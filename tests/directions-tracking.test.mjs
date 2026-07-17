@@ -3,51 +3,67 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
-const analyticsUrl = new URL('../analytics.js', import.meta.url);
+const analyticsUrl = new URL('../script.js', import.meta.url);
 
-const loadTracking = ({ gtag } = {}) => {
-  assert.ok(existsSync(analyticsUrl), 'analytics.js should exist');
+const loadTracking = ({ gtag, locations = ['hero'] } = {}) => {
+  assert.ok(existsSync(analyticsUrl), 'script.js should exist');
   const listeners = new Map();
-  const window = { dataLayer: [] };
+  const directionsLinks = locations.map((location) => ({
+    dataset: location ? { ctaLocation: location } : {},
+    addEventListener(type, handler) {
+      if (type === 'click') this.click = handler;
+    }
+  }));
+  const window = {
+    dataLayer: [],
+    addEventListener() {},
+    matchMedia: () => ({ matches: true }),
+    scrollY: 0
+  };
   if (gtag) window.gtag = gtag;
   const document = {
     addEventListener(type, handler) {
-      listeners.set(type, handler);
-    }
+      const handlers = listeners.get(type) || [];
+      handlers.push(handler);
+      listeners.set(type, handlers);
+    },
+    querySelector: () => null,
+    querySelectorAll: (selector) => selector === '[data-cta="directions"]' ? directionsLinks : [],
+    body: { classList: { toggle() {}, add() {}, remove() {} } }
   };
   vm.runInNewContext(readFileSync(analyticsUrl, 'utf8'), { window, document });
-  return { click: listeners.get('click'), window };
+  return { clicks: directionsLinks.map((link) => link.click), window };
 };
 
-const clickTarget = (link) => ({ closest: () => link });
 const normalize = (value) => JSON.parse(JSON.stringify(value));
 
 test('pushes directions_click with the CTA location', () => {
-  const { click, window } = loadTracking();
-  click({ target: clickTarget({ dataset: { ctaLocation: 'hero' } }) });
+  const { clicks, window } = loadTracking();
+  clicks[0]();
   assert.deepEqual(normalize(window.dataLayer), [
     { event: 'directions_click', cta_location: 'hero' }
   ]);
 });
 
 test('uses unknown when a tracked link has no location', () => {
-  const { click, window } = loadTracking();
-  click({ target: clickTarget({ dataset: {} }) });
+  const { clicks, window } = loadTracking({ locations: [null] });
+  clicks[0]();
   assert.equal(window.dataLayer[0].cta_location, 'unknown');
 });
 
-test('ignores clicks outside directions links', () => {
-  const { click, window } = loadTracking();
-  click({ target: clickTarget(null) });
-  assert.deepEqual(window.dataLayer, []);
+test('attaches tracking to every directions link', () => {
+  const { clicks, window } = loadTracking({ locations: ['header', 'mobile'] });
+  assert.equal(clicks.length, 2);
+  assert.ok(clicks.every((click) => typeof click === 'function'));
+  clicks[1]();
+  assert.equal(window.dataLayer[0].cta_location, 'mobile');
 });
 
 test('forwards the event to gtag when available', () => {
   const calls = [];
-  const { click } = loadTracking({ gtag: (...args) => calls.push(args) });
-  click({ target: clickTarget({ dataset: { ctaLocation: 'mobile' } }) });
+  const { clicks } = loadTracking({ gtag: (...args) => calls.push(args), locations: ['mobile'] });
+  clicks[0]();
   assert.deepEqual(normalize(calls), [
     ['event', 'directions_click', { cta_location: 'mobile' }]
   ]);
 });
-

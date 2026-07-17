@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
 
 test('uses the confirmed website, hours, and phone everywhere', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/thebsclub\.ch\/">/);
@@ -16,6 +17,12 @@ test('uses the confirmed website, hours, and phone everywhere', () => {
   assert.match(html, /\+41 76 226 27 22/);
 });
 
+test('keeps repository launch notes aligned with confirmed details', () => {
+  assert.doesNotMatch(readme, /774 20 27/);
+  assert.match(readme, /\+41 76 226 27 22/);
+  assert.match(readme, /Every day: `11:00–19:00`/);
+});
+
 test('puts directions first and retains menu and Uber Eats paths', () => {
   const heroActions = html.match(/<div class="hero-actions">([\s\S]*?)<\/div>/)?.[1] ?? '';
   const mobileActions = html.match(/<div class="mobile-actions"[^>]*>([\s\S]*?)<\/div>/)?.[1] ?? '';
@@ -23,11 +30,13 @@ test('puts directions first and retains menu and Uber Eats paths', () => {
   assert.match(heroActions, />View Menu\b/);
   assert.match(heroActions, /https:\/\/www\.ubereats\.com\/ch\/store\/bublee-interlaken\/Ik4zv95aWhWzt0lYSbjaMQ/);
   assert.match(mobileActions, /^\s*<a[^>]*data-cta="directions"[^>]*>Directions/);
-  assert.match(mobileActions, />Menu</);
+  assert.match(mobileActions, /<button class="menu-open" type="button" data-menu="bubble">Menu<\/button>/);
   assert.match(mobileActions, />Uber Eats/);
 });
 
 test('marks every directions surface for delegated tracking', () => {
+  assert.match(html, /<script src="script\.js\?v=20260717-2" defer><\/script>/);
+  assert.doesNotMatch(html, /(?:analytics|tracking|cta)\.js/);
   const trackedDirections = html.match(/data-cta="directions"/g) ?? [];
   assert.ok(trackedDirections.length >= 5, `expected at least 5 tracked directions links, found ${trackedDirections.length}`);
   for (const location of ['header', 'hero', 'visit', 'map_card', 'mobile']) {

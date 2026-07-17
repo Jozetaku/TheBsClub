@@ -4,7 +4,7 @@
 
 **Goal:** Synchronize The B's Club's confirmed contact details and make directions the measurable primary conversion action.
 
-**Architecture:** Keep the site dependency-free. Store content and CTA markup in `index.html`, isolate directions analytics in `analytics.js`, and validate both with Node's built-in test runner so no package installation is required.
+**Architecture:** Keep the site dependency-free. Store content and CTA markup in `index.html`, attach directions analytics through the existing cache-versioned `script.js`, and validate both with Node's built-in test runner so no package installation is required.
 
 **Tech Stack:** Static HTML, CSS, browser JavaScript, Node.js `node:test`.
 
@@ -83,17 +83,17 @@ git commit -m "Sync business details and CTA hierarchy"
 
 - [ ] **Step 1: Write the failing behavioral test**
 
-Create `tests/directions-tracking.test.mjs`. Use `node:vm` to execute `analytics.js` with a fake `document.addEventListener`, capture the delegated click handler, invoke it with a target whose `closest()` returns a direction-link object, and assert the exact `dataLayer` entry. Add cases for a missing location (`unknown`), a non-direction click (no event), and an available `gtag` function.
+Create `tests/directions-tracking.test.mjs`. Use `node:vm` to execute `script.js` with fake direction-link elements, capture their direct click handlers, and assert the exact `dataLayer` entry. Add cases for a missing location (`unknown`), multiple direction links, and an available `gtag` function.
 
 - [ ] **Step 2: Run the analytics test and verify RED**
 
 Run: `node --test tests/directions-tracking.test.mjs`
 
-Expected: FAIL because `analytics.js` does not exist.
+Expected: FAIL because `script.js` does not yet attach tracking handlers to direction links.
 
 - [ ] **Step 3: Implement delegated tracking**
 
-Create `analytics.js` as an IIFE. Register one document click handler, resolve `event.target?.closest?.('[data-cta="directions"]')`, return when absent, read `link.dataset.ctaLocation || 'unknown'`, initialize `window.dataLayer`, push `{ event: 'directions_click', cta_location: location }`, and call `window.gtag('event', 'directions_click', { cta_location: location })` only when `typeof window.gtag === 'function'`.
+In `script.js`, select every `[data-cta="directions"]` link, attach a direct click handler, read `link.dataset.ctaLocation || 'unknown'`, initialize `window.dataLayer`, push `{ event: 'directions_click', cta_location: location }`, and call `window.gtag('event', 'directions_click', { cta_location: location })` only when `typeof window.gtag === 'function'`. Load the script with a release version query so browsers receive the new code.
 
 - [ ] **Step 4: Run all tests and verify GREEN**
 
@@ -106,7 +106,7 @@ Expected: all content and analytics tests PASS with no warnings.
 Run:
 
 ```bash
-git add analytics.js tests/directions-tracking.test.mjs
+git add script.js index.html tests/directions-tracking.test.mjs
 git commit -m "Track directions CTA clicks"
 ```
 

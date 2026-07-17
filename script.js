@@ -123,6 +123,23 @@
     if (event.key === 'Escape' && menuDialog?.classList.contains('is-fallback-open')) closeDialog();
   });
 
+  document.querySelectorAll('[data-cta="directions"]').forEach((directionsLink) => {
+    directionsLink.addEventListener('click', () => {
+      const ctaLocation = directionsLink.dataset.ctaLocation || 'unknown';
+      if (!Array.isArray(window.dataLayer)) window.dataLayer = [];
+      window.dataLayer.push({
+        event: 'directions_click',
+        cta_location: ctaLocation
+      });
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'directions_click', {
+          cta_location: ctaLocation
+        });
+      }
+    });
+  });
+
   const year = document.querySelector('#year');
   if (year) year.textContent = String(new Date().getFullYear());
 })();

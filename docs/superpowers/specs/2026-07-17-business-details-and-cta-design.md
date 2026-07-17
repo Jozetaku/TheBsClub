@@ -17,7 +17,7 @@ Make the website match the confirmed store information and prioritize in-person 
 
 ## Tracking
 
-Every directions link carries `data-cta="directions"`. A single delegated click handler emits `directions_click` to `window.dataLayer` and calls `gtag('event', ...)` when a Google Analytics function is present. Tracking must never block navigation or throw when analytics is absent.
+Every directions link carries `data-cta="directions"`. The existing `script.js` attaches a click handler to each link, emits `directions_click` to `window.dataLayer`, and calls `gtag('event', ...)` when a Google Analytics function is present. Tracking must never block navigation or throw when analytics is absent.
 
 ## SEO and structured data
 
