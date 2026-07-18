@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
@@ -55,4 +55,21 @@ test('offers analytics consent and persistent privacy settings', () => {
 test('keeps the consent bar above mobile quick actions', () => {
   assert.match(css, /\.consent-banner\s*\{[\s\S]*position:\s*fixed/);
   assert.match(css, /@media\s*\(max-width:\s*760px\)[\s\S]*\.consent-banner\s*\{[\s\S]*bottom:\s*calc\(78px\s*\+\s*env\(safe-area-inset-bottom\)\)/);
+});
+
+test('does not advertise unavailable brunch or breakfast products', () => {
+  assert.doesNotMatch(html, /brunch|breakfast|avocado toast|all-day comfort food/i);
+  assert.match(html, /<title>The B's Club — Coffee, Matcha &amp; Bubble Tea in Interlaken<\/title>/);
+  assert.match(html, /"servesCuisine": \["Coffee", "Bubble Tea", "Matcha", "Waffles"\]/);
+  assert.match(html, /Coffee, matcha, bubble tea and waffles\./);
+  assert.match(html, /Drop in for coffee, a colourful afternoon pick-me-up or a sweet finish to your day\./);
+});
+
+test('features Yummy Strawberry with an optimized local image', () => {
+  const imageUrl = new URL('../images/yummy-strawberry-campaign.webp', import.meta.url);
+  assert.ok(existsSync(imageUrl), 'Yummy Strawberry campaign image should exist');
+  assert.ok(statSync(imageUrl).size < 300_000, 'Yummy Strawberry image should stay below 300 KB');
+  assert.match(html, /images\/yummy-strawberry-campaign\.webp/);
+  assert.match(html, /<h3>Yummy Strawberry<\/h3>/);
+  assert.match(html, /<strong>CHF 7\.90<\/strong>/);
 });
