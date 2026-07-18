@@ -59,11 +59,12 @@ test('attaches tracking to every directions link', () => {
   assert.equal(window.dataLayer[0].cta_location, 'mobile');
 });
 
-test('forwards the event to gtag when available', () => {
+test('forwards exactly one directions event to gtag', () => {
   const calls = [];
   const { clicks } = loadTracking({ gtag: (...args) => calls.push(args), locations: ['mobile'] });
   clicks[0]();
-  assert.deepEqual(normalize(calls), [
+  const directionsEvents = calls.filter(([command, event]) => command === 'event' && event === 'directions_click');
+  assert.deepEqual(normalize(directionsEvents), [
     ['event', 'directions_click', { cta_location: 'mobile' }]
   ]);
 });

@@ -40,7 +40,7 @@
 - Consumes: GA4 Measurement ID `G-JS838K2PY5`.
 - Produces: `window.dataLayer`, `window.gtag(...args)`, and denied Consent Mode v2 defaults available before the external Google tag loads.
 
-- [ ] **Step 1: Write the failing bootstrap tests**
+- [x] **Step 1: Write the failing bootstrap tests**
 
 Create `tests/consent-mode.test.mjs` with these assertions:
 
@@ -93,7 +93,7 @@ test('declares consent defaults before loading gtag.js', () => {
 });
 ```
 
-- [ ] **Step 2: Run the bootstrap tests and verify RED**
+- [x] **Step 2: Run the bootstrap tests and verify RED**
 
 Run:
 
@@ -103,7 +103,7 @@ Run:
 
 Expected: FAIL because the consent bootstrap and Google tag loader do not exist.
 
-- [ ] **Step 3: Add the minimal bootstrap and loader**
+- [x] **Step 3: Add the minimal bootstrap and loader**
 
 Insert before the existing deferred `script.js` include in `index.html`:
 
@@ -126,13 +126,13 @@ Insert before the existing deferred `script.js` include in `index.html`:
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JS838K2PY5"></script>
 ```
 
-- [ ] **Step 4: Run the bootstrap tests and verify GREEN**
+- [x] **Step 4: Run the bootstrap tests and verify GREEN**
 
 Run the Task 1 command again.
 
 Expected: 3 tests pass, 0 fail.
 
-- [ ] **Step 5: Commit the bootstrap**
+- [x] **Step 5: Commit the bootstrap**
 
 ```powershell
 git add index.html tests/consent-mode.test.mjs
@@ -151,7 +151,7 @@ git commit -m "Bootstrap GA4 consent mode"
 - Consumes: `window.gtag`, `window.localStorage`, `#analytics-consent`, `[data-consent-choice]`, and `#privacy-settings`.
 - Produces: stored key `thebsclub_analytics_consent` with value `granted` or `denied`; consent update calls; visible or hidden consent bar state.
 
-- [ ] **Step 1: Add failing static control tests**
+- [x] **Step 1: Add failing static control tests**
 
 Append to `tests/site-content.test.mjs`:
 
@@ -164,7 +164,7 @@ test('offers analytics consent and persistent privacy settings', () => {
 });
 ```
 
-- [ ] **Step 2: Add failing consent-controller tests**
+- [x] **Step 2: Add failing consent-controller tests**
 
 Append a real `script.js` harness to `tests/consent-mode.test.mjs`:
 
@@ -262,7 +262,7 @@ test('reopens privacy settings and focuses the accept action', () => {
 });
 ```
 
-- [ ] **Step 3: Run the new tests and verify RED**
+- [x] **Step 3: Run the new tests and verify RED**
 
 Run:
 
@@ -272,7 +272,7 @@ Run:
 
 Expected: FAIL because the consent markup and controller do not exist.
 
-- [ ] **Step 4: Add consent markup**
+- [x] **Step 4: Add consent markup**
 
 Add this button inside `.footer-bottom`:
 
@@ -295,7 +295,7 @@ Add this markup before `.dialog-backdrop`:
 </section>
 ```
 
-- [ ] **Step 5: Add the minimal controller**
+- [x] **Step 5: Add the minimal controller**
 
 Insert before the directions tracking block in `script.js`:
 
@@ -351,13 +351,13 @@ Insert before the directions tracking block in `script.js`:
   });
 ```
 
-- [ ] **Step 6: Run consent and content tests and verify GREEN**
+- [x] **Step 6: Run consent and content tests and verify GREEN**
 
 Run the Task 2 command again.
 
 Expected: all consent-mode and site-content tests pass.
 
-- [ ] **Step 7: Commit the consent behavior**
+- [x] **Step 7: Commit the consent behavior**
 
 ```powershell
 git add index.html script.js tests/consent-mode.test.mjs tests/site-content.test.mjs
@@ -374,7 +374,7 @@ git commit -m "Add analytics consent controls"
 - Consumes: `.consent-banner`, `.consent-actions`, `.consent-reject`, and `.footer-privacy` markup from Task 2.
 - Produces: desktop and mobile layouts with the consent bar above the existing `.mobile-actions` bar.
 
-- [ ] **Step 1: Add a failing mobile-clearance test**
+- [x] **Step 1: Add a failing mobile-clearance test**
 
 Add this read beside the existing `html` and `readme` constants in `tests/site-content.test.mjs`:
 
@@ -391,7 +391,7 @@ test('keeps the consent bar above mobile quick actions', () => {
 });
 ```
 
-- [ ] **Step 2: Run the static test and verify RED**
+- [x] **Step 2: Run the static test and verify RED**
 
 Run:
 
@@ -401,7 +401,7 @@ Run:
 
 Expected: FAIL because consent styles do not exist.
 
-- [ ] **Step 3: Add desktop and mobile consent styles**
+- [x] **Step 3: Add desktop and mobile consent styles**
 
 Append to `styles.css`:
 
@@ -455,13 +455,13 @@ Append to `styles.css`:
 }
 ```
 
-- [ ] **Step 4: Run the static test and verify GREEN**
+- [x] **Step 4: Run the static test and verify GREEN**
 
 Run the Task 3 command again.
 
 Expected: all site-content tests pass.
 
-- [ ] **Step 5: Commit the consent styles**
+- [x] **Step 5: Commit the consent styles**
 
 ```powershell
 git add styles.css tests/site-content.test.mjs
@@ -479,7 +479,7 @@ git commit -m "Style analytics consent banner"
 - Consumes: consent bootstrap, consent controller, and the existing five directions CTA locations.
 - Produces: a regression-checked branch ready for GitHub review and production deployment.
 
-- [ ] **Step 1: Add a failing exact-once event assertion**
+- [x] **Step 1: Add a failing exact-once event assertion**
 
 Replace the existing gtag forwarding test with:
 
@@ -495,7 +495,7 @@ test('forwards exactly one directions event to gtag', () => {
 });
 ```
 
-- [ ] **Step 2: Temporarily duplicate the gtag event call and verify RED**
+- [x] **Step 2: Temporarily duplicate the gtag event call and verify RED**
 
 In a temporary working copy, duplicate the existing `window.gtag('event', 'directions_click', ...)` call and run:
 
@@ -505,13 +505,13 @@ In a temporary working copy, duplicate the existing `window.gtag('event', 'direc
 
 Expected: FAIL because two matching GA4 event calls are observed. Remove the temporary duplicate immediately.
 
-- [ ] **Step 3: Run the exact-once test against the real implementation and verify GREEN**
+- [x] **Step 3: Run the exact-once test against the real implementation and verify GREEN**
 
 Run the Task 4 test command again.
 
 Expected: all directions tracking tests pass with one GA4 event call.
 
-- [ ] **Step 4: Bump the cache-busting script version**
+- [x] **Step 4: Bump the cache-busting script version**
 
 Change the deferred site script reference in `index.html` to:
 
@@ -525,7 +525,7 @@ Update the existing `marks every directions surface for delegated tracking` asse
 assert.match(html, /<script src="script\.js\?v=20260718-1" defer><\/script>/);
 ```
 
-- [ ] **Step 5: Run the full automated suite**
+- [x] **Step 5: Run the full automated suite**
 
 Run:
 
