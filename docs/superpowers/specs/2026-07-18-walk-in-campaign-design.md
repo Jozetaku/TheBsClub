@@ -1,8 +1,8 @@
 # The B's Club Walk-in Campaign Design
 
-**Date:** 18 July 2026  
-**Status:** Approved direction; written-spec review pending  
-**Campaign end:** 31 August 2026, 23:59 Europe/Zurich  
+**Date:** 18 July 2026
+**Status:** Approved direction; written-spec review pending
+**Campaign end:** 31 August 2026, 23:59 Europe/Zurich
 **Campaign code:** `BS12`
 
 ## Purpose
