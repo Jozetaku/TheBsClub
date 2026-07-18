@@ -36,7 +36,7 @@ test('puts directions first and retains menu and Uber Eats paths', () => {
 });
 
 test('marks every directions surface for delegated tracking', () => {
-  assert.match(html, /<script src="script\.js\?v=20260718-2" defer><\/script>/);
+  assert.match(html, /<script src="script\.js\?v=20260718-3" defer><\/script>/);
   assert.doesNotMatch(html, /(?:analytics|tracking|cta)\.js/);
   const trackedDirections = html.match(/data-cta="directions"/g) ?? [];
   assert.ok(trackedDirections.length >= 5, `expected at least 5 tracked directions links, found ${trackedDirections.length}`);
@@ -72,4 +72,20 @@ test('features Yummy Strawberry with an optimized local image', () => {
   assert.match(html, /images\/yummy-strawberry-campaign\.webp/);
   assert.match(html, /<h3>Yummy Strawberry<\/h3>/);
   assert.match(html, /<strong>CHF 7\.90<\/strong>/);
+});
+
+test('publishes the approved BS12 walk-in offer', () => {
+  const imageUrl = new URL('../images/summer-drinks-campaign.webp', import.meta.url);
+  assert.ok(existsSync(imageUrl), 'campaign trio image should exist');
+  assert.ok(statSync(imageUrl).size < 450_000, 'campaign trio image should stay below 450 KB');
+  assert.match(html, /<noscript><style>#summer-offer\[hidden\] \{ display: block !important; \}<\/style><\/noscript>/);
+  assert.match(html, /id="summer-offer"[^>]*hidden[^>]*data-campaign-end="2026-08-31T21:59:59Z"/);
+  assert.match(html, /3 drinks\. 1 summer offer\./);
+  assert.match(html, /Pick yours and save 12% in store\./);
+  assert.match(html, /Show code <strong>BS12<\/strong> at checkout/);
+  assert.match(html, /Brown Sugar Milk Tea[\s\S]*?<del>CHF 7\.90<\/del>[\s\S]*?<strong>CHF 6\.95<\/strong>/);
+  assert.match(html, /Yummy Strawberry[\s\S]*?<del>CHF 7\.90<\/del>[\s\S]*?<strong>CHF 6\.95<\/strong>/);
+  assert.match(html, /Matcha Latte[\s\S]*?<del>CHF 8\.90<\/del>[\s\S]*?<strong>CHF 7\.80<\/strong>/);
+  assert.match(html, /data-cta="directions" data-cta-location="campaign"/);
+  assert.match(html, /<script src="script\.js\?v=20260718-3" defer><\/script>/);
 });

@@ -4,6 +4,15 @@
   const primaryNav = document.querySelector('#primary-nav');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const campaignOffer = document.querySelector('#summer-offer');
+  const campaignEnd = campaignOffer?.dataset.campaignEnd;
+  if (campaignOffer && campaignEnd) {
+    const endTimestamp = Date.parse(campaignEnd);
+    if (Number.isFinite(endTimestamp) && Date.now() <= endTimestamp) {
+      campaignOffer.hidden = false;
+    }
+  }
+
   const setNavState = (open) => {
     menuToggle?.setAttribute('aria-expanded', String(open));
     primaryNav?.classList.toggle('is-open', open);
