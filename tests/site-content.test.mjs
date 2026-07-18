@@ -6,6 +6,22 @@ const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
+const rgb = (hex) => [1, 3, 5].map((start) => Number.parseInt(hex.slice(start, start + 2), 16));
+const luminance = (hex) => rgb(hex)
+  .map((channel) => {
+    const value = channel / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  })
+  .reduce((total, value, index) => total + value * [0.2126, 0.7152, 0.0722][index], 0);
+const contrastRatio = (foreground, background) => {
+  const values = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
+  return (values[0] + 0.05) / (values[1] + 0.05);
+};
+const blend = (foreground, background, alpha) => `#${rgb(foreground)
+  .map((channel, index) => Math.round(channel * alpha + rgb(background)[index] * (1 - alpha)))
+  .map((channel) => channel.toString(16).padStart(2, '0'))
+  .join('')}`;
+
 test('uses the confirmed website, hours, and phone everywhere', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/thebsclub\.ch\/">/);
   assert.match(html, /<meta property="og:url" content="https:\/\/thebsclub\.ch\/">/);
@@ -76,18 +92,37 @@ test('features Yummy Strawberry with an optimized local image', () => {
 
 test('publishes the approved BS12 walk-in offer', () => {
   const imageUrl = new URL('../images/summer-drinks-campaign.webp', import.meta.url);
+  const campaignHtml = html.match(/<section class="summer-offer"[\s\S]*?<\/section>/)?.[0] ?? '';
   assert.ok(existsSync(imageUrl), 'campaign trio image should exist');
   assert.ok(statSync(imageUrl).size < 450_000, 'campaign trio image should stay below 450 KB');
   assert.match(html, /<noscript><style>#summer-offer\[hidden\] \{ display: block !important; \}<\/style><\/noscript>/);
-  assert.match(html, /id="summer-offer"[^>]*hidden[^>]*data-campaign-end="2026-08-31T21:59:59Z"/);
-  assert.match(html, /3 drinks\. 1 summer offer\./);
-  assert.match(html, /Pick yours and save 12% in store\./);
-  assert.match(html, /Show code <strong>BS12<\/strong> at checkout/);
-  assert.match(html, /Brown Sugar Milk Tea[\s\S]*?<del>CHF 7\.90<\/del>[\s\S]*?<strong>CHF 6\.95<\/strong>/);
-  assert.match(html, /Yummy Strawberry[\s\S]*?<del>CHF 7\.90<\/del>[\s\S]*?<strong>CHF 6\.95<\/strong>/);
-  assert.match(html, /Matcha Latte[\s\S]*?<del>CHF 8\.90<\/del>[\s\S]*?<strong>CHF 7\.80<\/strong>/);
-  assert.match(html, /data-cta="directions" data-cta-location="campaign"/);
+  assert.match(campaignHtml, /id="summer-offer"[^>]*hidden[^>]*data-campaign-end="2026-08-31T21:59:59Z"/);
+  assert.match(campaignHtml, /3 drinks\. 1 summer offer\./);
+  assert.match(campaignHtml, /Pick yours and save 12% in store\./);
+  assert.match(campaignHtml, /Show code <strong>BS12<\/strong> at checkout/);
+  assert.match(campaignHtml, /Brown Sugar Milk Tea[\s\S]*?<del>CHF 7\.90<\/del>[\s\S]*?<strong>CHF 6\.95<\/strong>/);
+  assert.match(campaignHtml, /Yummy Strawberry[\s\S]*?<del>CHF 7\.90<\/del>[\s\S]*?<strong>CHF 6\.95<\/strong>/);
+  assert.match(campaignHtml, /Matcha Latte[\s\S]*?<del>CHF 8\.90<\/del>[\s\S]*?<strong>CHF 7\.80<\/strong>/);
+  const termsHtml = campaignHtml.match(/<div class="summer-offer-actions">[\s\S]*?<p>([\s\S]*?)<\/p>/)?.[1] ?? '';
+  const renderedTerms = termsHtml.replace(/<br\s*\/?\s*>/g, '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  assert.equal(renderedTerms, 'In store only · Until 31 August 2026');
+  assert.match(campaignHtml, /data-cta="directions" data-cta-location="campaign"/);
   assert.match(html, /<script src="script\.js\?v=20260718-3" defer><\/script>/);
+});
+
+test('keeps campaign text readable on the coral-to-amber background', () => {
+  const emphasizedHeadingRule = css.match(/\.summer-offer-copy h2 em\s*\{([^}]*)\}/)?.[1] ?? '';
+  const oldPriceRule = css.match(/\.summer-price-row del\s*\{([^}]*)\}/)?.[1] ?? '';
+
+  assert.match(emphasizedHeadingRule, /color:\s*#3a211b/);
+  assert.match(oldPriceRule, /color:\s*#4a342d/);
+  assert.doesNotMatch(oldPriceRule, /opacity:|text-shadow:/);
+
+  for (const gradientColor of ['#ef725d', '#f5ae51']) {
+    assert.ok(contrastRatio('#3a211b', gradientColor) >= 4.5);
+    const priceRowBackground = blend('#ffffff', gradientColor, 0.68);
+    assert.ok(contrastRatio('#4a342d', priceRowBackground) >= 4.5);
+  }
 });
 
 test('blends the complete desktop campaign trio into its full-bleed backdrop', () => {
