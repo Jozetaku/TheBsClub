@@ -535,7 +535,7 @@ Run:
 
 Expected: every test passes with 0 failures.
 
-- [ ] **Step 6: Test locally in a desktop browser**
+- [x] **Step 6: Test locally in a desktop browser**
 
 Serve the repository root and verify:
 
@@ -547,11 +547,11 @@ Serve the repository root and verify:
 6. Google Maps navigation is not delayed or blocked.
 7. The console has no new errors.
 
-- [ ] **Step 7: Test at 390 x 844**
+- [x] **Step 7: Test at 390 x 844**
 
 Verify the consent bar sits above `.mobile-actions`, both consent buttons are reachable, and Directions, Menu, and Uber Eats remain visible and clickable.
 
-- [ ] **Step 8: Commit the final test and cache version**
+- [x] **Step 8: Commit the final test and cache version**
 
 ```powershell
 git add index.html tests/directions-tracking.test.mjs docs/superpowers/plans/2026-07-18-ga4-consent-mode.md
