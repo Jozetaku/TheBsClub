@@ -90,11 +90,24 @@ test('publishes the approved BS12 walk-in offer', () => {
   assert.match(html, /<script src="script\.js\?v=20260718-3" defer><\/script>/);
 });
 
-test('shows the complete campaign trio over a full-bleed desktop backdrop', () => {
+test('blends the complete desktop campaign trio into its full-bleed backdrop', () => {
+  const desktopImageRule = css.match(/\.summer-offer-media img\s*\{([^}]*)\}/)?.[1] ?? '';
   assert.match(css, /\.summer-offer-media::before\s*\{[^}]*background-image:\s*url\("images\/summer-drinks-campaign\.webp"\)[^}]*filter:\s*blur\(/);
-  assert.match(css, /\.summer-offer-media img\s*\{[^}]*object-fit:\s*contain/);
+  assert.match(desktopImageRule, /position:\s*absolute/);
+  assert.match(desktopImageRule, /aspect-ratio:\s*3\s*\/\s*2/);
+  assert.match(desktopImageRule, /object-fit:\s*contain/);
+  assert.match(desktopImageRule, /-webkit-mask-image:\s*linear-gradient\(/);
+  assert.match(desktopImageRule, /(?:^|;)\s*mask-image:\s*linear-gradient\(/);
 });
 
 test('retains the approved campaign crop below the desktop breakpoint', () => {
-  assert.match(css, /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{[^}]*object-fit:\s*cover/);
+  const responsiveImageRule = css.match(/@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(responsiveImageRule, /position:\s*relative/);
+  assert.match(responsiveImageRule, /top:\s*auto/);
+  assert.match(responsiveImageRule, /height:\s*100%/);
+  assert.match(responsiveImageRule, /aspect-ratio:\s*auto/);
+  assert.match(responsiveImageRule, /object-fit:\s*cover/);
+  assert.match(responsiveImageRule, /transform:\s*none/);
+  assert.match(responsiveImageRule, /-webkit-mask-image:\s*none/);
+  assert.match(responsiveImageRule, /(?:^|;)\s*mask-image:\s*none/);
 });
