@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const analyticsUrl = new URL('../script.js', import.meta.url);
 
-const loadTracking = ({ gtag, locations = ['hero'] } = {}) => {
+const loadTracking = ({ dataLayer = [], gtag, locations = ['hero'] } = {}) => {
   assert.ok(existsSync(analyticsUrl), 'script.js should exist');
   const listeners = new Map();
   const directionsLinks = locations.map((location) => ({
@@ -15,7 +15,7 @@ const loadTracking = ({ gtag, locations = ['hero'] } = {}) => {
     }
   }));
   const window = {
-    dataLayer: [],
+    dataLayer,
     addEventListener() {},
     matchMedia: () => ({ matches: true }),
     scrollY: 0
@@ -59,11 +59,23 @@ test('attaches tracking to every directions link', () => {
   assert.equal(window.dataLayer[0].cta_location, 'mobile');
 });
 
-test('forwards the event to gtag when available', () => {
-  const calls = [];
-  const { clicks } = loadTracking({ gtag: (...args) => calls.push(args), locations: ['mobile'] });
+test('queues exactly one directions event through the shared gtag data layer', () => {
+  const dataLayer = [];
+  const bootstrapGtag = function gtag() {
+    dataLayer.push(arguments);
+  };
+  const { clicks } = loadTracking({ dataLayer, gtag: bootstrapGtag, locations: ['mobile'] });
   clicks[0]();
-  assert.deepEqual(normalize(calls), [
-    ['event', 'directions_click', { cta_location: 'mobile' }]
+  const directionsEvents = dataLayer
+    .map((message) => {
+      if (message?.event === 'directions_click') return message;
+      const [command, event, payload] = Array.from(message);
+      return command === 'event' && event === 'directions_click'
+        ? { event, cta_location: payload.cta_location }
+        : null;
+    })
+    .filter(Boolean);
+  assert.deepEqual(normalize(directionsEvents), [
+    { event: 'directions_click', cta_location: 'mobile' }
   ]);
 });

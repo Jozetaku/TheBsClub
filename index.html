@@ -42,7 +42,23 @@
     }]
   }
   </script>
-  <script src="script.js?v=20260717-2" defer></script>
+  <script data-google-consent-bootstrap>
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag() {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      wait_for_update: 500
+    });
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-JS838K2PY5');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JS838K2PY5"></script>
+  <script src="script.js?v=20260718-2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -258,7 +274,7 @@
       <a class="brand footer-brand" href="#top"><span class="brand-mark"><img src="images/logo-sm.png" alt="" width="44" height="44"></span><span><strong>The B's Club</strong><small>Food to nourish your soul</small></span></a>
       <div class="footer-links"><a href="#favourites">Menu</a><a href="#local-offer">Local offer</a><a href="#visit">Visit</a><a href="https://www.instagram.com/thebsclub25/" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.facebook.com/profile.php?id=100071619350267" target="_blank" rel="noopener">Facebook ↗</a></div>
     </div>
-    <div class="container footer-bottom"><p>© <span id="year">2026</span> The B's Club. Interlaken, Switzerland.</p><p>Independent café · Good food · Good company</p></div>
+    <div class="container footer-bottom"><p>© <span id="year">2026</span> The B's Club. Interlaken, Switzerland.</p><p>Independent café · Good food · Good company</p><button class="footer-privacy" id="privacy-settings" type="button">Privacy settings</button></div>
   </footer>
 
   <div class="mobile-actions" aria-label="Quick actions">
@@ -266,6 +282,17 @@
     <button class="menu-open" type="button" data-menu="bubble">Menu</button>
     <a href="https://www.ubereats.com/ch/store/bublee-interlaken/Ik4zv95aWhWzt0lYSbjaMQ" target="_blank" rel="noopener">Uber Eats ↗</a>
   </div>
+
+  <section class="consent-banner" id="analytics-consent" aria-label="Analytics privacy choices" hidden>
+    <div>
+      <strong>Help us improve your visit</strong>
+      <p>We use privacy-conscious analytics to understand visits and direction requests. Advertising cookies stay off.</p>
+    </div>
+    <div class="consent-actions">
+      <button class="button button-small" type="button" data-consent-choice="granted">Accept Analytics</button>
+      <button class="consent-reject" type="button" data-consent-choice="denied">Reject</button>
+    </div>
+  </section>
 
   <div class="dialog-backdrop" id="dialog-backdrop" hidden></div>
   <dialog class="menu-dialog" id="menu-dialog" aria-labelledby="menu-dialog-title">

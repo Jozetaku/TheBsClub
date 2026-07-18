@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
 test('uses the confirmed website, hours, and phone everywhere', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/thebsclub\.ch\/">/);
@@ -35,11 +36,23 @@ test('puts directions first and retains menu and Uber Eats paths', () => {
 });
 
 test('marks every directions surface for delegated tracking', () => {
-  assert.match(html, /<script src="script\.js\?v=20260717-2" defer><\/script>/);
+  assert.match(html, /<script src="script\.js\?v=20260718-2" defer><\/script>/);
   assert.doesNotMatch(html, /(?:analytics|tracking|cta)\.js/);
   const trackedDirections = html.match(/data-cta="directions"/g) ?? [];
   assert.ok(trackedDirections.length >= 5, `expected at least 5 tracked directions links, found ${trackedDirections.length}`);
   for (const location of ['header', 'hero', 'visit', 'map_card', 'mobile']) {
     assert.match(html, new RegExp(`data-cta-location="${location}"`));
   }
+});
+
+test('offers analytics consent and persistent privacy settings', () => {
+  assert.match(html, /id="analytics-consent"/);
+  assert.match(html, /data-consent-choice="granted"[^>]*>Accept Analytics</);
+  assert.match(html, /data-consent-choice="denied"[^>]*>Reject</);
+  assert.match(html, /id="privacy-settings"[^>]*>Privacy settings</);
+});
+
+test('keeps the consent bar above mobile quick actions', () => {
+  assert.match(css, /\.consent-banner\s*\{[\s\S]*position:\s*fixed/);
+  assert.match(css, /@media\s*\(max-width:\s*760px\)[\s\S]*\.consent-banner\s*\{[\s\S]*bottom:\s*calc\(78px\s*\+\s*env\(safe-area-inset-bottom\)\)/);
 });
