@@ -35,8 +35,8 @@ The offer is in-store only and requires the customer to show or say code `BS12` 
 The public wording is:
 
 - Label: `The B's Club · Walk-in special`
-- Headline: `12% off 3 favourites`
-- Supporting copy: `Your next Interlaken pick-me-up is waiting. Choose one of three customer favourites at a special in-store price.`
+- Headline: `3 drinks. 1 summer offer.`
+- Offer line: `Pick yours and save 12% in store.`
 - Code instruction: `Show code BS12 at checkout`
 - Terms: `In store only · Until 31 August 2026`
 - Primary CTA: `Get Directions`
