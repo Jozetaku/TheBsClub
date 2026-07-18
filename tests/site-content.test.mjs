@@ -89,3 +89,12 @@ test('publishes the approved BS12 walk-in offer', () => {
   assert.match(html, /data-cta="directions" data-cta-location="campaign"/);
   assert.match(html, /<script src="script\.js\?v=20260718-3" defer><\/script>/);
 });
+
+test('shows the complete campaign trio over a full-bleed desktop backdrop', () => {
+  assert.match(css, /\.summer-offer-media::before\s*\{[^}]*background-image:\s*url\("images\/summer-drinks-campaign\.webp"\)[^}]*filter:\s*blur\(/);
+  assert.match(css, /\.summer-offer-media img\s*\{[^}]*object-fit:\s*contain/);
+});
+
+test('retains the approved campaign crop below the desktop breakpoint', () => {
+  assert.match(css, /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{[^}]*object-fit:\s*cover/);
+});
