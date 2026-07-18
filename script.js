@@ -123,6 +123,56 @@
     if (event.key === 'Escape' && menuDialog?.classList.contains('is-fallback-open')) closeDialog();
   });
 
+  const consentKey = 'thebsclub_analytics_consent';
+  const consentBanner = document.querySelector('#analytics-consent');
+  const consentButtons = document.querySelectorAll('[data-consent-choice]');
+  const privacySettings = document.querySelector('#privacy-settings');
+
+  const readConsent = () => {
+    try {
+      const value = window.localStorage?.getItem(consentKey);
+      return value === 'granted' || value === 'denied' ? value : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const applyConsent = (choice, persist = true) => {
+    const analyticsStorage = choice === 'granted' ? 'granted' : 'denied';
+    if (typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', {
+        analytics_storage: analyticsStorage,
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+    }
+    if (persist) {
+      try {
+        window.localStorage?.setItem(consentKey, analyticsStorage);
+      } catch {
+        // Keep the in-page choice even when storage is unavailable.
+      }
+    }
+    if (consentBanner) consentBanner.hidden = true;
+  };
+
+  const storedConsent = readConsent();
+  if (storedConsent) {
+    applyConsent(storedConsent, false);
+  } else if (consentBanner) {
+    consentBanner.hidden = false;
+  }
+
+  consentButtons.forEach((button) => {
+    button.addEventListener('click', () => applyConsent(button.dataset.consentChoice));
+  });
+
+  privacySettings?.addEventListener('click', () => {
+    if (consentBanner) consentBanner.hidden = false;
+    consentButtons[0]?.focus();
+  });
+
   document.querySelectorAll('[data-cta="directions"]').forEach((directionsLink) => {
     directionsLink.addEventListener('click', () => {
       const ctaLocation = directionsLink.dataset.ctaLocation || 'unknown';

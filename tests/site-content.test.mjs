@@ -43,3 +43,10 @@ test('marks every directions surface for delegated tracking', () => {
     assert.match(html, new RegExp(`data-cta-location="${location}"`));
   }
 });
+
+test('offers analytics consent and persistent privacy settings', () => {
+  assert.match(html, /id="analytics-consent"/);
+  assert.match(html, /data-consent-choice="granted"[^>]*>Accept Analytics</);
+  assert.match(html, /data-consent-choice="denied"[^>]*>Reject</);
+  assert.match(html, /id="privacy-settings"[^>]*>Privacy settings</);
+});
