@@ -95,6 +95,25 @@ test('features Yummy Strawberry with an optimized local image', () => {
   assert.match(html, /<strong>CHF 7\.90<\/strong>/);
 });
 
+test('keeps the hero caption clear of the overlapping side image', () => {
+  const captionRule = css.match(/\.hero-image figcaption\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(captionRule, /right:\s*auto/);
+  assert.match(captionRule, /width:\s*max-content/);
+  assert.match(captionRule, /max-width:\s*calc\(100%\s*-\s*40px\)/);
+  assert.match(captionRule, /z-index:\s*2/);
+});
+
+test('shows the complete Yummy Strawberry cup in both scoped frames', () => {
+  const productRule = css.match(/\.product-image-yummy img\s*\{([^}]*)\}/)?.[1] ?? '';
+  const storyRule = css.match(/\.story-visual \.story-photo-yummy\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(html, /class="product-image product-image-yummy"/);
+  assert.match(html, /class="story-photo-two story-photo-yummy"/);
+  assert.match(productRule, /object-fit:\s*contain/);
+  assert.match(productRule, /object-position:\s*center/);
+  assert.match(storyRule, /object-fit:\s*contain/);
+  assert.match(storyRule, /object-position:\s*center/);
+});
+
 test('publishes the approved BS12 walk-in offer', () => {
   const imageUrl = new URL('../images/summer-drinks-campaign.webp', import.meta.url);
   const campaignHtml = html.match(/<section class="summer-offer"[\s\S]*?<\/section>/)?.[0] ?? '';
