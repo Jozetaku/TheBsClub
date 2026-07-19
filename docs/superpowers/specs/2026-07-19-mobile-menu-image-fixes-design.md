@@ -52,11 +52,11 @@ Add a dedicated Yummy image class. The portrait asset uses `object-fit: contain`
 
 ### Yummy Strawberry Story Image
 
-Add a dedicated class or scoped rule that uses `object-fit: contain`, a matching coral background, and restrained internal breathing room. Keep the existing framed overlap composition while showing the whole cup.
+Add the `story-photo-yummy` class to the existing image. It uses `object-fit: contain`, a matching coral background, and restrained internal breathing room. Keep the existing framed overlap composition while showing the whole cup.
 
 ### Mobile Campaign Trio
 
-At widths up to 960 px, retain the existing blurred full-bleed background but render the foreground image with `object-fit: contain`. At widths up to 560 px, set the foreground width to 90% and centre it, creating approximately 5% safe space on each side.
+At widths up to 960 px, retain the existing blurred full-bleed background but render the foreground image with `object-fit: contain`. At widths up to 560 px, set the foreground width to 90% and centre it, creating 5% safe space on each side.
 
 ## Responsive Acceptance Criteria
 
