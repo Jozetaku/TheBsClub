@@ -1,7 +1,7 @@
 # Campaign Trio Image Replacement Design
 
 Date: 2026-07-20
-Status: Approved visual direction; awaiting written-spec approval
+Status: Approved
 
 ## Objective
 
