@@ -75,7 +75,7 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 .hero-image:hover img { transform: scale(1.025); }
 .hero-image-main { inset: 0 19% 0 0; }
 .hero-image-side { width: 43%; height: 38%; right: 0; bottom: 7%; border: 10px solid var(--cream); }
-.hero-image figcaption { position: absolute; z-index: 2; left: 20px; right: auto; bottom: 18px; width: max-content; max-width: calc(100% - 40px); display: flex; align-items: center; gap: 9px; padding: 11px 14px; border-radius: 999px; background: rgba(255, 253, 248, .93); color: var(--ink); font-size: 12px; font-weight: 700; backdrop-filter: blur(8px); }
+.hero-image figcaption { position: absolute; left: 20px; right: 20px; bottom: 18px; display: flex; align-items: center; gap: 9px; padding: 11px 14px; border-radius: 999px; background: rgba(255, 253, 248, .93); color: var(--ink); font-size: 12px; font-weight: 700; backdrop-filter: blur(8px); }
 .hero-image figcaption span { color: var(--coral); }
 .hero-note { position: absolute; top: 5%; right: 0; width: 170px; height: 170px; padding: 24px; border-radius: 50%; background: var(--coral); color: #fff; display: flex; flex-direction: column; justify-content: center; transform: rotate(7deg); box-shadow: 0 16px 40px rgba(239, 114, 93, .28); }
 .hero-note span { font-family: var(--font-display); font-size: 16px; }
@@ -130,8 +130,6 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 .product-card-tall .product-image { height: 585px; }
 .product-card-wide .product-image { height: 335px; }
 .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
-.product-image-yummy { background: linear-gradient(115deg, #fb9368 0%, #fd9663 48%, #fcaf73 100%); }
-.product-image-yummy img { padding: 14px; object-fit: contain; object-position: center; }
 .product-card:hover img { transform: scale(1.035); }
 .product-badge { position: absolute; top: 16px; left: 16px; padding: 8px 12px; border-radius: 99px; background: var(--coral); color: white; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
 .product-info { display: flex; align-items: start; justify-content: space-between; gap: 20px; padding: 17px 3px 28px; border-bottom: 1px solid var(--line); }
@@ -170,7 +168,6 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 .story-visual img { position: absolute; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); }
 .story-photo-one { top: 0; left: 0; width: 67%; height: 530px; }
 .story-photo-two { right: 0; bottom: 0; width: 52%; height: 270px; border: 10px solid var(--cream); }
-.story-visual .story-photo-yummy { padding: 10px; background: linear-gradient(115deg, #fb9368 0%, #fd9663 48%, #fcaf73 100%); object-fit: contain; object-position: center; }
 .roundel { position: absolute; top: 55px; right: -5px; width: 132px; height: 132px; display: grid; place-items: center; padding: 24px; border-radius: 50%; background: var(--gold); color: white; font-size: 9px; font-weight: 700; text-align: center; letter-spacing: .1em; transform: rotate(10deg); }
 .story-copy h2 { font-size: clamp(47px, 5vw, 67px); }
 .story-copy > p:not(.eyebrow) { margin-top: 25px; color: var(--ink-soft); line-height: 1.8; }
@@ -275,7 +272,7 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 @media (max-width: 960px) {
   .summer-offer-shell { grid-template-columns: 1fr; }
   .summer-offer-media { min-height: 390px; }
-  .summer-offer-media img { position: relative; top: auto; left: auto; display: block; width: 100%; height: 100%; aspect-ratio: auto; object-fit: contain; transform: none; -webkit-mask-image: none; mask-image: none; }
+  .summer-offer-media img { position: relative; top: auto; left: auto; height: 100%; aspect-ratio: auto; object-fit: cover; transform: none; -webkit-mask-image: none; mask-image: none; }
   .summer-offer-media::after { background: linear-gradient(0deg, rgba(239,114,93,.82), transparent 42%); }
   .summer-offer-copy { margin-top: -30px; padding: 34px 34px 38px; }
   .summer-offer-copy h2 { margin-top: 34px; }
@@ -332,7 +329,6 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
   .summer-offer .container { width: 100%; }
   .summer-offer-shell { border-radius: 0; }
   .summer-offer-media { min-height: 300px; }
-  .summer-offer-media img { width: 90%; margin-inline: auto; }
   .summer-offer-copy { padding: 30px 20px 32px; }
   .summer-offer-copy h2 { font-size: 47px; }
   .summer-offer-topline { align-items: flex-start; }
@@ -354,7 +350,7 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
   .hero-note { width: 122px; height: 122px; padding: 17px; }
   .hero-note span { font-size: 12px; }
   .hero-note strong { font-size: 21px; }
-  .hero-image figcaption { left: 12px; right: auto; bottom: 12px; max-width: calc(100% - 24px); }
+  .hero-image figcaption { left: 12px; right: 12px; bottom: 12px; }
   .section { padding: 74px 0; }
   .section-heading h2, .offer-intro h2, .story-copy h2, .review-heading h2, .visit-copy h2 { font-size: 44px; }
   .product-grid { display: block; }
