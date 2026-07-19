@@ -73,11 +73,16 @@ test('keeps the consent bar above mobile quick actions', () => {
   assert.match(css, /@media\s*\(max-width:\s*760px\)[\s\S]*\.consent-banner\s*\{[\s\S]*bottom:\s*calc\(78px\s*\+\s*env\(safe-area-inset-bottom\)\)/);
 });
 
-test('does not advertise unavailable brunch or breakfast products', () => {
-  assert.doesNotMatch(html, /brunch|breakfast|avocado toast|all-day comfort food/i);
+test('does not advertise unavailable products and features the current Signature Latte', () => {
+  assert.doesNotMatch(html, /brunch|breakfast|avocado toast|all-day comfort food|waffles?|strawberry-waffle/i);
   assert.match(html, /<title>The B's Club — Coffee, Matcha &amp; Bubble Tea in Interlaken<\/title>/);
-  assert.match(html, /"servesCuisine": \["Coffee", "Bubble Tea", "Matcha", "Waffles"\]/);
-  assert.match(html, /Coffee, matcha, bubble tea and waffles\./);
+  assert.match(html, /"servesCuisine": \["Coffee", "Bubble Tea", "Matcha"\]/);
+  assert.match(html, /Coffee, matcha, bubble tea and colourful drinks\./);
+  assert.match(html, /SIGNATURE LATTE/);
+  assert.match(html, /images\/signature-latte\.jpg/);
+  assert.match(html, /<p>Hot coffee<\/p><h3>Signature Latte<\/h3>/);
+  assert.match(html, /<strong>CHF 4\.90<\/strong>/);
+  assert.doesNotMatch(html, /signature-latte-hot-concept-v1\.png/);
   assert.match(html, /Drop in for coffee, a colourful afternoon pick-me-up or a sweet finish to your day\./);
 });
 
