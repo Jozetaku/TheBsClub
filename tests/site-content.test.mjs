@@ -146,3 +146,12 @@ test('retains the approved campaign crop below the desktop breakpoint', () => {
   assert.match(responsiveImageRule, /-webkit-mask-image:\s*none/);
   assert.match(responsiveImageRule, /(?:^|;)\s*mask-image:\s*none/);
 });
+
+test('crops mobile campaign space from the right instead of the Brown Sugar cup', () => {
+  const responsiveRule = css.match(
+    /@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{([^}]*)\}/
+  )?.[1] ?? '';
+
+  assert.match(responsiveRule, /object-fit:\s*cover/);
+  assert.match(responsiveRule, /object-position:\s*left center/);
+});

@@ -272,7 +272,7 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 @media (max-width: 960px) {
   .summer-offer-shell { grid-template-columns: 1fr; }
   .summer-offer-media { min-height: 390px; }
-  .summer-offer-media img { position: relative; top: auto; left: auto; height: 100%; aspect-ratio: auto; object-fit: cover; transform: none; -webkit-mask-image: none; mask-image: none; }
+  .summer-offer-media img { position: relative; top: auto; left: auto; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: left center; transform: none; -webkit-mask-image: none; mask-image: none; }
   .summer-offer-media::after { background: linear-gradient(0deg, rgba(239,114,93,.82), transparent 42%); }
   .summer-offer-copy { margin-top: -30px; padding: 34px 34px 38px; }
   .summer-offer-copy h2 { margin-top: 34px; }
