@@ -73,11 +73,16 @@ test('keeps the consent bar above mobile quick actions', () => {
   assert.match(css, /@media\s*\(max-width:\s*760px\)[\s\S]*\.consent-banner\s*\{[\s\S]*bottom:\s*calc\(78px\s*\+\s*env\(safe-area-inset-bottom\)\)/);
 });
 
-test('does not advertise unavailable brunch or breakfast products', () => {
-  assert.doesNotMatch(html, /brunch|breakfast|avocado toast|all-day comfort food/i);
+test('does not advertise unavailable products and features the current Signature Latte', () => {
+  assert.doesNotMatch(html, /brunch|breakfast|avocado toast|all-day comfort food|waffles?|strawberry-waffle/i);
   assert.match(html, /<title>The B's Club — Coffee, Matcha &amp; Bubble Tea in Interlaken<\/title>/);
-  assert.match(html, /"servesCuisine": \["Coffee", "Bubble Tea", "Matcha", "Waffles"\]/);
-  assert.match(html, /Coffee, matcha, bubble tea and waffles\./);
+  assert.match(html, /"servesCuisine": \["Coffee", "Bubble Tea", "Matcha"\]/);
+  assert.match(html, /Coffee, matcha, bubble tea and colourful drinks\./);
+  assert.match(html, /SIGNATURE LATTE/);
+  assert.match(html, /images\/signature-latte\.jpg/);
+  assert.match(html, /<p>Hot coffee<\/p><h3>Signature Latte<\/h3>/);
+  assert.match(html, /<strong>CHF 4\.90<\/strong>/);
+  assert.doesNotMatch(html, /signature-latte-hot-concept-v1\.png/);
   assert.match(html, /Drop in for coffee, a colourful afternoon pick-me-up or a sweet finish to your day\./);
 });
 
@@ -88,6 +93,25 @@ test('features Yummy Strawberry with an optimized local image', () => {
   assert.match(html, /images\/yummy-strawberry-campaign\.webp/);
   assert.match(html, /<h3>Yummy Strawberry<\/h3>/);
   assert.match(html, /<strong>CHF 7\.90<\/strong>/);
+});
+
+test('keeps the hero caption clear of the overlapping side image', () => {
+  const captionRule = css.match(/\.hero-image figcaption\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(captionRule, /right:\s*auto/);
+  assert.match(captionRule, /width:\s*max-content/);
+  assert.match(captionRule, /max-width:\s*calc\(100%\s*-\s*40px\)/);
+  assert.match(captionRule, /z-index:\s*2/);
+});
+
+test('shows the complete Yummy Strawberry cup in both scoped frames', () => {
+  const productRule = css.match(/\.product-image-yummy img\s*\{([^}]*)\}/)?.[1] ?? '';
+  const storyRule = css.match(/\.story-visual \.story-photo-yummy\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(html, /class="product-image product-image-yummy"/);
+  assert.match(html, /class="story-photo-two story-photo-yummy"/);
+  assert.match(productRule, /object-fit:\s*contain/);
+  assert.match(productRule, /object-position:\s*center/);
+  assert.match(storyRule, /object-fit:\s*contain/);
+  assert.match(storyRule, /object-position:\s*center/);
 });
 
 test('publishes the approved BS12 walk-in offer', () => {
@@ -135,14 +159,13 @@ test('blends the complete desktop campaign trio into its full-bleed backdrop', (
   assert.match(desktopImageRule, /(?:^|;)\s*mask-image:\s*linear-gradient\(/);
 });
 
-test('retains the approved campaign crop below the desktop breakpoint', () => {
+test('adds safe space around the campaign trio below the desktop breakpoint', () => {
   const responsiveImageRule = css.match(/@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{([^}]*)\}/)?.[1] ?? '';
+  const mobileImageRule = css.match(/@media\s*\(max-width:\s*560px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{([^}]*)\}/)?.[1] ?? '';
   assert.match(responsiveImageRule, /position:\s*relative/);
-  assert.match(responsiveImageRule, /top:\s*auto/);
   assert.match(responsiveImageRule, /height:\s*100%/);
-  assert.match(responsiveImageRule, /aspect-ratio:\s*auto/);
-  assert.match(responsiveImageRule, /object-fit:\s*cover/);
+  assert.match(responsiveImageRule, /object-fit:\s*contain/);
   assert.match(responsiveImageRule, /transform:\s*none/);
-  assert.match(responsiveImageRule, /-webkit-mask-image:\s*none/);
-  assert.match(responsiveImageRule, /(?:^|;)\s*mask-image:\s*none/);
+  assert.match(mobileImageRule, /width:\s*90%/);
+  assert.match(mobileImageRule, /margin-inline:\s*auto/);
 });
