@@ -94,6 +94,31 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 .promise-grid h2 { margin-bottom: 5px; font-family: var(--font-display); font-size: 21px; font-weight: 600; }
 .promise-grid p { color: var(--ink-soft); font-size: 13px; }
 
+.summer-offer { padding: 96px 0 110px; background: var(--paper); }
+.summer-offer-shell { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(380px, .92fr); min-height: 590px; overflow: hidden; border-radius: 30px; background: linear-gradient(145deg, #ef725d, #f5ae51); color: #171310; box-shadow: 0 28px 80px rgba(69, 29, 18, .2); }
+.summer-offer-media { position: relative; min-height: 590px; overflow: hidden; isolation: isolate; background: #f08a5f; }
+.summer-offer-media::before { position: absolute; inset: -18px; z-index: 0; background-color: #f08a5f; background-image: url("images/summer-drinks-campaign.webp"); background-position: center; background-size: cover; filter: blur(16px); opacity: .52; content: ""; pointer-events: none; }
+.summer-offer-media::after { position: absolute; inset: 0; z-index: 2; background: linear-gradient(90deg, transparent 68%, rgba(239,114,93,.8)); content: ""; pointer-events: none; }
+.summer-offer-media img { position: absolute; top: 50%; left: 0; z-index: 1; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: contain; object-position: center; transform: translateY(-50%); -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%); }
+.summer-offer-copy { position: relative; display: flex; flex-direction: column; padding: 50px 46px 40px 26px; }
+.summer-offer-copy::after { position: absolute; top: -8px; right: -18px; color: rgba(255,255,255,.11); font-size: 110px; font-weight: 700; line-height: 1; content: "12%"; transform: rotate(7deg); pointer-events: none; }
+.summer-offer-topline { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 14px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.summer-offer-topline span { padding: 7px 11px; border: 1px solid rgba(23,19,16,.5); border-radius: 999px; }
+.summer-offer-copy h2 { position: relative; z-index: 1; margin-top: 60px; font-family: var(--font-display); font-size: clamp(48px, 5.2vw, 68px); font-weight: 600; line-height: .92; letter-spacing: -.045em; }
+.summer-offer-copy h2 em { color: #3a211b; }
+.summer-offer-lead { position: relative; z-index: 1; margin-top: 15px; font-size: 17px; font-weight: 600; }
+.summer-price-list { position: relative; z-index: 1; display: grid; gap: 1px; margin-top: auto; overflow: hidden; border-radius: 16px; background: rgba(23,19,16,.17); }
+.summer-price-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 13px 15px; background: rgba(255,255,255,.68); backdrop-filter: blur(8px); }
+.summer-price-row > span:first-child { font-size: 13px; font-weight: 700; }
+.summer-price-row > span:last-child { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+.summer-price-row del { color: #4a342d; font-size: 11px; }
+.summer-price-row strong { font-size: 20px; font-weight: 700; }
+.summer-code { position: relative; z-index: 1; margin-top: 16px; font-size: 14px; }
+.summer-code strong { display: inline-block; margin-inline: 4px; padding: 3px 8px; border: 1px dashed currentColor; border-radius: 6px; font-size: 17px; letter-spacing: .08em; }
+.summer-offer-actions { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.summer-offer-button { background: #171310; color: #fff; }
+.summer-offer-actions > p { opacity: .72; font-size: 11px; line-height: 1.4; }
+
 .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 80px; margin-bottom: 62px; }
 .section-heading h2 { font-size: clamp(48px, 6vw, 76px); }
 .section-heading > p { max-width: 415px; padding-bottom: 8px; color: var(--ink-soft); line-height: 1.7; }
@@ -244,6 +269,16 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
   .visit-details div:last-child { grid-column: 1 / -1; border-right: 0; }
 }
 
+@media (max-width: 960px) {
+  .summer-offer-shell { grid-template-columns: 1fr; }
+  .summer-offer-media { min-height: 390px; }
+  .summer-offer-media img { position: relative; top: auto; left: auto; height: 100%; aspect-ratio: auto; object-fit: cover; transform: none; -webkit-mask-image: none; mask-image: none; }
+  .summer-offer-media::after { background: linear-gradient(0deg, rgba(239,114,93,.82), transparent 42%); }
+  .summer-offer-copy { margin-top: -30px; padding: 34px 34px 38px; }
+  .summer-offer-copy h2 { margin-top: 34px; }
+  .summer-price-list { margin-top: 30px; }
+}
+
 @media (max-width: 820px) {
   .container { width: min(100% - 36px, 680px); }
   .section { padding: 88px 0; }
@@ -290,6 +325,16 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
   html { scroll-padding-top: 82px; }
   body { padding-bottom: 68px; }
   .container { width: calc(100% - 32px); }
+  .summer-offer { padding: 50px 0 74px; }
+  .summer-offer .container { width: 100%; }
+  .summer-offer-shell { border-radius: 0; }
+  .summer-offer-media { min-height: 300px; }
+  .summer-offer-copy { padding: 30px 20px 32px; }
+  .summer-offer-copy h2 { font-size: 47px; }
+  .summer-offer-topline { align-items: flex-start; }
+  .summer-price-row { padding: 12px; }
+  .summer-price-row > span:first-child { max-width: 155px; }
+  .summer-offer-actions { align-items: flex-start; flex-direction: column; }
   .promo-bar { min-height: 42px; padding-inline: 12px; gap: 8px; font-size: 10px; }
   .promo-bar p { max-width: 225px; }
   .brand strong { font-size: 17px; }

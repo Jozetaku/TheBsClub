@@ -4,6 +4,34 @@
   const primaryNav = document.querySelector('#primary-nav');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const campaignOffer = document.querySelector('#summer-offer');
+  const campaignEnd = campaignOffer?.dataset.campaignEnd;
+  if (campaignOffer && campaignEnd) {
+    const maximumTimerDelay = 2_147_483_647;
+    const endTimestamp = Date.parse(campaignEnd);
+    let expiryTimer;
+
+    const syncCampaignOffer = () => {
+      if (expiryTimer !== undefined) {
+        window.clearTimeout(expiryTimer);
+        expiryTimer = undefined;
+      }
+
+      const remaining = endTimestamp - Date.now();
+      campaignOffer.hidden = !Number.isFinite(endTimestamp) || remaining < 0;
+      if (campaignOffer.hidden) return;
+
+      const delay = Math.min(remaining + 1, maximumTimerDelay);
+      expiryTimer = window.setTimeout(() => {
+        expiryTimer = undefined;
+        syncCampaignOffer();
+      }, delay);
+    };
+
+    syncCampaignOffer();
+    document.addEventListener('visibilitychange', syncCampaignOffer);
+  }
+
   const setNavState = (open) => {
     menuToggle?.setAttribute('aria-expanded', String(open));
     primaryNav?.classList.toggle('is-open', open);
