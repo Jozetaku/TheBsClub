@@ -159,14 +159,13 @@ test('blends the complete desktop campaign trio into its full-bleed backdrop', (
   assert.match(desktopImageRule, /(?:^|;)\s*mask-image:\s*linear-gradient\(/);
 });
 
-test('retains the approved campaign crop below the desktop breakpoint', () => {
+test('adds safe space around the campaign trio below the desktop breakpoint', () => {
   const responsiveImageRule = css.match(/@media\s*\(max-width:\s*960px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{([^}]*)\}/)?.[1] ?? '';
+  const mobileImageRule = css.match(/@media\s*\(max-width:\s*560px\)\s*\{[\s\S]*?\.summer-offer-media img\s*\{([^}]*)\}/)?.[1] ?? '';
   assert.match(responsiveImageRule, /position:\s*relative/);
-  assert.match(responsiveImageRule, /top:\s*auto/);
   assert.match(responsiveImageRule, /height:\s*100%/);
-  assert.match(responsiveImageRule, /aspect-ratio:\s*auto/);
-  assert.match(responsiveImageRule, /object-fit:\s*cover/);
+  assert.match(responsiveImageRule, /object-fit:\s*contain/);
   assert.match(responsiveImageRule, /transform:\s*none/);
-  assert.match(responsiveImageRule, /-webkit-mask-image:\s*none/);
-  assert.match(responsiveImageRule, /(?:^|;)\s*mask-image:\s*none/);
+  assert.match(mobileImageRule, /width:\s*90%/);
+  assert.match(mobileImageRule, /margin-inline:\s*auto/);
 });
