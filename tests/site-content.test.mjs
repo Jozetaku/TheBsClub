@@ -45,7 +45,8 @@ test('puts the Asian food menu first while retaining directions and ordering pat
 });
 
 test('marks every directions surface for delegated tracking', () => {
-  assert.match(html, /<script src="script\.js\?v=20260718-2" defer><\/script>/);
+  assert.match(html, /<script src="script\.js\?v=20260815-1" defer><\/script>/);
+  assert.match(html, /<script src="cursor\.js\?v=20260815-1" defer><\/script>/);
   assert.doesNotMatch(html, /(?:analytics|tracking|cta)\.js/);
   const trackedDirections = html.match(/data-cta="directions"/g) ?? [];
   assert.ok(trackedDirections.length >= 5, `expected at least 5 tracked directions links, found ${trackedDirections.length}`);
