@@ -24,7 +24,7 @@ The page can also be uploaded as-is to any static hosting provider such as GitHu
 
 ## Content to verify before launch
 
-- July 2026 offer eligibility and terms
+- New Asian food availability from 15 August 2026
 - Current prices
 - 4.9 Tripadvisor rating and review permissions
 - Whether “No booking needed” matches store policy
