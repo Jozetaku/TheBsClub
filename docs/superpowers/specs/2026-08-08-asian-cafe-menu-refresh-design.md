@@ -127,8 +127,10 @@ Use the following order:
 6. **Dietary callout placeholder** — Tofu option language only until ingredients are confirmed.
 7. **Drinks section** — Bubble Tea, Matcha and Coffee as the other half of the offer.
 8. **Easy Evening section** — position the café as a relaxed, affordable evening meal without overstating the current hours.
-9. **Visit section** — address, daily hours and directions CTA.
-10. **Footer** — official full logo, address, opening hours and essential links.
+9. **Our Story and Guest Notes** — retain the existing brand story and reviews as secondary trust content after the new food-and-drink offer.
+10. **Wellness partner strip** — retain the existing Thai London Therapy relationship below the reviews without competing with the Asian Café message.
+11. **Visit section** — address, daily hours and directions CTA.
+12. **Footer** — official full logo, address, opening hours and essential links.
 
 The existing drinks-menu viewer may remain available, but it must not be the only way to access food information.
 
