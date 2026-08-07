@@ -433,7 +433,8 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 .footer-logo img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center;
 }
 
 .primary-nav a { color: var(--cream); }
