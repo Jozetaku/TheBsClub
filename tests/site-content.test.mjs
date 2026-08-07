@@ -6,32 +6,41 @@ const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
-test('uses the confirmed website, hours, and phone everywhere', () => {
+test('uses the confirmed website, hours, phone and launch date everywhere', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/thebsclub\.ch\/">/);
   assert.match(html, /<meta property="og:url" content="https:\/\/thebsclub\.ch\/">/);
   assert.match(html, /"url": "https:\/\/thebsclub\.ch\/"/);
   assert.doesNotMatch(html, /https:\/\/www\.thebsclub\.ch/);
-  assert.doesNotMatch(html, /10:00/);
-  assert.doesNotMatch(html, /7742027|774 20 27/);
-  assert.match(html, /11:00–19:00/);
+  assert.doesNotMatch(html, /11:00[–-]19:00|"closes": "19:00"/);
+  assert.match(html, /11:00[–-]21:00/);
+  assert.match(html, /"closes": "21:00"/);
+  assert.match(html, /From 15 August/);
   assert.match(html, /tel:\+41762262722/);
   assert.match(html, /\+41 76 226 27 22/);
 });
 
 test('keeps repository launch notes aligned with confirmed details', () => {
-  assert.doesNotMatch(readme, /774 20 27/);
+  assert.match(readme, /Asian Café/);
+  assert.match(readme, /15 August 2026/);
+  assert.match(readme, /Every day: `11:00[–-]21:00`/);
   assert.match(readme, /\+41 76 226 27 22/);
-  assert.match(readme, /Every day: `11:00–19:00`/);
 });
 
-test('puts directions first and retains menu and Uber Eats paths', () => {
+test('positions the site as an Asian Café in Interlaken', () => {
+  assert.match(html, /<title>The B's Club \| Asian Café &amp; Bubble Tea Interlaken<\/title>/);
+  assert.match(html, /<h1>\s*Asian Food &amp; Bubble Tea\s*<span>in Interlaken<\/span>\s*<\/h1>/);
+  assert.match(html, /Eat bold\./);
+  assert.match(html, /Sip happy\./);
+});
+
+test('puts the Asian food menu first while retaining directions and ordering paths', () => {
   const heroActions = html.match(/<div class="hero-actions">([\s\S]*?)<\/div>/)?.[1] ?? '';
   const mobileActions = html.match(/<div class="mobile-actions"[^>]*>([\s\S]*?)<\/div>/)?.[1] ?? '';
-  assert.match(heroActions, /^\s*<a[^>]*data-cta="directions"[^>]*>Get Directions/);
-  assert.match(heroActions, />View Menu\b/);
+  assert.match(heroActions, /^\s*<a[^>]*href="#food"[^>]*>Explore food \+ drinks/);
+  assert.match(heroActions, /data-cta="directions"/);
   assert.match(heroActions, /https:\/\/www\.ubereats\.com\/ch\/store\/bublee-interlaken\/Ik4zv95aWhWzt0lYSbjaMQ/);
   assert.match(mobileActions, /^\s*<a[^>]*data-cta="directions"[^>]*>Directions/);
-  assert.match(mobileActions, /<button class="menu-open" type="button" data-menu="bubble">Menu<\/button>/);
+  assert.match(mobileActions, /data-menu="bubble"/);
   assert.match(mobileActions, />Uber Eats/);
 });
 

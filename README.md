@@ -1,6 +1,8 @@
-# The B's Club — Redesigned Landing Page
+# The B's Club — Asian Café Landing Page
 
-A conversion-focused, responsive landing page for The B's Club in Interlaken.
+A conversion-focused, responsive Asian Café landing page for The B's Club in Interlaken.
+
+Launch target: 15 August 2026.
 
 ## Files
 
@@ -30,7 +32,7 @@ The page can also be uploaded as-is to any static hosting provider such as GitHu
 ## Main links
 
 - Official website: `https://thebsclub.ch/`
-- Opening hours: Every day: `11:00–19:00`
+- Opening hours: Every day: `11:00–21:00`
 - Phone: `+41 76 226 27 22`
 - Address: `Jungfraustrasse 46, 3800 Interlaken`
 - Instagram: `@thebsclub25`
