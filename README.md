@@ -1,12 +1,15 @@
-# The B's Club — Redesigned Landing Page
+# The B's Club — Asian Café Landing Page
 
-A conversion-focused, responsive landing page for The B's Club in Interlaken.
+A conversion-focused, responsive Asian Café landing page for The B's Club in Interlaken.
+
+Launch target: 15 August 2026.
 
 ## Files
 
 - `index.html` — semantic page content, SEO metadata and structured data
 - `styles.css` — full responsive visual system
 - `script.js` — navigation, scroll reveals, menu viewer and CTA tracking
+- `cursor.js` — optional Bubble Tea cursor for fine-pointer desktop devices
 - `images/` — original supplied brand, product and menu assets
 - `DESIGN-REVIEW-TH.md` — Thai-language expert review and redesign rationale
 
@@ -22,15 +25,34 @@ The page can also be uploaded as-is to any static hosting provider such as GitHu
 
 ## Content to verify before launch
 
-- July 2026 offer eligibility and terms
+- New Asian food availability from 15 August 2026
 - Current prices
 - 4.9 Tripadvisor rating and review permissions
 - Whether “No booking needed” matches store policy
+- Supplier ingredients and preparation details before adding any formal dietary claim; the launch page currently says only `Tofu option`
+
+## Verification
+
+Run the complete automated suite with:
+
+```bash
+node --test tests/*.test.mjs
+```
+
+The launch refresh is also checked at desktop, tablet and mobile widths for horizontal overflow, menu dialogs, navigation, consent controls, Mini Makers and the custom cursor fallback.
+
+## Rollback checkpoints
+
+The refresh is isolated on `feature/asian-cafe-refresh`. These commits keep the major visual features independently reversible:
+
+- `20dab73` — Bold Asian Club visual system
+- `bf5464e` — Mini Makers ladder-climbing hero
+- `4a264b6` — Bubble Tea straw-tip cursor
 
 ## Main links
 
 - Official website: `https://thebsclub.ch/`
-- Opening hours: Every day: `11:00–19:00`
+- Opening hours: Every day: `11:00–21:00`
 - Phone: `+41 76 226 27 22`
 - Address: `Jungfraustrasse 46, 3800 Interlaken`
 - Instagram: `@thebsclub25`
