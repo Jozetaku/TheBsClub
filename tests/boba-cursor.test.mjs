@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const source = readFileSync(new URL('../cursor.js', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
 const loadCursor = ({ finePointer = true, reducedMotion = false } = {}) => {
   const listeners = new Map();
@@ -62,4 +64,15 @@ test('toggles interactive and click states and removes listeners on destroy', ()
   assert.equal(fixture.listeners.has('pointermove'), false);
   assert.equal(fixture.listeners.has('pointerdown'), false);
   assert.equal(fixture.listeners.has('pointerup'), false);
+});
+
+test('renders a clean Matcha Latte cursor while preserving the straw-tip hotspot', () => {
+  const cursorMarkup = html.match(/<div class="boba-cursor"[\s\S]*?<\/div>\s*<\/body>/)?.[0] ?? '';
+  assert.match(cursorMarkup, /matcha-cursor-foam/);
+  assert.match(cursorMarkup, /matcha-cursor-layer/);
+  assert.match(cursorMarkup, /cursor-pearls/);
+  assert.doesNotMatch(cursorMarkup, /brown-sugar-line/);
+  assert.doesNotMatch(cursorMarkup, /<b>B<\/b>/);
+  assert.match(css, /\.matcha-cursor-layer\s*\{[^}]*linear-gradient/);
+  assert.match(css, /\.matcha-cursor-foam\s*\{/);
 });

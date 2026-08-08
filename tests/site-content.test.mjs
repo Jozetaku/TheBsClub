@@ -11,10 +11,11 @@ test('uses the confirmed website, hours, phone and launch date everywhere', () =
   assert.match(html, /<meta property="og:url" content="https:\/\/thebsclub\.ch\/">/);
   assert.match(html, /"url": "https:\/\/thebsclub\.ch\/"/);
   assert.doesNotMatch(html, /https:\/\/www\.thebsclub\.ch/);
-  assert.doesNotMatch(html, /11:00[–-]19:00|"closes": "19:00"/);
-  assert.match(html, /11:00[–-]21:00/);
-  assert.match(html, /"closes": "21:00"/);
+  assert.doesNotMatch(html, /11:00[–-]21:00|"closes": "21:00"/);
+  assert.match(html, /11:00[–-]19:00/);
+  assert.match(html, /"closes": "19:00"/);
   assert.match(html, /From 15 August/);
+  assert.match(html, /Available from 15 August 2026 · Speisekarte/);
   assert.match(html, /tel:\+41762262722/);
   assert.match(html, /\+41 76 226 27 22/);
 });
@@ -22,15 +23,21 @@ test('uses the confirmed website, hours, phone and launch date everywhere', () =
 test('keeps repository launch notes aligned with confirmed details', () => {
   assert.match(readme, /Asian Café/);
   assert.match(readme, /15 August 2026/);
-  assert.match(readme, /Every day: `11:00[–-]21:00`/);
+  assert.match(readme, /Every day: `11:00[–-]19:00`/);
   assert.match(readme, /\+41 76 226 27 22/);
 });
 
-test('positions the site as an Asian Café in Interlaken', () => {
-  assert.match(html, /<title>The B's Club \| Asian Café &amp; Bubble Tea Interlaken<\/title>/);
-  assert.match(html, /<h1>\s*Asian Food &amp; Bubble Tea\s*<span>in Interlaken<\/span>\s*<\/h1>/);
-  assert.match(html, /Eat bold\./);
-  assert.match(html, /Sip happy\./);
+test('positions the site as an Asian Café in Interlaken without the awkward hero preposition', () => {
+  assert.match(html, /<title>The B's Club \| Asian Café Interlaken<\/title>/);
+  assert.match(html, /<h1>\s*<span class="hero-title-category">Asian Cafe<\/span>\s*<span class="hero-title-place">Interlaken<\/span>\s*<\/h1>/);
+  assert.doesNotMatch(html, /<h1>[\s\S]*?<span>in Interlaken<\/span>[\s\S]*?<\/h1>/);
+  assert.match(html, /Thai food\./);
+  assert.match(html, /Bubble tea\./);
+});
+
+test('makes the main public car park a clear location advantage', () => {
+  const parkingMessage = /Next to Interlaken(?:’|&rsquo;|'|&#8217;)s main public car park/;
+  assert.ok((html.match(new RegExp(parkingMessage.source, 'g')) ?? []).length >= 2);
 });
 
 test('puts the Asian food menu first while retaining directions and ordering paths', () => {
@@ -44,7 +51,18 @@ test('puts the Asian food menu first while retaining directions and ordering pat
   assert.match(mobileActions, />Uber Eats/);
 });
 
+test('keeps every bestseller and category connected to the existing full-menu dialog', () => {
+  for (const menu of ['bubble', 'matcha', 'coffee']) {
+    assert.match(html, new RegExp(`data-dialog-menu="${menu}"`));
+  }
+  assert.match(html, /class="mobile-actions"[\s\S]*data-menu="bubble"/);
+  assert.ok((html.match(/class="[^"]*menu-open[^"]*"[^>]*data-menu="bubble"/g) ?? []).length >= 5);
+  assert.ok((html.match(/class="[^"]*menu-open[^"]*"[^>]*data-menu="matcha"/g) ?? []).length >= 2);
+  assert.match(html, /class="[^"]*menu-open[^"]*"[^>]*data-menu="coffee"/);
+});
+
 test('marks every directions surface for delegated tracking', () => {
+  assert.match(html, /<link rel="stylesheet" href="styles\.css\?v=20260815-15">/);
   assert.match(html, /<script src="script\.js\?v=20260815-1" defer><\/script>/);
   assert.match(html, /<script src="cursor\.js\?v=20260815-1" defer><\/script>/);
   assert.doesNotMatch(html, /(?:analytics|tracking|cta)\.js/);
