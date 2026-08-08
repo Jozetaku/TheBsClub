@@ -23,7 +23,7 @@
 - Test: `tests/deploy-pages.test.mjs`
 
 **Interfaces:**
-- Consumes: `index.html` reference to `cursor.js?v=20260815-1` and the root `cursor.js` file.
+- Consumes: `index.html` reference to `cursor.js?v=20260815-2` and the root `cursor.js` file.
 - Produces: `_site/cursor.js` in the GitHub Pages artifact.
 
 - [ ] **Step 1: Write the failing test**
@@ -50,7 +50,7 @@ cp index.html styles.css script.js cursor.js .nojekyll _site/
 Run: `node --test tests/*.test.mjs`
 Expected: all tests pass.
 
-After pushing `main`, request `https://thebsclub.ch/cursor.js?v=20260815-1`.
+After pushing `main`, request `https://thebsclub.ch/cursor.js?v=20260815-2`.
 Expected: HTTP 200.
 
 - [ ] **Step 5: Commit and deploy**
