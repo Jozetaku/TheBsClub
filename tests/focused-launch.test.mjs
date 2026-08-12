@@ -77,11 +77,11 @@ test('uses the approved elegant product theatre without branding the cups', () =
   assert.match(css, /\.bestseller-product\s*\{[^}]*object-fit:\s*contain/);
 });
 
-test('pairs a tall iced coffee with the existing cappuccino in the story collage', () => {
+test('pairs the real café interior with the existing cappuccino in the story collage', () => {
   const story = html.match(/<section class="section story"[\s\S]*?<\/section>/)?.[0] ?? '';
-  assert.match(story, /class="story-photo-one" src="images\/story-iced-coffee-tall-v2\.webp"[^>]*alt="Tall glass of iced coffee/);
+  assert.match(story, /class="story-photo-one" src="images\/the-bs-club-interior\.jpg"[^>]*alt="Interior of The B's Club Asian café in central Interlaken/);
   assert.match(story, /class="story-photo-two" src="images\/signature-latte\.jpg"[^>]*alt="Cappuccino/);
-  assert.doesNotMatch(story, /yummy-strawberry-campaign/);
+  assert.doesNotMatch(story, /story-iced-coffee-tall-v2/);
 });
 
 test('keeps water and cola as secondary meal-completion items', () => {

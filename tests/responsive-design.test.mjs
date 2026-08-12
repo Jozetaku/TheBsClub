@@ -73,8 +73,8 @@ test('gives the Matcha Latte stage the shared warm spotlight and grounded shadow
   assert.match(css, /\.bestseller-card\[data-drink="Matcha Latte"\]\s+\.bestseller-product\s*\{[^}]*filter:/);
 });
 
-test('lifts the overlapping Cappuccino frame 25px above the story collage base', () => {
-  assert.match(css, /\.story-photo-two\s*\{[^}]*bottom:\s*25px/);
+test('lifts the overlapping Cappuccino frame 50px above the story collage base', () => {
+  assert.match(css, /\.story-photo-two\s*\{[^}]*bottom:\s*50px/);
 });
 
 test('keeps Thai London Therapy legible against the sand partner background', () => {

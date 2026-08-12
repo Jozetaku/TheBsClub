@@ -168,8 +168,8 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 .story-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 110px; align-items: center; }
 .story-visual { position: relative; min-height: 620px; }
 .story-visual img { position: absolute; object-fit: cover; border-radius: var(--radius); box-shadow: var(--shadow); }
-.story-photo-one { top: 0; left: 0; width: 67%; height: 530px; }
-.story-photo-two { right: 0; bottom: 25px; width: 52%; height: 270px; border: 10px solid var(--cream); }
+.story-photo-one { top: 0; left: 0; width: 67%; height: 530px; object-position: 50% 54%; }
+.story-photo-two { right: 0; bottom: 50px; width: 52%; height: 270px; border: 10px solid var(--cream); }
 .roundel { position: absolute; top: 55px; right: -5px; width: 132px; height: 132px; display: grid; place-items: center; padding: 24px; border-radius: 50%; background: var(--gold); color: white; font-size: 9px; font-weight: 700; text-align: center; letter-spacing: .1em; transform: rotate(10deg); }
 .story-copy h2 { font-size: clamp(47px, 5vw, 67px); }
 .story-copy > p:not(.eyebrow) { margin-top: 25px; color: var(--ink-soft); line-height: 1.8; }
