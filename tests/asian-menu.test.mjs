@@ -23,17 +23,17 @@ test('publishes all four Asian food dishes as semantic cards', () => {
 
 test('maps every approved meal photograph to its matching semantic card', () => {
   const expectedImages = [
-    ['spicy-basil', 'spicy-basil.png', 'Spicy Basil chicken with jasmine rice in a kraft takeaway bowl'],
-    ['green-curry', 'green-curry.png', 'Green Curry chicken with vegetables and jasmine rice in a kraft takeaway bowl'],
-    ['red-curry', 'red-curry.png', 'Red Curry chicken with jasmine rice in a kraft takeaway bowl'],
-    ['katsu-curry', 'katsu-curry.png', 'Crispy Chicken Katsu Curry with jasmine rice in a kraft takeaway bowl'],
+    ['spicy-basil', 'v3/spicy-basil.png', 'Spicy Basil chicken with jasmine rice in a kraft takeaway bowl'],
+    ['green-curry', 'v3/green-curry.png', 'Green Curry chicken with vegetables and jasmine rice in a kraft takeaway bowl'],
+    ['red-curry', 'v3/red-curry.png', 'Red Curry chicken with jasmine rice in a kraft takeaway bowl'],
+    ['katsu-curry', 'v4/katsu-curry.png', 'Crispy Chicken Katsu Curry with jasmine rice in a kraft takeaway bowl'],
   ];
 
-  for (const [dish, filename, alt] of expectedImages) {
-    assert.ok(existsSync(new URL(`../images/campaign/v3/${filename}`, import.meta.url)));
+  for (const [dish, assetPath, alt] of expectedImages) {
+    assert.ok(existsSync(new URL(`../images/campaign/${assetPath}`, import.meta.url)));
     assert.match(
       html,
-      new RegExp(`data-dish="${dish}"[\\s\\S]*?<figure class="dish-photo-stage">[\\s\\S]*?src="images/campaign/v3/${filename}"[\\s\\S]*?alt="${alt}"`),
+      new RegExp(`data-dish="${dish}"[\\s\\S]*?<figure class="dish-photo-stage">[\\s\\S]*?src="images/campaign/${assetPath}"[\\s\\S]*?alt="${alt}"`),
     );
   }
 
