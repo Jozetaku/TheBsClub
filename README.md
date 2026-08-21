@@ -9,6 +9,7 @@ Launch target: 15 August 2026.
 - `index.html` — semantic page content, SEO metadata and structured data
 - `styles.css` — full responsive visual system
 - `script.js` — navigation, scroll reveals, menu viewer and CTA tracking
+- `music/` — The B's Club Global Music Radio, adapted from `Jozetaku/zetaku-radio-v2-dark` and limited to HTTPS streams for secure playback
 - `cursor.js` — optional Bubble Tea cursor for fine-pointer desktop devices
 - `images/` — original supplied brand, product and menu assets
 - `DESIGN-REVIEW-TH.md` — Thai-language expert review and redesign rationale
@@ -39,7 +40,7 @@ Run the complete automated suite with:
 node --test tests/*.test.mjs
 ```
 
-The launch refresh is also checked at desktop, tablet and mobile widths for horizontal overflow, menu dialogs, navigation, consent controls, Mini Makers and the custom cursor fallback.
+The launch refresh is also checked at desktop, tablet and mobile widths for horizontal overflow, menu dialogs, navigation, consent controls, Mini Makers, the music station and the custom cursor fallback.
 
 ## Rollback checkpoints
 
