@@ -12,6 +12,8 @@ const pagesWorkflow = readFileSync(new URL('../.github/workflows/deploy-pages.ym
 test('introduces Global Music Radio as a prominent branded homepage section', () => {
   assert.match(homepage, /<section class="section music-station-teaser" id="music">/);
   assert.match(homepage, /href="music\/" target="_blank" rel="noopener">Open Global Music Radio/);
+  assert.match(homepage, /class="music-orbit-play" href="music\/" target="_blank" rel="noopener" aria-label="Open The B's Club Global Music Radio"/);
+  assert.doesNotMatch(homepage, /class="music-orbit-logo"/);
   assert.match(homepage, /href="#music">Music<\/a>/);
   assert.match(homepage, /126 secure live stations from 38 countries/);
   assert.doesNotMatch(homepage, /<iframe[^>]+music/i);
@@ -52,6 +54,7 @@ test('keeps playback user initiated and supports background media controls', () 
 test('matches the café palette and adapts both entry section and station to mobile', () => {
   assert.match(homepageCss, /\.music-teaser-grid\s*\{[^}]*display:\s*grid/);
   assert.match(homepageCss, /\.music-launch\s*\{[^}]*background:\s*var\(--sun\)/);
+  assert.match(homepageCss, /\.music-orbit-play\s*\{[^}]*background:\s*var\(--sun\)/);
   assert.match(homepageCss, /@media\s*\(max-width:\s*980px\)[\s\S]*\.music-teaser-grid\s*\{[^}]*grid-template-columns:\s*1fr/);
   assert.match(stationCss, /--z-basalt:\s*#0D3028/);
   assert.match(stationCss, /--z-mai:\s*#F5C84B/);
