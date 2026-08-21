@@ -7,6 +7,7 @@ const homepageCss = readFileSync(new URL('../styles.css', import.meta.url), 'utf
 const stationHtml = readFileSync(new URL('../music/index.html', import.meta.url), 'utf8');
 const stationScript = readFileSync(new URL('../music/app.js', import.meta.url), 'utf8');
 const stationCss = readFileSync(new URL('../music/station-theme.css', import.meta.url), 'utf8');
+const pagesWorkflow = readFileSync(new URL('../.github/workflows/deploy-pages.yml', import.meta.url), 'utf8');
 
 test('introduces Global Music Radio as a prominent branded homepage section', () => {
   assert.match(homepage, /<section class="section music-station-teaser" id="music">/);
@@ -55,4 +56,8 @@ test('matches the café palette and adapts both entry section and station to mob
   assert.match(stationCss, /--z-basalt:\s*#0D3028/);
   assert.match(stationCss, /--z-mai:\s*#F5C84B/);
   assert.match(stationHtml, /@media \(max-width:900px\)/);
+});
+
+test('includes the music application in the GitHub Pages artifact', () => {
+  assert.match(pagesWorkflow, /cp -R music _site\/music/);
 });
