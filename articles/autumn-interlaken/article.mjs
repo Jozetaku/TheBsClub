@@ -1,6 +1,12 @@
 import { PACK_STATUSES, TRIP_TYPES } from './travel-packs.mjs';
 
 const MENU_URL = '/#favourites';
+const APPROVED_PRODUCTS = new Set([
+  'Brown Sugar Milk Tea', 'Yummy Strawberry', 'Iced Matcha Latte', 'Mango Tea',
+  'Spicy Basil Chicken', 'Spicy Basil Tofu', 'Green Curry Chicken',
+  'Green Curry Tofu', 'Red Curry Chicken', 'Red Curry Tofu',
+  'Crispy Chicken Katsu Curry'
+]);
 const PACKAGING_TYPES = new Set(['sealed-cold-cup', 'customer-flask', 'takeaway-bowl']);
 const ITEM_TYPES = new Set(['drink', 'meal']);
 const ITEM_ROLES = new Set(['featured', 'optional']);
@@ -36,18 +42,23 @@ function hasCopy(record, locale) {
 }
 
 function isProductItem(item) {
-  return item && typeof item.name === 'string' && item.name && ITEM_TYPES.has(item.type) &&
+  return item && typeof item.name === 'string' && APPROVED_PRODUCTS.has(item.name) && ITEM_TYPES.has(item.type) &&
     ITEM_ROLES.has(item.role) && PACKAGING_TYPES.has(item.packagingType);
+}
+
+function isCalendarDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
 
 function isValidRecord(record) {
   return record && typeof record === 'object' && typeof record.packId === 'string' &&
     record.season === 'autumn' && TRIP_TYPES.includes(record.tripType) &&
-    PACK_STATUSES.includes(record.status) && /^\d{4}-\d{2}-\d{2}$/.test(record.updatedAt) &&
-    !Number.isNaN(Date.parse(`${record.updatedAt}T00:00:00Z`)) && hasCopy(record, 'en') &&
+    PACK_STATUSES.includes(record.status) && isCalendarDate(record.updatedAt) && hasCopy(record, 'en') &&
     hasCopy(record, 'de') && Array.isArray(record.productItems) && record.productItems.every(isProductItem) &&
-    Array.isArray(record.dietaryTags) && typeof record.image === 'string' &&
-    typeof record.menuUrl === 'string' && record.menuUrl && PACKAGING_TYPES.has(record.packagingType);
+    Array.isArray(record.dietaryTags) && record.dietaryTags.length === 0 && typeof record.image === 'string' &&
+    record.menuUrl === MENU_URL && PACKAGING_TYPES.has(record.packagingType);
 }
 
 export function normalizePack(record, locale) {

@@ -41,8 +41,8 @@ export const travelPacks = [
       }
     },
     carryNote: {
-      en: 'Sealed cold cups only; carry upright.',
-      de: 'Nur versiegelte Kaltbecher; bitte aufrecht tragen.'
+      en: 'Cold drinks are sealed for easy carrying.',
+      de: 'Kalte Getränke sind für einfachen Transport versiegelt.'
     },
     productItems: [
       ...drinks(['Yummy Strawberry', 'Mango Tea'], 'featured'),
@@ -70,8 +70,8 @@ export const travelPacks = [
       }
     },
     carryNote: {
-      en: 'Drinks are sealed; meals are labelled consume promptly.',
-      de: 'Getränke sind versiegelt; Mahlzeiten sind mit zeitnah geniessen gekennzeichnet.'
+      en: 'Drinks are sealed for easy carrying; meals are labelled consume promptly.',
+      de: 'Getränke sind für einfachen Transport versiegelt; Mahlzeiten sind zum zeitnahen Geniessen gekennzeichnet.'
     },
     productItems: [
       ...drinks(['Yummy Strawberry', 'Mango Tea'], 'featured'),
@@ -99,8 +99,8 @@ export const travelPacks = [
       }
     },
     carryNote: {
-      en: 'Sealed cold cups; meals are eat-soon additions, not all-day travel items.',
-      de: 'Versiegelte Kaltbecher; Mahlzeiten bitte bald essen, nicht für den ganzen Tag unterwegs.'
+      en: 'Cold cups are sealed for easy carrying; meals are eat-soon additions, not all-day travel items.',
+      de: 'Kaltbecher sind für einfachen Transport versiegelt; Mahlzeiten bitte bald essen, nicht für den ganzen Tag unterwegs.'
     },
     productItems: [
       ...drinks(['Mango Tea', 'Yummy Strawberry'], 'featured'),

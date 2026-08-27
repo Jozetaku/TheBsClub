@@ -48,3 +48,21 @@ test('falls back safely for missing, invalid, limited and unavailable data', () 
   const unavailable = normalizePack({ ...travelPacks[0], status: 'unavailable' }, 'en');
   assert.deepEqual(unavailable.productItems, []);
 });
+
+test('rejects unapproved product data, dietary claims, hostile menu URLs and impossible dates', () => {
+  const base = travelPacks[0];
+  assert.equal(normalizePack({
+    ...base,
+    productItems: [{ ...base.productItems[0], name: 'Unapproved Product' }]
+  }, 'en'), null);
+  assert.equal(normalizePack({ ...base, dietaryTags: ['vegan'] }, 'en'), null);
+  assert.equal(normalizePack({ ...base, menuUrl: 'https://example.test/menu' }, 'en'), null);
+  assert.equal(normalizePack({ ...base, updatedAt: '2026-02-31' }, 'en'), null);
+});
+
+test('uses sealed-for-easy-carrying English copy with a localized German equivalent', () => {
+  for (const pack of travelPacks) {
+    assert.match(pack.carryNote.en, /sealed for easy carrying/);
+    assert.match(pack.carryNote.de, /versiegelt/);
+  }
+});
