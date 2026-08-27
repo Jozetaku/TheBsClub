@@ -2,12 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
+const articlePaths = {
+  en: '../en/articles/autumn-interlaken/index.html',
+  de: '../de/artikel/herbst-interlaken/index.html'
+};
+
 const readArticle = (locale) => readFileSync(
-  new URL(`../${locale}/articles/autumn-interlaken/index.html`, import.meta.url),
+  new URL(articlePaths[locale], import.meta.url),
   'utf8'
 );
 
 const occurrences = (source, pattern) => source.match(pattern)?.length ?? 0;
+const attributeValues = (source, attribute) => [
+  ...source.matchAll(new RegExp(`\\b${attribute}(?:="([^"]*)")?`, 'g'))
+].map((match) => match[1] ?? '');
+const sourceUrls = (source) => [
+  ...source.matchAll(/<(?:a)\b[^>]*class="source-link"[^>]*href="([^"]+)"/g),
+  ...((source.match(/<section class="article-sources"[\s\S]*?<\/section>/)?.[0] ?? '')
+    .matchAll(/<a\b[^>]*href="([^"]+)"/g))
+].map((match) => match[1]).sort();
 
 test('English autumn guide is a complete semantic article', () => {
   const en = readArticle('en');
@@ -118,8 +131,46 @@ test('English guide follows the required editorial and shared-shell order', () =
   assert.match(en, /href="\/de\/artikel\/herbst-interlaken\/"[^>]*>DE<\/a>/);
 });
 
-test.skip('German autumn guide mirrors the approved bilingual content contract', () => {
+test('German autumn guide mirrors the approved bilingual content contract', () => {
+  const en = readArticle('en');
   const de = readArticle('de');
+
+  assert.match(de, /<html lang="de">/);
   assert.equal(occurrences(de, /<h1\b/g), 1);
+  assert.match(de, /<h1>Interlaken im Herbst: Ein goldener Tag zwischen zwei Seen<\/h1>/);
+
+  for (const id of [
+    'place-hohematte',
+    'place-japanese-garden',
+    'place-aare',
+    'place-unterseen',
+    'place-harder-kulm',
+    'place-lake-brienz'
+  ]) {
+    assert.match(de, new RegExp(`id="${id}"`));
+  }
+
   assert.equal(occurrences(de, /data-pack-card/g), 3);
+  const faq = de.match(/<section[^>]*id="faq"[\s\S]*?<\/section>/)?.[0] ?? '';
+  assert.equal(occurrences(faq, /<h3\b/g), 6);
+
+  assert.deepEqual(attributeValues(de, 'data-place'), attributeValues(en, 'data-place'));
+  assert.deepEqual(attributeValues(de, 'data-pack-card'), attributeValues(en, 'data-pack-card'));
+  assert.deepEqual(attributeValues(de, 'data-article-event'), attributeValues(en, 'data-article-event'));
+  assert.deepEqual(sourceUrls(de), sourceUrls(en));
+
+  for (const url of [
+    'https://www.interlaken.ch/en/experiences/tour/ortsrundgang-in-interlaken-what-can-i-do-in-1-hour',
+    'https://www.jungfrau.ch/en-gb/harder-kulm',
+    'https://www.jungfrau.ch/en-gb/live/operating-info/',
+    'https://www.bls.ch/en/freizeit-und-ferien/ausfluege/schifffahrt-brienzersee',
+    'https://www.bls.ch/en/fahren/fahrplan'
+  ]) {
+    assert.match(de, new RegExp(url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+
+  assert.match(de, /f[uü]r unterwegs versiegelt/i);
+  assert.match(de, /passende wiederverwendbare Thermosflasche mitbringen/i);
+  assert.match(de, /zeitnah konsumieren oder ausreichend k[uü]hl halten/i);
+  assert.doesNotMatch(de, /ß/);
 });
