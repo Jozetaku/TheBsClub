@@ -1,11 +1,18 @@
 import { PACK_STATUSES, TRIP_TYPES } from './travel-packs.mjs';
 
 const MENU_URL = '/#favourites';
-const APPROVED_PRODUCTS = new Set([
-  'Brown Sugar Milk Tea', 'Yummy Strawberry', 'Iced Matcha Latte', 'Mango Tea',
-  'Spicy Basil Chicken', 'Spicy Basil Tofu', 'Green Curry Chicken',
-  'Green Curry Tofu', 'Red Curry Chicken', 'Red Curry Tofu',
-  'Crispy Chicken Katsu Curry'
+const APPROVED_PRODUCTS = new Map([
+  ['Brown Sugar Milk Tea', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Yummy Strawberry', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Iced Matcha Latte', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Mango Tea', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Spicy Basil Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Spicy Basil Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Green Curry Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Green Curry Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Red Curry Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Red Curry Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Crispy Chicken Katsu Curry', { type: 'meal', packagingType: 'takeaway-bowl' }]
 ]);
 const PACKAGING_TYPES = new Set(['sealed-cold-cup', 'customer-flask', 'takeaway-bowl']);
 const ITEM_TYPES = new Set(['drink', 'meal']);
@@ -42,8 +49,10 @@ function hasCopy(record, locale) {
 }
 
 function isProductItem(item) {
-  return item && typeof item.name === 'string' && APPROVED_PRODUCTS.has(item.name) && ITEM_TYPES.has(item.type) &&
-    ITEM_ROLES.has(item.role) && PACKAGING_TYPES.has(item.packagingType);
+  const approvedProduct = item && APPROVED_PRODUCTS.get(item.name);
+  return item && typeof item.name === 'string' && approvedProduct && ITEM_TYPES.has(item.type) &&
+    ITEM_ROLES.has(item.role) && PACKAGING_TYPES.has(item.packagingType) &&
+    item.type === approvedProduct.type && item.packagingType === approvedProduct.packagingType;
 }
 
 function isCalendarDate(value) {

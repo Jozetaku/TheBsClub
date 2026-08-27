@@ -66,3 +66,15 @@ test('uses sealed-for-easy-carrying English copy with a localized German equival
     assert.match(pack.carryNote.de, /versiegelt/);
   }
 });
+
+test('rejects approved names paired with the wrong type or packaging', () => {
+  const base = travelPacks[0];
+  assert.equal(normalizePack({
+    ...base,
+    productItems: [{ ...base.productItems[0], name: 'Spicy Basil Chicken', type: 'meal', packagingType: 'sealed-cold-cup' }]
+  }, 'en'), null);
+  assert.equal(normalizePack({
+    ...base,
+    productItems: [{ ...base.productItems[0], name: 'Mango Tea', type: 'meal', packagingType: 'takeaway-bowl' }]
+  }, 'en'), null);
+});
