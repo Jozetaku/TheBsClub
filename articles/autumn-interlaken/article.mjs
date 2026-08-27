@@ -47,6 +47,11 @@ const notices = {
   de: 'Frag vor deiner Bestellung nach der heutigen reisetauglichen Option.'
 };
 
+const statusLabels = {
+  en: { active: 'Available', limited: 'Limited availability', unavailable: 'Unavailable' },
+  de: { active: 'Verfügbar', limited: 'Begrenzte Auswahl', unavailable: 'Nicht verfügbar' }
+};
+
 function selectLocale(locale) {
   return locale === 'de' ? 'de' : 'en';
 }
@@ -87,6 +92,7 @@ export function normalizePack(record, locale) {
     packId: record.packId,
     tripType: record.tripType,
     status: record.status,
+    statusLabel: statusLabels[selectedLocale][record.status],
     title: record.locales[selectedLocale].title,
     description: record.locales[selectedLocale].description,
     carryNote: record.carryNote[selectedLocale],
@@ -106,6 +112,7 @@ function createFallback(tripType, locale) {
     packId: `autumn-${tripType}-fallback`,
     tripType,
     status: 'unavailable',
+    statusLabel: statusLabels[selectedLocale].unavailable,
     title: copy.title,
     description: copy.description,
     carryNote: '',
@@ -138,7 +145,7 @@ function createPackEnhancement(document, model) {
   const status = document.createElement('p');
   addClass(status, 'pack-status');
   status.setAttribute('data-status', model.status);
-  status.textContent = model.status;
+  status.textContent = model.statusLabel;
   content.append(status);
 
   const names = document.createElement('p');

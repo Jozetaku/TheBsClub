@@ -44,4 +44,9 @@ The page can also be uploaded as-is to any static hosting provider such as GitHu
 - On publication day, check Harder Kulm live operations, BLS current operating status, and the BLS annual timetable before publishing or updating the guide.
 - Update `dateModified`, reader-facing checked date, and tests together in both bilingual article pages whenever facts or dates change.
 
+## Autumn guide link verification
+
+- On 27 August 2026, the official Harder Kulm destination and live-operation pages, BLS Lake Brienz page, BLS timetable, BLS current operating situation, BLS annual navigation timetable PDF, and Google Maps Directions query all returned HTTP 200. The Maps query resolved after redirects to Google Maps.
+- The official Interlaken Tourism town-walk URL used for the four town destinations redirected to the same path on `www.interlaken.swiss` and ended at HTTP 500. It is retained as the official source rather than replaced with a secondary blog; recheck it on publication day and update this note when the official destination becomes available.
+
 No build step or JavaScript framework is required.

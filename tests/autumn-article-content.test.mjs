@@ -241,6 +241,60 @@ test('English guide preserves the approved factual boundaries', () => {
   }
 });
 
+test('keeps destination ids and localized transport facts unique', () => {
+  const articles = { en: readArticle('en'), de: readArticle('de') };
+  const placeIds = [
+    'place-hohematte',
+    'place-japanese-garden',
+    'place-aare',
+    'place-unterseen',
+    'place-harder-kulm',
+    'place-lake-brienz'
+  ];
+  const transportFacts = {
+    en: [
+      /3 April–29 November 2026/g,
+      /3 April–6 December 2026/g,
+      /after 11 October/gi
+    ],
+    de: [
+      /3\. April bis 29\. November 2026/g,
+      /3\. April bis 6\. Dezember 2026/g,
+      /Nach dem 11\. Oktober/gi
+    ]
+  };
+
+  for (const [locale, html] of Object.entries(articles)) {
+    for (const id of placeIds) {
+      assert.equal(occurrences(html, new RegExp(`\\bid="${id}"`, 'g')), 1, `${locale} #${id}`);
+    }
+    for (const fact of transportFacts[locale]) {
+      assert.equal(occurrences(html, fact), 1, `${locale} ${fact}`);
+    }
+  }
+});
+
+test('omits prices and numeric last-departure promises from both articles', () => {
+  const price = /(?:\b(?:CHF|SFr\.?|EUR)\s*\d|\d\s*(?:CHF|SFr\.?|EUR)\b|€\s*\d|\d\s*€)/i;
+  const lastService = /\b(?:last (?:departure|return|descent)|letzte (?:Abfahrt|Rückfahrt|Rueckfahrt|Talfahrt))\b/i;
+  const clockTime = /\b(?:[01]?\d|2[0-3])[:.]\d{2}\b/;
+
+  for (const locale of Object.keys(articlePaths)) {
+    const html = readArticle(locale);
+    assert.doesNotMatch(html, price, `${locale} must not publish a price`);
+
+    const visibleText = html
+      .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ');
+    for (const sentence of visibleText.split(/[.!?](?:\s|$)/)) {
+      if (lastService.test(sentence)) {
+        assert.doesNotMatch(sentence, clockTime, `${locale} must defer the last service time to the live operator`);
+      }
+    }
+  }
+});
+
 test('English guide follows the required editorial and shared-shell order', () => {
   const en = readArticle('en');
   const orderedMarkers = [

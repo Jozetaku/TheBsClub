@@ -118,3 +118,21 @@ test('pushes one directions event with article context on article pages', () => 
     }
   ]);
 });
+
+test('categorizes exact 768 and 1024 directions boundaries', () => {
+  for (const [width, deviceCategory] of [
+    [767, 'mobile'],
+    [768, 'tablet'],
+    [1023, 'tablet'],
+    [1024, 'desktop']
+  ]) {
+    const { clicks, window } = loadTracking({
+      articleId: 'autumn-interlaken',
+      language: 'en',
+      width
+    });
+    clicks[0]();
+
+    assert.equal(directionsEvents(window.dataLayer)[0].device_category, deviceCategory, `${width}px`);
+  }
+});

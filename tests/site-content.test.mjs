@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+const pagesWorkflow = readFileSync(new URL('../.github/workflows/deploy-pages.yml', import.meta.url), 'utf8');
 
 test('uses the confirmed website, hours, and phone everywhere', () => {
   assert.match(html, /<link rel="canonical" href="https:\/\/thebsclub\.ch\/">/);
@@ -45,6 +46,17 @@ test('documents autumn guide pack, transport, and date maintenance', () => {
   assert.match(readme, /`dateModified`, reader-facing checked date, and tests together/i);
   assert.match(readme, /\/en\/articles\/autumn-interlaken/);
   assert.match(readme, /\/de\/artikel\/herbst-interlaken/);
+});
+
+test('records the unavailable official place source without substituting a secondary source', () => {
+  assert.match(readme, /27 August 2026/);
+  assert.match(readme, /Interlaken Tourism.*redirected.*HTTP 500/i);
+  assert.match(readme, /retained as the official source/i);
+});
+
+test('publishes localized autumn guides, article assets, and sitemap in the Pages artifact', () => {
+  assert.match(pagesWorkflow, /cp\s+-R\s+en\s+de\s+articles\s+_site\//);
+  assert.match(pagesWorkflow, /cp\s+sitemap\.xml\s+_site\//);
 });
 
 test('puts directions first and retains menu and Uber Eats paths', () => {

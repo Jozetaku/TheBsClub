@@ -7,6 +7,19 @@ import { travelPacks } from '../articles/autumn-interlaken/travel-packs.mjs';
 const englishHtml = readFileSync(new URL('../en/articles/autumn-interlaken/index.html', import.meta.url), 'utf8');
 const germanHtml = readFileSync(new URL('../de/artikel/herbst-interlaken/index.html', import.meta.url), 'utf8');
 
+const eventLocationsByMarker = (html) => {
+  const locations = new Map();
+  for (const match of html.matchAll(/<(?:a|button)\b[^>]*data-article-event="[^"]+"[^>]*>/g)) {
+    const tag = match[0];
+    const marker = tag.match(/data-article-event="([^"]+)"/)?.[1];
+    const location = tag.match(/data-cta-location="([^"]+)"/)?.[1] ?? null;
+    const values = locations.get(marker) ?? [];
+    values.push(location);
+    locations.set(marker, values);
+  }
+  return Object.fromEntries(locations);
+};
+
 class FakeClassList {
   constructor(owner) {
     this.owner = owner;
@@ -231,6 +244,26 @@ test('renders limited names and the localized ask-today notice', () => {
   assert.match(cards.city.slot.textContent, /Ask for today's travel-friendly option before you order/);
 });
 
+test('localizes active and limited pack status labels for readers', () => {
+  const active = createPackRoot();
+  article.renderTravelPacks(active.root, travelPacks, 'de');
+  assert.equal(
+    active.cards.city.slot.querySelector('[data-status="active"]').textContent,
+    'Verfügbar'
+  );
+
+  const limited = createPackRoot();
+  article.renderTravelPacks(
+    limited.root,
+    travelPacks.map((pack) => ({ ...pack, status: pack.tripType === 'city' ? 'limited' : pack.status })),
+    'de'
+  );
+  assert.equal(
+    limited.cards.city.slot.querySelector('[data-status="limited"]').textContent,
+    'Begrenzte Auswahl'
+  );
+});
+
 test('leaves fallback categories and menu calls to action intact for unavailable invalid or missing data', () => {
   for (const records of [[], [{ tripType: 'city', status: 'broken' }], travelPacks.map((pack) => ({ ...pack, status: 'unavailable' }))]) {
     const { root, cards } = createPackRoot();
@@ -334,6 +367,20 @@ test('emits article_view once with article context', () => {
   }]);
 });
 
+test('categorizes exact 768 and 1024 article analytics boundaries', () => {
+  for (const [width, deviceCategory] of [
+    [767, 'mobile'],
+    [768, 'tablet'],
+    [1023, 'tablet'],
+    [1024, 'desktop']
+  ]) {
+    const document = createAnalyticsDocument({ width });
+    article.initializeArticleInteractions(document);
+
+    assert.equal(document.defaultView.dataLayer[0].device_category, deviceCategory, `${width}px`);
+  }
+});
+
 test('emits scroll_depth once at each 50 and 90 percent threshold', () => {
   const document = createAnalyticsDocument({ width: 800 });
   article.initializeArticleInteractions(document);
@@ -425,4 +472,24 @@ test('both locale pages mark language, place and timetable article events', () =
     assert.match(html, /data-article-event="outbound-place"/);
     assert.match(html, /data-article-event="timetable"/);
   }
+});
+
+test('repeated article event surfaces provide matching specific CTA locations in both locales', () => {
+  const expected = {
+    directions: ['header', 'hero', 'visit', 'mobile'],
+    'language-switch': ['article-tools'],
+    'travel-packs': ['hero', 'mobile'],
+    'outbound-place': [
+      'destination', 'destination', 'destination', 'destination',
+      'sources', 'sources', 'sources'
+    ],
+    menu: [
+      'destination', 'destination', 'destination', 'destination', 'destination', 'destination',
+      'travel-pack-card', 'travel-pack-card', 'travel-pack-card', 'directions', 'mobile'
+    ],
+    timetable: ['destination', 'destination', 'sources', 'sources']
+  };
+
+  assert.deepEqual(eventLocationsByMarker(englishHtml), expected);
+  assert.deepEqual(eventLocationsByMarker(germanHtml), expected);
 });
