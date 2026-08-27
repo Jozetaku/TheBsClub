@@ -108,8 +108,8 @@ test('keeps every bestseller and category connected to the existing full-menu di
 });
 
 test('marks every directions surface for delegated tracking', () => {
-  assert.match(html, /<link rel="stylesheet" href="styles\.css\?v=20260827-1">/);
-  assert.match(html, /<script src="script\.js\?v=20260827-1" defer><\/script>/);
+  assert.match(html, /<link rel="stylesheet" href="styles\.css\?v=20260827-2">/);
+  assert.match(html, /<script src="script\.js\?v=20260827-2" defer><\/script>/);
   assert.match(html, /<script src="cursor\.js\?v=20260815-2" defer><\/script>/);
   assert.doesNotMatch(html, /(?:analytics|tracking|cta)\.js/);
   const trackedDirections = html.match(/data-cta="directions"/g) ?? [];

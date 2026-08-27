@@ -39,6 +39,7 @@ jobs:
           cp -R images _site/images
           cp -R en de articles _site/
           cp sitemap.xml _site/
+          cp -R music _site/music
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

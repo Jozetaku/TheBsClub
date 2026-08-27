@@ -1,0 +1,221 @@
+/* =============================================================
+   THE B'S CLUB GLOBAL MUSIC RADIO THEME
+   Standalone brand tokens for the no-build music station page.
+   ============================================================= */
+
+:root {
+  /* --- surfaces --- */
+  --z-basalt:   #0D3028;  /* page ground */
+  --z-slate:    #173F34;  /* cards, player */
+  --z-well:     #214D42;  /* recessed rows, inert fields */
+
+  /* --- text --- */
+  --z-snow:     #FFF8E9;  /* primary text on dark */
+  --z-ash:      #B8C8C1;  /* secondary text */
+  --z-ash-dim:  #718A82;  /* rules, dividers, disabled */
+
+  /* --- accent (sampled from the Mai Prap Marn tool) --- */
+  --z-mai:      #F5C84B;  /* CTA and focus ring */
+  --z-mai-lift: #FFDC68;  /* hover / pressed */
+  --z-mai-deep: #C2961D;  /* accent text on light pages only */
+
+  /* --- heritage green, kept for continuity --- */
+  --z-pine:      #2E6B4E;
+  --z-pine-lift: #72D08D;
+
+  /* --- functional --- */
+  --z-whatsapp: #25D366;  /* the booking channel's own colour, never decoration */
+
+  --z-rule:      rgba(255, 248, 233, .14);
+  --z-rule-hard: rgba(255, 248, 233, .28);
+
+  /* --- type --- */
+  --z-display:   "Archivo", system-ui, -apple-system, sans-serif;
+  --z-editorial: "Newsreader", Georgia, serif;
+
+  /* --- motion --- */
+  --z-fast:   180ms;
+  --z-base:   320ms;
+  --z-slow:   640ms;
+  --z-reveal: 900ms;
+  --z-release: cubic-bezier(.22, 1, .36, 1);   /* default: fast out, long settle */
+  --z-press:   cubic-bezier(.65, 0, .35, 1);   /* only for two-way motion */
+
+  /* --- radius --- */
+  --z-r-sm: 4px;
+  --z-r-md: 10px;
+}
+
+/* =============================================================
+   BASE
+   ============================================================= */
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--z-basalt);
+  color: var(--z-snow);
+  font-family: var(--z-display);
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--z-display);
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(3.2rem, 8vw, 6.5rem);   line-height: .94; letter-spacing: -.03em;  font-weight: 600; }
+h2 { font-size: clamp(1.75rem, 3.2vw, 2.5rem); line-height: 1.1; letter-spacing: -.02em;  font-weight: 500; }
+h3 { font-size: 1.25rem;                       line-height: 1.3; letter-spacing: -.01em;  font-weight: 500; }
+h4 { font-size: 1rem;                          line-height: 1.4; letter-spacing: -.005em; font-weight: 600; }
+
+p { max-width: 62ch; }
+
+/* Focus ring is a token, not a per-component decision. Never remove it. */
+:focus-visible {
+  outline: 2px solid var(--z-mai);
+  outline-offset: 3px;
+  border-radius: var(--z-r-sm);
+}
+
+/* =============================================================
+   TYPE UTILITIES
+   ============================================================= */
+
+/* Replaces the old .heading-serif. Headings are Archivo, NOT a serif. */
+.z-display { font-family: var(--z-display); font-weight: 600; letter-spacing: -.025em; }
+
+/* The ONLY place Newsreader appears. Italic, max one per section,
+   reserved for the Thai lineage voice — "Mai Prap Marn", pull quotes. */
+.z-editorial { font-family: var(--z-editorial); font-style: italic; font-weight: 400; line-height: 1.35; }
+
+.z-label {
+  font-size: .75rem; font-weight: 500; line-height: 1.2;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--z-ash);
+}
+
+.z-muted { color: var(--z-ash); }
+
+/* Mandatory on every price, duration and phone number. */
+.z-num { font-variant-numeric: tabular-nums; }
+
+/* =============================================================
+   COMPONENTS
+   ============================================================= */
+
+.z-btn {
+  display: inline-flex; align-items: center; gap: .6rem;
+  border: 0; cursor: pointer;
+  font-family: var(--z-display); font-size: .95rem; font-weight: 500;
+  padding: .85rem 1.4rem; border-radius: var(--z-r-sm);
+  text-decoration: none;
+  transition: background var(--z-fast) var(--z-release),
+              color      var(--z-fast) var(--z-release),
+              box-shadow var(--z-fast) var(--z-release),
+              transform  var(--z-fast) var(--z-release);
+}
+.z-btn:active { transform: translateY(1px); }
+
+/* Primary. One per view — if two things are gold, neither is the CTA. */
+.z-btn--book       { background: var(--z-mai); color: var(--z-basalt); }
+.z-btn--book:hover { background: var(--z-mai-lift); }
+
+/* The booking channel keeps its own colour. */
+.z-btn--wa       { background: var(--z-whatsapp); color: #062B14; }
+.z-btn--wa:hover { filter: brightness(1.08); }
+
+.z-btn--ghost       { background: transparent; color: var(--z-snow); box-shadow: inset 0 0 0 1px var(--z-rule); }
+.z-btn--ghost:hover { box-shadow: inset 0 0 0 1px var(--z-mai); color: var(--z-mai); }
+
+.z-chip {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  padding: .35rem .7rem; border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--z-rule); color: var(--z-ash);
+}
+.z-chip--open      { color: var(--z-pine-lift); box-shadow: inset 0 0 0 1px rgba(78,155,80,.45); }
+.z-chip--open::before { content: ""; width: .42rem; height: .42rem; border-radius: 999px; background: currentColor; }
+.z-chip--dur       { color: var(--z-snow); letter-spacing: .04em; text-transform: none; font-variant-numeric: tabular-nums; }
+
+/* Replaces .service-card / .zen-card. Depth comes from surface steps and
+   hairlines — drop shadows die on a dark ground. */
+.z-card {
+  background: var(--z-slate);
+  border-radius: var(--z-r-md);
+  box-shadow: inset 0 1px 0 rgba(241,244,240,.06);
+  transition: box-shadow var(--z-base) var(--z-release);
+}
+.z-card:hover { box-shadow: inset 0 0 0 1px var(--z-rule-hard); }
+
+/* One price/duration row = one booking target. */
+.z-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .62rem 0; border-top: 1px solid var(--z-rule);
+  cursor: pointer; transition: padding-inline var(--z-fast) var(--z-release);
+}
+.z-row:hover { padding-inline: .35rem; }
+.z-row:hover .z-price { color: var(--z-mai); }
+
+.z-price {
+  font-size: 1.35rem; font-weight: 500; font-variant-numeric: tabular-nums;
+  transition: color var(--z-fast) var(--z-release);
+}
+.z-price small { font-size: .7rem; color: var(--z-ash-dim); margin-right: .3rem; letter-spacing: .08em; }
+
+/* Underline grows from the left on hover. */
+.z-link {
+  color: var(--z-snow); text-decoration: none; padding-bottom: 2px;
+  background-image: linear-gradient(var(--z-mai), var(--z-mai));
+  background-size: 0% 1px; background-repeat: no-repeat; background-position: left bottom;
+  transition: background-size var(--z-base) var(--z-release),
+              color           var(--z-base) var(--z-release);
+}
+.z-link:hover { color: var(--z-mai); background-size: 100% 1px; }
+
+.z-rule { border-color: var(--z-rule); }
+
+/* =============================================================
+   REVEAL — one per section, never two.
+   Add data-reveal to a container; children with data-reveal-item stagger.
+   ============================================================= */
+
+[data-reveal] [data-reveal-item] {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity   var(--z-reveal) var(--z-release),
+              transform var(--z-reveal) var(--z-release);
+}
+[data-reveal].is-visible [data-reveal-item] { opacity: 1; transform: translateY(0); }
+[data-reveal].is-visible [data-reveal-item]:nth-child(2) { transition-delay:  60ms; }
+[data-reveal].is-visible [data-reveal-item]:nth-child(3) { transition-delay: 120ms; }
+[data-reveal].is-visible [data-reveal-item]:nth-child(4) { transition-delay: 180ms; }
+[data-reveal].is-visible [data-reveal-item]:nth-child(5) { transition-delay: 240ms; }
+
+/* Content must be fully present and readable when motion is off. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  [data-reveal] [data-reveal-item] { opacity: 1 !important; transform: none !important; }
+}
+
+/* =============================================================
+   CURSOR — keep the existing wood-tool cursor, retuned to the accent.
+   ============================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  .music-cursor__pulse {
+    border-color: var(--z-mai);
+    background: rgba(245, 200, 75, .14);
+    box-shadow: 0 0 20px 8px rgba(245, 200, 75, .22);
+  }
+  .music-cursor__pulse::after { border-color: rgba(245, 200, 75, .32); }
+  .music-cursor.is-interactive .music-cursor__pulse {
+    border-color: var(--z-mai-lift);
+    background: rgba(255, 220, 104, .18);
+  }
+  .music-cursor.is-interactive .music-cursor__pulse::after { border-color: rgba(255, 220, 104, .55); }
+}
