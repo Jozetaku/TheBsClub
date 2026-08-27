@@ -2,14 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const businessId = 'https://thebsclub.ch/#business';
-const imageUrl = 'https://thebsclub.ch/articles/autumn-interlaken/interlaken-autumn-social.png';
+const businessId = 'https://www.thebsclub.ch/#business';
+const imageUrl = 'https://www.thebsclub.ch/articles/autumn-interlaken/interlaken-autumn-social.png';
 const expectedDate = '2026-08-27';
 
 const locales = {
   en: {
     path: '../en/articles/autumn-interlaken/index.html',
-    url: 'https://thebsclub.ch/en/articles/autumn-interlaken',
+    url: 'https://www.thebsclub.ch/en/articles/autumn-interlaken',
     title: 'Interlaken in Autumn: 6 Places to Visit | The B',
     description: 'Find six beautiful places to visit in Interlaken this autumn, from Höhematte to Lake Brienz, plus three easy travel packs and directions to The B.',
     headline: 'Interlaken in Autumn: A Golden Day Between Two Lakes',
@@ -27,7 +27,7 @@ const locales = {
   },
   de: {
     path: '../de/artikel/herbst-interlaken/index.html',
-    url: 'https://thebsclub.ch/de/artikel/herbst-interlaken',
+    url: 'https://www.thebsclub.ch/de/artikel/herbst-interlaken',
     title: 'Interlaken im Herbst: 6 schöne Orte | The B',
     description: 'Entdecke sechs schöne Orte in Interlaken im Herbst – von der Höhematte bis zum Brienzersee – plus drei Herbst-Packs und den Weg zu The B.',
     headline: 'Interlaken im Herbst: Ein goldener Tag zwischen zwei Seen',
@@ -166,7 +166,7 @@ test('localized JSON-LD graphs contain complete Article, breadcrumb and place di
     const breadcrumbs = graph.find((node) => node['@type'] === 'BreadcrumbList');
     assert.ok(breadcrumbs, `${locale} BreadcrumbList node missing`);
     assert.deepEqual(breadcrumbs.itemListElement, [
-      { '@type': 'ListItem', position: 1, name: locale === 'en' ? 'Home' : 'Startseite', item: 'https://thebsclub.ch/' },
+      { '@type': 'ListItem', position: 1, name: locale === 'en' ? 'Home' : 'Startseite', item: 'https://www.thebsclub.ch/' },
       { '@type': 'ListItem', position: 2, name: config.breadcrumb, item: config.url }
     ]);
 
@@ -184,7 +184,7 @@ test('sitemap lists the homepage and both localized articles with reciprocal alt
     alternates: [...match[1].matchAll(/<xhtml:link\b([^>]*)\/>/g)].map((link) => attributes(link[1]))
   }));
   assert.deepEqual(entries.map((entry) => entry.loc), [
-    'https://thebsclub.ch/',
+    'https://www.thebsclub.ch/',
     locales.en.url,
     locales.de.url
   ]);

@@ -8,10 +8,10 @@ const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 const pagesWorkflow = readFileSync(new URL('../.github/workflows/deploy-pages.yml', import.meta.url), 'utf8');
 
 test('uses the confirmed website, hours, phone and launch date everywhere', () => {
-  assert.match(html, /<link rel="canonical" href="https:\/\/thebsclub\.ch\/">/);
-  assert.match(html, /<meta property="og:url" content="https:\/\/thebsclub\.ch\/">/);
-  assert.match(html, /"url": "https:\/\/thebsclub\.ch\/"/);
-  assert.doesNotMatch(html, /https:\/\/www\.thebsclub\.ch/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/www\.thebsclub\.ch\/">/);
+  assert.match(html, /<meta property="og:url" content="https:\/\/www\.thebsclub\.ch\/">/);
+  assert.match(html, /"url": "https:\/\/www\.thebsclub\.ch\/"/);
+  assert.doesNotMatch(html, /https:\/\/thebsclub\.ch/);
   assert.doesNotMatch(html, /11:00[–-]21:00|"closes": "21:00"/);
   assert.match(html, /11:00[–-]19:00/);
   assert.match(html, /"closes": "19:00"/);

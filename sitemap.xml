@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://thebsclub.ch/</loc>
+    <loc>https://www.thebsclub.ch/</loc>
   </url>
   <url>
-    <loc>https://thebsclub.ch/en/articles/autumn-interlaken</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://thebsclub.ch/en/articles/autumn-interlaken" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://thebsclub.ch/de/artikel/herbst-interlaken" />
+    <loc>https://www.thebsclub.ch/en/articles/autumn-interlaken</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.thebsclub.ch/en/articles/autumn-interlaken" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.thebsclub.ch/de/artikel/herbst-interlaken" />
   </url>
   <url>
-    <loc>https://thebsclub.ch/de/artikel/herbst-interlaken</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://thebsclub.ch/en/articles/autumn-interlaken" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://thebsclub.ch/de/artikel/herbst-interlaken" />
+    <loc>https://www.thebsclub.ch/de/artikel/herbst-interlaken</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.thebsclub.ch/en/articles/autumn-interlaken" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.thebsclub.ch/de/artikel/herbst-interlaken" />
   </url>
 </urlset>
