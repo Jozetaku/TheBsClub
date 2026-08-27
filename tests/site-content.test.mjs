@@ -24,6 +24,29 @@ test('keeps repository launch notes aligned with confirmed details', () => {
   assert.match(readme, /Every day: `11:00–19:00`/);
 });
 
+test('links the English autumn guide from navigation and the footer', () => {
+  const primaryNav = html.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
+  const footer = html.match(/<footer class="footer">[\s\S]*?<\/footer>/)?.[0] ?? '';
+
+  assert.match(primaryNav, /<a href="\/en\/articles\/autumn-interlaken">Autumn guide<\/a>/);
+  assert.match(footer, /<a href="\/en\/articles\/autumn-interlaken">Plan an autumn day in Interlaken<\/a>/);
+});
+
+test('documents autumn guide pack, transport, and date maintenance', () => {
+  assert.match(readme, /availability and content only in `articles\/autumn-interlaken\/travel-packs\.mjs`/i);
+  assert.match(readme, /`active`, `limited`, and `unavailable`/);
+  assert.match(readme, /fallback/i);
+  assert.match(readme, /verify menu names with staff/i);
+  assert.match(readme, /Harder Kulm and BLS dates annually in late July\/early August/i);
+  assert.match(readme, /publication day/i);
+  assert.match(readme, /Harder.*live operations/i);
+  assert.match(readme, /BLS.*current operating status/i);
+  assert.match(readme, /BLS.*annual timetable/i);
+  assert.match(readme, /`dateModified`, reader-facing checked date, and tests together/i);
+  assert.match(readme, /\/en\/articles\/autumn-interlaken/);
+  assert.match(readme, /\/de\/artikel\/herbst-interlaken/);
+});
+
 test('puts directions first and retains menu and Uber Eats paths', () => {
   const heroActions = html.match(/<div class="hero-actions">([\s\S]*?)<\/div>/)?.[1] ?? '';
   const mobileActions = html.match(/<div class="mobile-actions"[^>]*>([\s\S]*?)<\/div>/)?.[1] ?? '';

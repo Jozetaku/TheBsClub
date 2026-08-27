@@ -35,4 +35,13 @@ The page can also be uploaded as-is to any static hosting provider such as GitHu
 - Address: `Jungfraustrasse 46, 3800 Interlaken`
 - Instagram: `@thebsclub25`
 
+## Autumn guide maintenance
+
+- The English guide is `/en/articles/autumn-interlaken`; its German counterpart is `/de/artikel/herbst-interlaken`. The German version is selected from the article language switch, not by an automatic redirect.
+- Change autumn-pack availability and content only in `articles/autumn-interlaken/travel-packs.mjs`. The allowed status values are `active`, `limited`, and `unavailable`: active shows the approved details, limited asks visitors to check with the team, and unavailable removes product suggestions. Missing or invalid pack data uses the safe fallback with empty product suggestions and a current-menu link.
+- Verify menu names with staff before adding or changing them in the pack data.
+- Recheck Harder Kulm and BLS dates annually in late July/early August before the autumn guide is refreshed.
+- On publication day, check Harder Kulm live operations, BLS current operating status, and the BLS annual timetable before publishing or updating the guide.
+- Update `dateModified`, reader-facing checked date, and tests together in both bilingual article pages whenever facts or dates change.
+
 No build step or JavaScript framework is required.
