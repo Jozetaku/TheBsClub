@@ -87,9 +87,8 @@
 
   <header class="site-header" id="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/#top" aria-label="The B's Club, Startseite">
-        <span class="brand-mark"><img src="/images/logo-sm.png" alt="" width="44" height="44"></span>
-        <span><strong>The B's Club</strong><small>Interlaken</small></span>
+      <a class="official-logo" href="/#top" aria-label="The B's Club, Startseite">
+        <img src="/images/logo-official.png" alt="The B's Club" width="1181" height="1181">
       </a>
 
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" data-menu-open-label="Menü öffnen" data-menu-close-label="Menü schliessen">
@@ -412,7 +411,7 @@
 
   <footer class="footer">
     <div class="container footer-top">
-      <a class="brand footer-brand" href="/#top"><span class="brand-mark"><img src="/images/logo-sm.png" alt="" width="44" height="44"></span><span><strong>The B's Club</strong><small>Food to nourish your soul</small></span></a>
+      <a class="footer-logo" href="/#top" aria-label="The B's Club, zurück nach oben"><img src="/images/logo-official.png" alt="The B's Club" width="1181" height="1181" loading="lazy" decoding="async"></a>
       <div class="footer-links"><a href="/#favourites">Menü</a><a href="/#local-offer">Lokales Angebot</a><a href="/#visit">Besuch</a><a href="https://www.instagram.com/thebsclub25/" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.facebook.com/profile.php?id=100071619350267" target="_blank" rel="noopener">Facebook ↗</a></div>
     </div>
     <div class="container footer-bottom"><p>© <span id="year">2026</span> The B's Club. Interlaken, Schweiz.</p><p>Unabhängiges Café · Gutes Essen · Gute Gesellschaft</p><button class="footer-privacy" id="privacy-settings" type="button">Datenschutzeinstellungen</button></div>
@@ -436,6 +435,17 @@
   </section>
 
   <script src="/script.js?v=20260827-1" defer></script>
+  <script src="/cursor.js?v=20260815-2" defer></script>
   <script type="module" src="/articles/autumn-interlaken/article.mjs"></script>
+
+  <div class="boba-cursor" id="boba-cursor" aria-hidden="true">
+    <span class="boba-cursor-straw" data-cursor-part="straw"></span>
+    <span class="boba-cursor-lid" data-cursor-part="lid"></span>
+    <span class="boba-cursor-cup" data-cursor-part="cup">
+      <i class="matcha-cursor-foam"></i>
+      <i class="matcha-cursor-layer"></i>
+      <i class="cursor-pearls"></i>
+    </span>
+  </div>
 </body>
 </html>

@@ -78,6 +78,26 @@ test('autumn social artwork is the required 1200 by 630 PNG', () => {
   assert.ok(png.length > 10_000, 'social artwork should contain a rendered composition');
 });
 
+test('localized articles preserve the latest official logo and custom cursor shell', () => {
+  for (const locale of Object.keys(articlePaths)) {
+    const article = readArticle(locale);
+    const header = article.match(/<header class="site-header"[\s\S]*?<\/header>/)?.[0] ?? '';
+    const footer = article.match(/<footer class="footer">[\s\S]*?<\/footer>/)?.[0] ?? '';
+
+    assert.match(header, /class="official-logo"/);
+    assert.match(header, /src="\/images\/logo-official\.png"/);
+    assert.match(footer, /class="footer-logo"/);
+    assert.match(footer, /src="\/images\/logo-official\.png"/);
+    assert.equal(occurrences(article, /\/images\/logo-official\.png/g), 2);
+
+    assert.match(article, /<script src="\/cursor\.js\?v=20260815-2" defer><\/script>/);
+    assert.match(article, /<div class="boba-cursor" id="boba-cursor" aria-hidden="true">/);
+    assert.match(article, /class="matcha-cursor-foam"/);
+    assert.match(article, /class="matcha-cursor-layer"/);
+    assert.match(article, /class="cursor-pearls"/);
+  }
+});
+
 test('localized maps expose seven independent semantic hotspots', () => {
   const expectedLabels = {
     en: [
