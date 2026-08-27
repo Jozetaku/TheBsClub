@@ -37,13 +37,16 @@
     <path d="M342 680C478 623 598 626 705 659C823 695 938 704 1076 650L1118 736C946 804 786 794 645 754C529 721 431 725 314 771Z" fill="#E4D5BD" opacity=".54"/>
   </g>
 
-  <g class="roads" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M300 493C435 448 552 459 650 493C753 528 862 532 1016 480" stroke="#E4D5BD" stroke-width="22"/>
-    <path d="M421 350C471 429 527 491 630 630C708 735 832 762 1038 690" stroke="#E4D5BD" stroke-width="19"/>
-    <path d="M887 478C835 559 763 609 630 630" stroke="#E4D5BD" stroke-width="15"/>
-    <path d="M1018 477C1081 458 1116 440 1156 408" stroke="#E4D5BD" stroke-width="15"/>
-    <path d="M345 551C467 539 570 555 653 604" stroke="#FFFDF8" stroke-width="7" opacity=".88"/>
-    <path d="M738 455C769 418 783 385 789 341" stroke="#FFFDF8" stroke-width="7" opacity=".88"/>
+  <g class="larch-leaves" opacity=".92">
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#B78A45" transform="translate(284 694) rotate(-37)"/>
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#EF725D" transform="translate(312 665) rotate(-69) scale(.8)"/>
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#B78A45" transform="translate(338 643) rotate(-14) scale(.72)"/>
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#EF725D" transform="translate(350 626) rotate(-80) scale(.6)"/>
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#B78A45" transform="translate(1034 741) rotate(-46)"/>
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#EF725D" transform="translate(1067 705) rotate(-12) scale(.82)"/>
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#B78A45" transform="translate(1096 682) rotate(-72) scale(.74)"/>
+    <path d="M0 0C10-26 25-33 42-27C34-10 20-1 0 0Z" fill="#EF725D" transform="translate(1128 659) rotate(-25) scale(.62)"/>
+    <path d="M270 711C305 674 336 643 374 614M1024 754C1061 710 1105 679 1152 651" fill="none" stroke="#B78A45" stroke-width="5" stroke-linecap="round"/>
   </g>
 
   <path d="M208 407C368 372 526 356 667 367C799 378 891 371 1014 344C1063 333 1104 337 1168 360" fill="none" stroke="#E4D5BD" stroke-width="40" stroke-linecap="round"/>

@@ -53,6 +53,10 @@ test('autumn artwork assets are original self-contained vectors', () => {
   const map = readFileSync(artworkPath('interlaken-autumn-map.svg'), 'utf8');
   assert.match(map, /viewBox="0 0 1400 900"/);
   assert.match(map, /#6FAFB5/i, 'the geographic lake blue belongs in the map artwork');
+  assert.doesNotMatch(map, /class="roads"/i, 'the illustration must not introduce a road network');
+  const larchLeaves = map.match(/<g class="larch-leaves"[\s\S]*?<\/g>/i)?.[0] ?? '';
+  assert.match(larchLeaves, /fill="#B78A45"/i, 'the map should include golden larch leaves');
+  assert.match(larchLeaves, /fill="#EF725D"/i, 'the map should include coral larch leaves');
 
   for (const filename of svgFiles.slice(1)) {
     const svg = readFileSync(artworkPath(filename), 'utf8');
@@ -137,8 +141,19 @@ test('article CSS fulfils the responsive editorial and accessibility contract', 
   assert.match(css, /\.article-directions\s*{[^}]*background:\s*var\(--ink-deep\)/s);
 
   assert.match(css, /\.map-hotspot:focus-visible\s*{[^}]*outline:\s*3px\s+solid\s+var\(--coral\)/s);
+  assert.match(css, /\.map-hotspot\s*{[^}]*width:\s*36px;[^}]*height:\s*36px/s);
+  assert.match(
+    css,
+    /\.map-hotspot strong\s*{[^}]*position:\s*absolute;[^}]*left:\s*calc\(100%\s*\+\s*8px\)/s,
+    'labels must not shift hotspot centres away from their SVG route nodes'
+  );
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css, /@media\s*\(min-width:\s*1200px\)/, 'article should define its 1440-safe layout');
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*980px\)[\s\S]*?\.map-section\s*{[^}]*position:\s*sticky/s,
+    'sticky map context should only engage when the desktop viewport is tall enough'
+  );
   assert.match(css, /@media\s*\(max-width:\s*820px\)/, 'article should define its 768-safe layout');
   assert.match(css, /@media\s*\(max-width:\s*560px\)[\s\S]*?width:\s*calc\(100%\s*-\s*48px\)/);
   assert.match(css, /@media\s*\(max-width:\s*380px\)/, 'article should define its 360-safe layout');
