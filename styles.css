@@ -448,7 +448,6 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
   }
   .consent-actions { justify-content: space-between; }
 }
-
 /* Bold Asian Club visual system — launch 15 August 2026 */
 .promo-bar {
   background: var(--sun);

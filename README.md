@@ -57,4 +57,18 @@ The refresh is isolated on `feature/asian-cafe-refresh`. These commits keep the 
 - Address: `Jungfraustrasse 46, 3800 Interlaken`
 - Instagram: `@thebsclub25`
 
+## Autumn guide maintenance
+
+- The English guide is `/en/articles/autumn-interlaken`; its German counterpart is `/de/artikel/herbst-interlaken`. The German version is selected from the article language switch, not by an automatic redirect.
+- Change autumn-pack availability and content only in `articles/autumn-interlaken/travel-packs.mjs`; the approved product catalog also lives in that single maintenance file. The allowed status values are `active`, `limited`, and `unavailable`: active shows the approved details, limited asks visitors to check with the team, and unavailable removes product suggestions. Missing or invalid data uses the safe fallback independently on the affected card, with empty product suggestions and a current-menu link.
+- Verify menu names with staff before adding or changing them in the pack data.
+- Recheck Harder Kulm and BLS dates annually in late July/early August before the autumn guide is refreshed.
+- On publication day, check Harder Kulm live operations, BLS current operating status, and the BLS annual timetable before publishing or updating the guide.
+- Update `dateModified`, reader-facing checked date, and tests together in both bilingual article pages whenever facts or dates change.
+
+## Autumn guide link verification
+
+- On 27 August 2026, the official Harder Kulm destination and live-operation pages, BLS Lake Brienz page, BLS timetable, BLS current operating situation, BLS annual navigation timetable PDF, and Google Maps Directions query all returned HTTP 200. The Maps query resolved after redirects to Google Maps.
+- Keep reader-facing destination links on healthy first-party Interlaken Tourism, Jungfrau Railways, BLS or Google Maps pages. Recheck every external link on publication day and replace a failing destination URL with the most relevant healthy first-party page; do not substitute secondary travel blogs.
+
 No build step or JavaScript framework is required.

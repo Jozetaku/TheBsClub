@@ -29,11 +29,16 @@ jobs:
         with:
           enablement: true
 
+      - name: Run tests
+        run: node --test tests/*.test.mjs
+
       - name: Prepare site
         run: |
           mkdir _site
           cp index.html styles.css script.js cursor.js .nojekyll _site/
           cp -R images _site/images
+          cp -R en de articles _site/
+          cp sitemap.xml _site/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
