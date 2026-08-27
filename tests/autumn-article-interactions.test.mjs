@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import * as article from '../articles/autumn-interlaken/article.mjs';
 import { travelPacks } from '../articles/autumn-interlaken/travel-packs.mjs';
+
+const englishHtml = readFileSync(new URL('../en/articles/autumn-interlaken/index.html', import.meta.url), 'utf8');
+const germanHtml = readFileSync(new URL('../de/artikel/herbst-interlaken/index.html', import.meta.url), 'utf8');
 
 class FakeClassList {
   constructor(owner) {
@@ -79,10 +83,16 @@ class FakeElement {
   click() {
     const event = {
       currentTarget: this,
+      target: this,
       defaultPrevented: false,
       preventDefault() { this.defaultPrevented = true; }
     };
-    this.listeners.get('click')?.(event);
+    let current = this;
+    while (current) {
+      event.currentTarget = current;
+      current.listeners.get('click')?.(event);
+      current = current.parentNode;
+    }
     return event;
   }
 
@@ -102,6 +112,15 @@ class FakeElement {
     return false;
   }
 
+  closest(selector) {
+    let current = this;
+    while (current) {
+      if (current.matches?.(selector)) return current;
+      current = current.parentNode;
+    }
+    return null;
+  }
+
   querySelectorAll(selector) {
     return this.children.flatMap((child) => [
       ...(child.matches(selector) ? [child] : []),
@@ -117,7 +136,24 @@ class FakeElement {
 class FakeDocument extends FakeElement {
   constructor() {
     super('#document');
-    this.defaultView = { matchMedia: () => ({ matches: false }) };
+    const listeners = new Map();
+    this.defaultView = {
+      dataLayer: [],
+      innerHeight: 500,
+      innerWidth: 767,
+      matchMedia: () => ({ matches: false }),
+      scrollY: 0,
+      addEventListener(type, listener) {
+        const handlers = listeners.get(type) ?? [];
+        handlers.push(listener);
+        listeners.set(type, handlers);
+      },
+      dispatch(type) {
+        for (const listener of listeners.get(type) ?? []) listener();
+      }
+    };
+    this.body = { dataset: {} };
+    this.documentElement = { lang: 'en', scrollHeight: 2000 };
   }
 
   createElement(tagName) {
@@ -163,6 +199,16 @@ const createPackRoot = () => {
   root.append(container);
   return { root, cards };
 };
+
+const createAnalyticsDocument = ({ language = 'en', width = 767 } = {}) => {
+  const document = new FakeDocument();
+  document.body.dataset.articleId = 'autumn-interlaken';
+  document.documentElement.lang = language;
+  document.defaultView.innerWidth = width;
+  return document;
+};
+
+const normalize = (value) => JSON.parse(JSON.stringify(value));
 
 test('renders active permitted names and localized carry note into enhancement slots', () => {
   const { root, cards } = createPackRoot();
@@ -271,4 +317,108 @@ test('reduced motion uses an instant scroll for an explicit map activation', () 
   article.activateMapTarget('place-aare', document, true);
 
   assert.deepEqual(target.scrollOptions, { behavior: 'auto', block: 'start' });
+});
+
+test('emits article_view once with article context', () => {
+  const document = createAnalyticsDocument();
+
+  article.initializeArticleInteractions(document);
+  article.initializeArticleInteractions(document);
+
+  assert.deepEqual(normalize(document.defaultView.dataLayer), [{
+    event: 'article_view',
+    article_id: 'autumn-interlaken',
+    language: 'en',
+    cta_location: 'article',
+    device_category: 'mobile'
+  }]);
+});
+
+test('emits scroll_depth once at each 50 and 90 percent threshold', () => {
+  const document = createAnalyticsDocument({ width: 800 });
+  article.initializeArticleInteractions(document);
+  document.defaultView.dataLayer.length = 0;
+
+  document.defaultView.scrollY = 500;
+  document.defaultView.dispatch('scroll');
+  document.defaultView.dispatch('scroll');
+  document.defaultView.scrollY = 1300;
+  document.defaultView.dispatch('scroll');
+  document.defaultView.dispatch('scroll');
+
+  assert.deepEqual(normalize(document.defaultView.dataLayer), [
+    {
+      event: 'scroll_depth',
+      article_id: 'autumn-interlaken',
+      language: 'en',
+      cta_location: '50_percent',
+      device_category: 'tablet'
+    },
+    {
+      event: 'scroll_depth',
+      article_id: 'autumn-interlaken',
+      language: 'en',
+      cta_location: '90_percent',
+      device_category: 'tablet'
+    }
+  ]);
+});
+
+test('delegates article CTA event names with context and leaves directions to the shared owner', () => {
+  const document = createAnalyticsDocument({ language: 'de', width: 1200 });
+  const targets = [
+    ['travel-packs', 'travel_packs_click'],
+    ['menu', 'menu_click'],
+    ['language-switch', 'language_switch'],
+    ['outbound-place', 'outbound_place_click'],
+    ['timetable', 'timetable_click'],
+    ['directions', null]
+  ].map(([marker, eventName]) => ({
+    target: element('a', { 'data-article-event': marker }),
+    eventName
+  }));
+  document.append(...targets.map(({ target }) => target));
+  article.initializeArticleInteractions(document);
+  document.defaultView.dataLayer.length = 0;
+
+  targets.forEach(({ target }) => target.click());
+
+  assert.deepEqual(normalize(document.defaultView.dataLayer), targets
+    .filter(({ eventName }) => eventName)
+    .map(({ target, eventName }) => ({
+      event: eventName,
+      article_id: 'autumn-interlaken',
+      language: 'de',
+      cta_location: target.getAttribute('data-article-event'),
+      device_category: 'desktop'
+    })));
+});
+
+test('pack_select adds the approved pack name without commercial or personal fields', () => {
+  const document = createAnalyticsDocument();
+  const { root } = createPackRoot();
+  root.ownerDocument = document;
+  document.append(root);
+  article.initializeArticleInteractions(document);
+  document.defaultView.dataLayer.length = 0;
+
+  root.querySelector('[data-pack-selector="city"]').click();
+
+  assert.deepEqual(normalize(document.defaultView.dataLayer), [{
+    event: 'pack_select',
+    article_id: 'autumn-interlaken',
+    language: 'en',
+    cta_location: 'travel-packs',
+    device_category: 'mobile',
+    pack_name: 'City stroll pack'
+  }]);
+});
+
+test('both locale pages mark language, place and timetable article events', () => {
+  for (const html of [englishHtml, germanHtml]) {
+    assert.match(html, /<script src="\/script\.js\?v=20260827-1" defer><\/script>/);
+    assert.match(html, /data-article-event="language-switch"/);
+    assert.match(html, /data-article-event="outbound-place"/);
+    assert.match(html, /data-article-event="timetable"/);
+  }
 });

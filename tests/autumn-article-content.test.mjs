@@ -263,7 +263,7 @@ test('English guide follows the required editorial and shared-shell order', () =
     'Sources and last checked',
     '<footer class="footer"',
     'id="analytics-consent"',
-    '<script src="/script.js" defer></script>',
+    '<script src="/script.js?v=20260827-1" defer></script>',
     '<script type="module" src="/articles/autumn-interlaken/article.mjs"></script>'
   ];
 

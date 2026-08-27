@@ -17,6 +17,15 @@ const APPROVED_PRODUCTS = new Map([
 const PACKAGING_TYPES = new Set(['sealed-cold-cup', 'customer-flask', 'takeaway-bowl']);
 const ITEM_TYPES = new Set(['drink', 'meal']);
 const ITEM_ROLES = new Set(['featured', 'optional']);
+const ARTICLE_CLICK_EVENTS = new Map([
+  ['travel-packs', 'travel_packs_click'],
+  ['pack-select', 'pack_select'],
+  ['menu', 'menu_click'],
+  ['language-switch', 'language_switch'],
+  ['outbound-place', 'outbound_place_click'],
+  ['timetable', 'timetable_click']
+]);
+const initializedAnalytics = new WeakSet();
 
 const fallbackCopy = {
   city: {
@@ -146,6 +155,8 @@ function createPackEnhancement(document, model) {
   selector.setAttribute('type', 'button');
   selector.setAttribute('data-pack-selector', model.tripType);
   selector.setAttribute('data-pack-label', model.title);
+  selector.setAttribute('data-article-event', 'pack-select');
+  selector.setAttribute('data-cta-location', 'travel-packs');
   selector.setAttribute('aria-pressed', 'false');
   addClass(selector, 'pack-status');
   selector.textContent = model.title;
@@ -198,6 +209,71 @@ function findTravelPacksRoot(element) {
   return null;
 }
 
+function getDeviceCategory(width) {
+  if (width < 768) return 'mobile';
+  if (width < 1024) return 'tablet';
+  return 'desktop';
+}
+
+function createArticleContext(document, ctaLocation) {
+  return {
+    article_id: document.body.dataset.articleId,
+    language: document.documentElement.lang,
+    cta_location: ctaLocation,
+    device_category: getDeviceCategory(document.defaultView.innerWidth)
+  };
+}
+
+function emitArticleEvent(document, eventName, ctaLocation, fields = {}) {
+  const window = document.defaultView;
+  const payload = {
+    ...createArticleContext(document, ctaLocation),
+    ...fields
+  };
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', eventName, payload);
+  } else {
+    if (!Array.isArray(window.dataLayer)) window.dataLayer = [];
+    window.dataLayer.push({ event: eventName, ...payload });
+  }
+}
+
+function initializeArticleAnalytics(document) {
+  if (!document.body?.dataset?.articleId || !document.defaultView || initializedAnalytics.has(document)) return;
+  initializedAnalytics.add(document);
+
+  emitArticleEvent(document, 'article_view', 'article');
+
+  const reachedDepths = new Set();
+  document.defaultView.addEventListener?.('scroll', () => {
+    const documentHeight = document.documentElement?.scrollHeight || document.body?.scrollHeight || 0;
+    if (!documentHeight) return;
+    const percent = ((document.defaultView.scrollY + document.defaultView.innerHeight) / documentHeight) * 100;
+    for (const threshold of [50, 90]) {
+      if (percent >= threshold && !reachedDepths.has(threshold)) {
+        reachedDepths.add(threshold);
+        emitArticleEvent(document, 'scroll_depth', `${threshold}_percent`);
+      }
+    }
+  }, { passive: true });
+
+  document.addEventListener?.('click', (event) => {
+    const target = event.target?.closest?.('[data-article-event]');
+    const marker = target?.getAttribute?.('data-article-event');
+    const eventName = ARTICLE_CLICK_EVENTS.get(marker);
+    if (!eventName) return;
+    const fields = eventName === 'pack_select'
+      ? { pack_name: target.getAttribute?.('data-pack-label') }
+      : {};
+    emitArticleEvent(
+      document,
+      eventName,
+      target.getAttribute?.('data-cta-location') || marker,
+      fields
+    );
+  });
+}
+
 export function activateMapTarget(id, document, userInitiated = false) {
   const target = document?.getElementById?.(id);
   if (!target) return false;
@@ -231,6 +307,8 @@ export function activateMapTarget(id, document, userInitiated = false) {
 
 export function initializeArticleInteractions(document) {
   if (!document?.querySelectorAll) return;
+
+  initializeArticleAnalytics(document);
 
   const packsRoot = document.getElementById?.('travel-packs');
   if (packsRoot) {

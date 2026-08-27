@@ -176,15 +176,22 @@
   document.querySelectorAll('[data-cta="directions"]').forEach((directionsLink) => {
     directionsLink.addEventListener('click', () => {
       const ctaLocation = directionsLink.dataset.ctaLocation || 'unknown';
+      const payload = { cta_location: ctaLocation };
+      const articleId = document.body.dataset.articleId;
+      if (articleId) {
+        payload.article_id = articleId;
+        payload.language = document.documentElement.lang;
+        payload.device_category = window.innerWidth < 768
+          ? 'mobile'
+          : window.innerWidth < 1024 ? 'tablet' : 'desktop';
+      }
       if (typeof window.gtag === 'function') {
-        window.gtag('event', 'directions_click', {
-          cta_location: ctaLocation
-        });
+        window.gtag('event', 'directions_click', payload);
       } else {
         if (!Array.isArray(window.dataLayer)) window.dataLayer = [];
         window.dataLayer.push({
           event: 'directions_click',
-          cta_location: ctaLocation
+          ...payload
         });
       }
     });
