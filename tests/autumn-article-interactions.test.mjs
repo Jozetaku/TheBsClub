@@ -394,24 +394,28 @@ test('delegates article CTA event names with context and leaves directions to th
     })));
 });
 
-test('pack_select adds the approved pack name without commercial or personal fields', () => {
-  const document = createAnalyticsDocument();
-  const { root } = createPackRoot();
-  root.ownerDocument = document;
-  document.append(root);
-  article.initializeArticleInteractions(document);
-  document.defaultView.dataLayer.length = 0;
+test('pack_select uses stable trip-type enums for every selector in each locale', () => {
+  for (const language of ['en', 'de']) {
+    const document = createAnalyticsDocument({ language });
+    const { root } = createPackRoot();
+    root.ownerDocument = document;
+    document.append(root);
+    article.initializeArticleInteractions(document);
+    document.defaultView.dataLayer.length = 0;
 
-  root.querySelector('[data-pack-selector="city"]').click();
+    for (const tripType of ['city', 'viewpoint', 'travel']) {
+      root.querySelector(`[data-pack-selector="${tripType}"]`).click();
+    }
 
-  assert.deepEqual(normalize(document.defaultView.dataLayer), [{
-    event: 'pack_select',
-    article_id: 'autumn-interlaken',
-    language: 'en',
-    cta_location: 'travel-packs',
-    device_category: 'mobile',
-    pack_name: 'City stroll pack'
-  }]);
+    assert.deepEqual(normalize(document.defaultView.dataLayer), ['city', 'viewpoint', 'travel'].map((packName) => ({
+      event: 'pack_select',
+      article_id: 'autumn-interlaken',
+      language,
+      cta_location: 'travel-packs',
+      device_category: 'mobile',
+      pack_name: packName
+    })));
+  }
 });
 
 test('both locale pages mark language, place and timetable article events', () => {

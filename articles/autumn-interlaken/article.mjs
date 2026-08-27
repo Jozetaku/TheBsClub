@@ -263,7 +263,7 @@ function initializeArticleAnalytics(document) {
     const eventName = ARTICLE_CLICK_EVENTS.get(marker);
     if (!eventName) return;
     const fields = eventName === 'pack_select'
-      ? { pack_name: target.getAttribute?.('data-pack-label') }
+      ? { pack_name: target.getAttribute?.('data-pack-selector') }
       : {};
     emitArticleEvent(
       document,
