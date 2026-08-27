@@ -14,6 +14,8 @@ const locales = {
     description: 'Find six beautiful places to visit in Interlaken this autumn, from Höhematte to Lake Brienz, plus three easy travel packs and directions to The B.',
     headline: 'Interlaken in Autumn: A Golden Day Between Two Lakes',
     breadcrumb: 'Autumn Guide',
+    editorialLabels: ['By', 'Published', 'Updated'],
+    editorialDate: '27 August 2026',
     places: [
       ['place-hohematte', 'Höhematte'],
       ['place-japanese-garden', 'Japanese Garden and former monastery'],
@@ -30,6 +32,8 @@ const locales = {
     description: 'Entdecke sechs schöne Orte in Interlaken im Herbst – von der Höhematte bis zum Brienzersee – plus drei Herbst-Packs und den Weg zu The B.',
     headline: 'Interlaken im Herbst: Ein goldener Tag zwischen zwei Seen',
     breadcrumb: 'Herbst-Guide',
+    editorialLabels: ['Von', 'Veröffentlicht', 'Aktualisiert'],
+    editorialDate: '27. August 2026',
     places: [
       ['place-hohematte', 'Höhematte'],
       ['place-japanese-garden', 'Japanischer Garten und ehemaliges Kloster'],
@@ -95,6 +99,33 @@ test('homepage publishes the stable business identity used by article publishers
 
   assert.ok(business, 'missing homepage CafeOrCoffeeShop schema');
   assert.equal(business['@id'], businessId);
+});
+
+test('visible localized bylines and dates match the Article schema', () => {
+  const business = jsonLd(read('../index.html')).find(
+    (schema) => schema['@type'] === 'CafeOrCoffeeShop'
+  );
+
+  for (const [locale, config] of Object.entries(locales)) {
+    const html = read(config.path);
+    const metadata = html.match(/<p class="article-meta">([\s\S]*?)<\/p>/)?.[1] ?? '';
+    const article = jsonLd(html)[0]['@graph'].find((node) => node['@type'] === 'Article');
+    const visibleAuthor = metadata.match(/<strong class="article-author">([^<]+)<\/strong>/)?.[1];
+    const times = [...metadata.matchAll(/<time datetime="([^"]+)">([^<]+)<\/time>/g)].map((match) => ({
+      datetime: match[1],
+      text: match[2]
+    }));
+
+    assert.equal(visibleAuthor, business.name, `${locale} visible author must match the referenced business`);
+    assert.equal(article.author['@id'], business['@id']);
+    for (const label of config.editorialLabels) {
+      assert.match(metadata, new RegExp(`${label}(?:\\s|&nbsp;)+`));
+    }
+    assert.deepEqual(times, [
+      { datetime: article.datePublished, text: config.editorialDate },
+      { datetime: article.dateModified, text: config.editorialDate }
+    ]);
+  }
 });
 
 test('localized JSON-LD graphs contain complete Article, breadcrumb and place discovery data', () => {
