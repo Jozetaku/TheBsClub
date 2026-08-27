@@ -1,4 +1,4 @@
-import { PACK_STATUSES, TRIP_TYPES } from './travel-packs.mjs';
+import { PACK_STATUSES, TRIP_TYPES, travelPacks } from './travel-packs.mjs';
 
 const MENU_URL = '/#favourites';
 const APPROVED_PRODUCTS = new Map([
@@ -116,4 +116,157 @@ export function getPackViewModels(records, locale) {
     if (model && !normalizedByType.has(model.tripType)) normalizedByType.set(model.tripType, model);
   }
   return TRIP_TYPES.map((tripType) => normalizedByType.get(tripType) ?? createFallback(tripType, locale));
+}
+
+function addClass(element, className) {
+  element.classList?.add(className);
+}
+
+function createPackEnhancement(document, model) {
+  const content = document.createElement('div');
+  content.setAttribute('data-pack-enhancement-content', '');
+
+  const status = document.createElement('p');
+  addClass(status, 'pack-status');
+  status.setAttribute('data-status', model.status);
+  status.textContent = model.status;
+  content.append(status);
+
+  const names = document.createElement('p');
+  addClass(names, 'pack-items');
+  names.textContent = model.productItems.map((item) => item.name).join(' · ');
+  content.append(names);
+
+  const carryNote = document.createElement('p');
+  addClass(carryNote, 'pack-carry-note');
+  carryNote.textContent = model.carryNote;
+  content.append(carryNote);
+
+  const selector = document.createElement('button');
+  selector.setAttribute('type', 'button');
+  selector.setAttribute('data-pack-selector', model.tripType);
+  selector.setAttribute('data-pack-label', model.title);
+  selector.setAttribute('aria-pressed', 'false');
+  addClass(selector, 'pack-status');
+  selector.textContent = model.title;
+  content.append(selector);
+
+  if (model.notice) {
+    const notice = document.createElement('p');
+    addClass(notice, 'pack-notice');
+    notice.textContent = model.notice;
+    content.append(notice);
+  }
+
+  return content;
+}
+
+export function renderTravelPacks(root, records, locale) {
+  if (!root?.querySelectorAll) return false;
+
+  const document = root.ownerDocument ?? root;
+  if (!document.createElement) return false;
+
+  const models = getPackViewModels(records, locale);
+  if (!models.every((model) => model.status === 'active' || model.status === 'limited')) return false;
+
+  const cards = [...root.querySelectorAll('[data-pack-card]')];
+  const prepared = models.map((model) => {
+    const card = cards.find((candidate) => candidate.getAttribute('data-trip-type') === model.tripType);
+    const slot = card?.querySelector?.('[data-pack-enhancement]');
+    return card && slot ? { card, slot, content: createPackEnhancement(document, model) } : null;
+  });
+  if (prepared.some((entry) => entry === null)) return false;
+
+  for (const { card, slot, content } of prepared) {
+    slot.replaceChildren(content);
+    card.setAttribute('data-enhanced', 'true');
+  }
+  return true;
+}
+
+function prefersReducedMotion(document) {
+  return document.defaultView?.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+}
+
+function findTravelPacksRoot(element) {
+  let current = element?.parentNode;
+  while (current) {
+    if (current.getAttribute?.('id') === 'travel-packs') return current;
+    current = current.parentNode;
+  }
+  return null;
+}
+
+export function activateMapTarget(id, document, userInitiated = false) {
+  const target = document?.getElementById?.(id);
+  if (!target) return false;
+
+  const targetPlace = target.getAttribute?.('data-place');
+  const hotspots = [...document.querySelectorAll?.('.map-hotspot') ?? []];
+  const targets = [...document.querySelectorAll?.('[data-place]') ?? []]
+    .filter((element) => element.hasAttribute?.('id'));
+
+  for (const hotspot of hotspots) {
+    hotspot.classList?.remove('is-active');
+    hotspot.removeAttribute?.('aria-current');
+  }
+  for (const section of targets) section.classList?.remove('is-active');
+
+  const marker = hotspots.find((hotspot) => hotspot.getAttribute?.('data-place') === targetPlace);
+  marker?.classList?.add('is-active');
+  marker?.setAttribute?.('aria-current', 'location');
+  target.classList?.add('is-active');
+
+  if (userInitiated) {
+    target.setAttribute?.('tabindex', '-1');
+    target.focus?.({ preventScroll: true });
+    target.scrollIntoView?.({
+      behavior: prefersReducedMotion(document) ? 'auto' : 'smooth',
+      block: 'start'
+    });
+  }
+  return true;
+}
+
+export function initializeArticleInteractions(document) {
+  if (!document?.querySelectorAll) return;
+
+  const packsRoot = document.getElementById?.('travel-packs');
+  if (packsRoot) {
+    try {
+      renderTravelPacks(packsRoot, travelPacks, document.documentElement?.lang);
+    } catch {
+      // Keep the authored fallback cards intact if enhancement cannot initialize.
+    }
+  }
+
+  for (const hotspot of document.querySelectorAll('.map-hotspot')) {
+    hotspot.addEventListener?.('click', () => {
+      const id = hotspot.getAttribute?.('href')?.slice(1);
+      if (id) activateMapTarget(id, document, true);
+    });
+  }
+
+  const selectors = [...document.querySelectorAll('[data-pack-selector]')];
+  if (!selectors.length) return;
+  for (const selector of selectors) {
+    const selectPack = () => {
+      const tripType = selector.getAttribute?.('data-pack-selector');
+      if (!TRIP_TYPES.includes(tripType)) return;
+      const packRoot = findTravelPacksRoot(selector);
+      packRoot?.setAttribute?.('data-selected-pack', tripType);
+      for (const button of selectors) {
+        const selected = button === selector;
+        button.setAttribute?.('aria-pressed', String(selected));
+        const label = button.getAttribute?.('data-pack-label') ?? button.textContent;
+        button.textContent = selected ? `${label} ✓` : label;
+      }
+    };
+    selector.addEventListener?.('click', selectPack);
+  }
+}
+
+if (typeof document !== 'undefined') {
+  initializeArticleInteractions(document);
 }
