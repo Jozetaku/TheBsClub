@@ -207,7 +207,8 @@ test('English autumn guide is a complete semantic article', () => {
   assert.equal(occurrences(faq, /<h3\b/g), 6);
   assert.match(faq, /<h3>Is Harder Kulm open in autumn\?<\/h3>/);
   assert.match(faq, /<h3>How do I reach The B from central Interlaken\?<\/h3>/);
-  assert.match(faq, /published 2026 season[^<]*29 November/i);
+  assert.match(faq, /seasonal fact box/i);
+  assert.doesNotMatch(faq, /29 November/i);
   assert.match(faq, /Jungfraustrasse 46/);
   assert.equal(occurrences(en, /\bfall\b/gi), 1);
 });
@@ -368,7 +369,8 @@ test('German autumn guide mirrors the approved bilingual content contract', () =
   assert.equal(occurrences(faq, /<h3\b/g), 6);
   assert.match(faq, /<h3>Ist der Harder Kulm im Herbst geöffnet\?<\/h3>/);
   assert.match(faq, /<h3>Wie erreiche ich The B vom Zentrum Interlakens aus\?<\/h3>/);
-  assert.match(faq, /publizierte Saison 2026[^<]*29\. November/i);
+  assert.match(faq, /Saison-Faktenbox/i);
+  assert.doesNotMatch(faq, /29\. November/i);
   assert.match(faq, /Jungfraustrasse 46/);
 
   assert.deepEqual(attributeValues(de, 'data-place'), attributeValues(en, 'data-place'));
@@ -380,11 +382,10 @@ test('German autumn guide mirrors the approved bilingual content contract', () =
   assert.doesNotMatch(en, /ortsrundgang-in-interlaken-what-can-i-do-in-1-hour/);
 
   for (const url of [
-    'https://www.interlaken.ch/en',
+    'https://www.interlaken.swiss/en/experiences/poi/japanese-garden-interlaken',
+    'https://www.interlaken.swiss/en/experiences/poi/unterseen-old-town',
     'https://www.google.com/maps/search/?api=1&amp;query=H%C3%B6hematte+Interlaken',
-    'https://www.google.com/maps/search/?api=1&amp;query=Japanese+Garden+Interlaken',
     'https://www.google.com/maps/search/?api=1&amp;query=Aare+promenade+Interlaken',
-    'https://www.google.com/maps/search/?api=1&amp;query=Unterseen+old+town',
     'https://www.jungfrau.ch/en-gb/harder-kulm',
     'https://www.jungfrau.ch/en-gb/live/operating-info/',
     'https://www.bls.ch/en/freizeit-und-ferien/ausfluege/schifffahrt-brienzersee',
@@ -397,6 +398,24 @@ test('German autumn guide mirrors the approved bilingual content contract', () =
   assert.match(de, /passende wiederverwendbare Thermosflasche mitbringen/i);
   assert.match(de, /zeitnah konsumieren oder ausreichend k[uü]hl halten/i);
   assert.doesNotMatch(de, /ß/);
+});
+
+test('Japanese Garden and Unterseen use destination-specific first-party fact links in both locales', () => {
+  const expected = {
+    'place-japanese-garden': 'https://www.interlaken.swiss/en/experiences/poi/japanese-garden-interlaken',
+    'place-unterseen': 'https://www.interlaken.swiss/en/experiences/poi/unterseen-old-town'
+  };
+
+  for (const locale of Object.keys(articlePaths)) {
+    const html = readArticle(locale);
+    const sources = html.match(/<section class="article-sources"[\s\S]*?<\/section>/)?.[0] ?? '';
+    for (const [id, url] of Object.entries(expected)) {
+      const destination = html.match(new RegExp(`<section[^>]*id="${id}"[\\s\\S]*?<\\/section>`))?.[0] ?? '';
+      assert.match(destination, new RegExp(`href="${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+      assert.match(sources, new RegExp(`href="${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+    }
+    assert.doesNotMatch(html, /query=(?:Japanese\+Garden\+Interlaken|Unterseen\+old\+town)/);
+  }
 });
 
 test('localized article menu toggles expose matching accessible open and close labels', () => {

@@ -512,7 +512,7 @@ test('repeated article event surfaces provide matching specific CTA locations in
     'travel-packs': ['hero', 'mobile'],
     'outbound-place': [
       'destination', 'destination', 'destination', 'destination',
-      'sources', 'sources', 'sources'
+      'sources', 'sources', 'sources', 'sources'
     ],
     menu: [
       'destination', 'destination', 'destination', 'destination', 'destination', 'destination',
