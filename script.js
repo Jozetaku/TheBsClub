@@ -9,7 +9,9 @@
     primaryNav?.classList.toggle('is-open', open);
     document.body.classList.toggle('nav-open', open);
     const label = menuToggle?.querySelector('.sr-only');
-    if (label) label.textContent = open ? 'Close menu' : 'Open menu';
+    const openLabel = menuToggle?.dataset.menuOpenLabel || 'Open menu';
+    const closeLabel = menuToggle?.dataset.menuCloseLabel || 'Close menu';
+    if (label) label.textContent = open ? closeLabel : openLabel;
   };
 
   menuToggle?.addEventListener('click', () => {

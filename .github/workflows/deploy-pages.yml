@@ -29,6 +29,9 @@ jobs:
         with:
           enablement: true
 
+      - name: Run tests
+        run: node --test tests/*.test.mjs
+
       - name: Prepare site
         run: |
           mkdir _site

@@ -1,19 +1,6 @@
-import { PACK_STATUSES, TRIP_TYPES, travelPacks } from './travel-packs.mjs';
+import { APPROVED_PRODUCTS, PACK_STATUSES, TRIP_TYPES, travelPacks } from './travel-packs.mjs';
 
 const MENU_URL = '/#favourites';
-const APPROVED_PRODUCTS = new Map([
-  ['Brown Sugar Milk Tea', { type: 'drink', packagingType: 'sealed-cold-cup' }],
-  ['Yummy Strawberry', { type: 'drink', packagingType: 'sealed-cold-cup' }],
-  ['Iced Matcha Latte', { type: 'drink', packagingType: 'sealed-cold-cup' }],
-  ['Mango Tea', { type: 'drink', packagingType: 'sealed-cold-cup' }],
-  ['Spicy Basil Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
-  ['Spicy Basil Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
-  ['Green Curry Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
-  ['Green Curry Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
-  ['Red Curry Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
-  ['Red Curry Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
-  ['Crispy Chicken Katsu Curry', { type: 'meal', packagingType: 'takeaway-bowl' }]
-]);
 const PACKAGING_TYPES = new Set(['sealed-cold-cup', 'customer-flask', 'takeaway-bowl']);
 const ITEM_TYPES = new Set(['drink', 'meal']);
 const ITEM_ROLES = new Set(['featured', 'optional']);
@@ -76,10 +63,12 @@ function isCalendarDate(value) {
 }
 
 function isValidRecord(record) {
+  const productItemsValid = Array.isArray(record?.productItems) && record.productItems.every(isProductItem);
+  const availableProductItemsValid = record?.status === 'unavailable' || record?.productItems?.length > 0;
   return record && typeof record === 'object' && typeof record.packId === 'string' &&
     record.season === 'autumn' && TRIP_TYPES.includes(record.tripType) &&
     PACK_STATUSES.includes(record.status) && isCalendarDate(record.updatedAt) && hasCopy(record, 'en') &&
-    hasCopy(record, 'de') && Array.isArray(record.productItems) && record.productItems.every(isProductItem) &&
+    hasCopy(record, 'de') && productItemsValid && availableProductItemsValid &&
     Array.isArray(record.dietaryTags) && record.dietaryTags.length === 0 && typeof record.image === 'string' &&
     record.menuUrl === MENU_URL && PACKAGING_TYPES.has(record.packagingType);
 }
@@ -186,21 +175,23 @@ export function renderTravelPacks(root, records, locale) {
   if (!document.createElement) return false;
 
   const models = getPackViewModels(records, locale);
-  if (!models.every((model) => model.status === 'active' || model.status === 'limited')) return false;
-
   const cards = [...root.querySelectorAll('[data-pack-card]')];
-  const prepared = models.map((model) => {
+  let enhancedCount = 0;
+
+  for (const model of models) {
     const card = cards.find((candidate) => candidate.getAttribute('data-trip-type') === model.tripType);
     const slot = card?.querySelector?.('[data-pack-enhancement]');
-    return card && slot ? { card, slot, content: createPackEnhancement(document, model) } : null;
-  });
-  if (prepared.some((entry) => entry === null)) return false;
+    if (!card || !slot) continue;
 
-  for (const { card, slot, content } of prepared) {
-    slot.replaceChildren(content);
+    slot.replaceChildren();
+    card.removeAttribute?.('data-enhanced');
+    if (model.status !== 'active' && model.status !== 'limited') continue;
+
+    slot.replaceChildren(createPackEnhancement(document, model));
     card.setAttribute('data-enhanced', 'true');
+    enhancedCount += 1;
   }
-  return true;
+  return enhancedCount > 0;
 }
 
 function prefersReducedMotion(document) {

@@ -279,6 +279,37 @@ test('leaves fallback categories and menu calls to action intact for unavailable
   }
 });
 
+test('enhances valid pack cards independently when another record is unavailable', () => {
+  const { root, cards } = createPackRoot();
+  const mixed = travelPacks.map((pack) => (
+    pack.tripType === 'viewpoint' ? { ...pack, status: 'unavailable', productItems: [] } : pack
+  ));
+
+  assert.equal(article.renderTravelPacks(root, mixed, 'en'), true);
+
+  assert.match(cards.city.slot.textContent, /Yummy Strawberry/);
+  assert.equal(cards.city.card.getAttribute('data-enhanced'), 'true');
+  assert.equal(cards.viewpoint.slot.textContent, '');
+  assert.equal(cards.viewpoint.card.hasAttribute('data-enhanced'), false);
+  assert.match(cards.viewpoint.card.textContent, /viewpoint fallback category/);
+  assert.match(cards.travel.slot.textContent, /Mango Tea/);
+  assert.equal(cards.travel.card.getAttribute('data-enhanced'), 'true');
+});
+
+test('falls back only the active card whose product list is empty', () => {
+  const { root, cards } = createPackRoot();
+  const emptyActive = travelPacks.map((pack) => (
+    pack.tripType === 'city' ? { ...pack, productItems: [] } : pack
+  ));
+
+  assert.equal(article.renderTravelPacks(root, emptyActive, 'de'), true);
+
+  assert.equal(cards.city.slot.textContent, '');
+  assert.equal(cards.city.card.hasAttribute('data-enhanced'), false);
+  assert.equal(cards.viewpoint.card.getAttribute('data-enhanced'), 'true');
+  assert.equal(cards.travel.card.getAttribute('data-enhanced'), 'true');
+});
+
 test('a hotspot click marks only its target and marker current without replacing native navigation', () => {
   const document = new FakeDocument();
   const hotspotA = element('a', { class: 'map-hotspot', href: '#place-aare', 'data-place': 'aare' });

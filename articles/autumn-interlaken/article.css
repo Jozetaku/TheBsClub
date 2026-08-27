@@ -662,7 +662,7 @@ body[data-article-id="autumn-interlaken"] main a {
   }
 
   .destination:nth-child(even) .destination-grid {
-    grid-template-columns: minmax(0, 1fr) 62px;
+    grid-template-columns: minmax(0, 1fr) 96px;
   }
 
   .destination-copy h2 {

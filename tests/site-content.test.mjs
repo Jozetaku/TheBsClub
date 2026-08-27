@@ -48,15 +48,26 @@ test('documents autumn guide pack, transport, and date maintenance', () => {
   assert.match(readme, /\/de\/artikel\/herbst-interlaken/);
 });
 
-test('records the unavailable official place source without substituting a secondary source', () => {
+test('records the healthy first-party place-source maintenance policy', () => {
   assert.match(readme, /27 August 2026/);
-  assert.match(readme, /Interlaken Tourism.*redirected.*HTTP 500/i);
-  assert.match(readme, /retained as the official source/i);
+  assert.doesNotMatch(readme, /retained as the official source/i);
+  assert.match(readme, /reader-facing destination links/i);
+  assert.match(readme, /healthy first-party/i);
 });
 
 test('publishes localized autumn guides, article assets, and sitemap in the Pages artifact', () => {
   assert.match(pagesWorkflow, /cp\s+-R\s+en\s+de\s+articles\s+_site\//);
   assert.match(pagesWorkflow, /cp\s+sitemap\.xml\s+_site\//);
+});
+
+test('runs the complete Node test suite before preparing or uploading the Pages artifact', () => {
+  const testStep = pagesWorkflow.indexOf('node --test tests/*.test.mjs');
+  const prepareStep = pagesWorkflow.indexOf('name: Prepare site');
+  const uploadStep = pagesWorkflow.indexOf('actions/upload-pages-artifact@v4');
+
+  assert.ok(testStep >= 0, 'Pages workflow must run the Node suite');
+  assert.ok(testStep < prepareStep, 'tests must finish before the site artifact is prepared');
+  assert.ok(testStep < uploadStep, 'tests must finish before the Pages artifact is uploaded');
 });
 
 test('puts directions first and retains menu and Uber Eats paths', () => {

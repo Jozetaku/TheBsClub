@@ -1,5 +1,18 @@
 export const TRIP_TYPES = ['city', 'viewpoint', 'travel'];
 export const PACK_STATUSES = ['active', 'limited', 'unavailable'];
+export const APPROVED_PRODUCTS = new Map([
+  ['Brown Sugar Milk Tea', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Yummy Strawberry', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Iced Matcha Latte', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Mango Tea', { type: 'drink', packagingType: 'sealed-cold-cup' }],
+  ['Spicy Basil Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Spicy Basil Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Green Curry Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Green Curry Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Red Curry Chicken', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Red Curry Tofu', { type: 'meal', packagingType: 'takeaway-bowl' }],
+  ['Crispy Chicken Katsu Curry', { type: 'meal', packagingType: 'takeaway-bowl' }]
+]);
 
 const drinks = (names, role) => names.map((name) => ({
   name,

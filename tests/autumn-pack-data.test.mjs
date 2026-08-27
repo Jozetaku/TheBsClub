@@ -1,14 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { travelPacks } from '../articles/autumn-interlaken/travel-packs.mjs';
+import { APPROVED_PRODUCTS, travelPacks } from '../articles/autumn-interlaken/travel-packs.mjs';
 import { getPackViewModels, normalizePack } from '../articles/autumn-interlaken/article.mjs';
-
-const allowedProducts = new Set([
-  'Brown Sugar Milk Tea', 'Yummy Strawberry', 'Iced Matcha Latte', 'Mango Tea',
-  'Spicy Basil Chicken', 'Spicy Basil Tofu', 'Green Curry Chicken',
-  'Green Curry Tofu', 'Red Curry Chicken', 'Red Curry Tofu',
-  'Crispy Chicken Katsu Curry'
-]);
 
 test('defines exactly one record for every approved trip type', () => {
   assert.deepEqual(travelPacks.map(({ tripType }) => tripType).sort(), ['city', 'travel', 'viewpoint']);
@@ -16,8 +9,16 @@ test('defines exactly one record for every approved trip type', () => {
 
 test('keeps every named product inside the approved current-menu allow-list', () => {
   for (const pack of travelPacks) {
-    for (const item of pack.productItems) assert.ok(allowedProducts.has(item.name), item.name);
+    for (const item of pack.productItems) assert.ok(APPROVED_PRODUCTS.has(item.name), item.name);
   }
+});
+
+test('keeps the approved product catalog in the documented travel-pack maintenance module', () => {
+  assert.equal(APPROVED_PRODUCTS.size, 11);
+  assert.deepEqual(APPROVED_PRODUCTS.get('Mango Tea'), {
+    type: 'drink',
+    packagingType: 'sealed-cold-cup'
+  });
 });
 
 test('provides EN and DE copy, a valid date, status, image and packaging type', () => {
@@ -47,6 +48,12 @@ test('falls back safely for missing, invalid, limited and unavailable data', () 
 
   const unavailable = normalizePack({ ...travelPacks[0], status: 'unavailable' }, 'en');
   assert.deepEqual(unavailable.productItems, []);
+});
+
+test('rejects active or limited pack records with no valid product items', () => {
+  const base = travelPacks[0];
+  assert.equal(normalizePack({ ...base, status: 'active', productItems: [] }, 'en'), null);
+  assert.equal(normalizePack({ ...base, status: 'limited', productItems: [] }, 'de'), null);
 });
 
 test('rejects unapproved product data, dietary claims, hostile menu URLs and impossible dates', () => {

@@ -134,6 +134,11 @@ test('article CSS fulfils the responsive editorial and accessibility contract', 
   assert.match(css, /\.map-section\s*{[^}]*position:\s*sticky/s);
   assert.match(css, /\.destination:nth-child\(even\)/);
   assert.match(css, /\.destination-number\s*{[^}]*color:\s*var\(--gold\)/s);
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*1200px\)[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+96px/s,
+    'desktop even-number columns must contain both decorative digits without edge clipping'
+  );
   assert.match(css, /\.pack-status\[data-status="active"\]/);
   assert.match(css, /\.pack-status\[data-status="limited"\]/);
   assert.match(css, /\.pack-status\[data-status="unavailable"\]/);
@@ -200,6 +205,10 @@ test('English autumn guide is a complete semantic article', () => {
 
   const faq = en.match(/<section[^>]*id="faq"[\s\S]*?<\/section>/)?.[0] ?? '';
   assert.equal(occurrences(faq, /<h3\b/g), 6);
+  assert.match(faq, /<h3>Is Harder Kulm open in autumn\?<\/h3>/);
+  assert.match(faq, /<h3>How do I reach The B from central Interlaken\?<\/h3>/);
+  assert.match(faq, /published 2026 season[^<]*29 November/i);
+  assert.match(faq, /Jungfraustrasse 46/);
   assert.equal(occurrences(en, /\bfall\b/gi), 1);
 });
 
@@ -357,14 +366,25 @@ test('German autumn guide mirrors the approved bilingual content contract', () =
   assert.equal(occurrences(de, /data-pack-card/g), 3);
   const faq = de.match(/<section[^>]*id="faq"[\s\S]*?<\/section>/)?.[0] ?? '';
   assert.equal(occurrences(faq, /<h3\b/g), 6);
+  assert.match(faq, /<h3>Ist der Harder Kulm im Herbst geöffnet\?<\/h3>/);
+  assert.match(faq, /<h3>Wie erreiche ich The B vom Zentrum Interlakens aus\?<\/h3>/);
+  assert.match(faq, /publizierte Saison 2026[^<]*29\. November/i);
+  assert.match(faq, /Jungfraustrasse 46/);
 
   assert.deepEqual(attributeValues(de, 'data-place'), attributeValues(en, 'data-place'));
   assert.deepEqual(attributeValues(de, 'data-pack-card'), attributeValues(en, 'data-pack-card'));
   assert.deepEqual(attributeValues(de, 'data-article-event'), attributeValues(en, 'data-article-event'));
   assert.deepEqual(sourceUrls(de), sourceUrls(en));
 
+  assert.doesNotMatch(de, /ortsrundgang-in-interlaken-what-can-i-do-in-1-hour/);
+  assert.doesNotMatch(en, /ortsrundgang-in-interlaken-what-can-i-do-in-1-hour/);
+
   for (const url of [
-    'https://www.interlaken.ch/en/experiences/tour/ortsrundgang-in-interlaken-what-can-i-do-in-1-hour',
+    'https://www.interlaken.ch/en',
+    'https://www.google.com/maps/search/?api=1&amp;query=H%C3%B6hematte+Interlaken',
+    'https://www.google.com/maps/search/?api=1&amp;query=Japanese+Garden+Interlaken',
+    'https://www.google.com/maps/search/?api=1&amp;query=Aare+promenade+Interlaken',
+    'https://www.google.com/maps/search/?api=1&amp;query=Unterseen+old+town',
     'https://www.jungfrau.ch/en-gb/harder-kulm',
     'https://www.jungfrau.ch/en-gb/live/operating-info/',
     'https://www.bls.ch/en/freizeit-und-ferien/ausfluege/schifffahrt-brienzersee',
@@ -377,4 +397,15 @@ test('German autumn guide mirrors the approved bilingual content contract', () =
   assert.match(de, /passende wiederverwendbare Thermosflasche mitbringen/i);
   assert.match(de, /zeitnah konsumieren oder ausreichend k[uü]hl halten/i);
   assert.doesNotMatch(de, /ß/);
+});
+
+test('localized article menu toggles expose matching accessible open and close labels', () => {
+  const en = readArticle('en');
+  const de = readArticle('de');
+  const script = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
+
+  assert.match(en, /class="menu-toggle"[^>]*data-menu-open-label="Open menu"[^>]*data-menu-close-label="Close menu"/);
+  assert.match(de, /class="menu-toggle"[^>]*data-menu-open-label="Menü öffnen"[^>]*data-menu-close-label="Menü schliessen"/);
+  assert.match(script, /dataset\.menuOpenLabel/);
+  assert.match(script, /dataset\.menuCloseLabel/);
 });
