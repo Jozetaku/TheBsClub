@@ -169,6 +169,18 @@ test('article CSS fulfils the responsive editorial and accessibility contract', 
     /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-grid\s*{[^}]*grid-template-columns:\s*84px\s+minmax\(0,\s*1fr\);[^}]*}[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+84px/s,
     'desktop odd and even destinations must reserve equal number tracks'
   );
+  assert.match(
+    css,
+    /\.article-hero\s*{[^}]*padding:\s*clamp\(68px,\s*7vw,\s*104px\)\s+0\s+clamp\(74px,\s*7\.5vw,\s*112px\)/s,
+    'desktop hero spacing must preserve impact without consuming a full viewport'
+  );
+  assert.match(
+    css,
+    /\.article-section\s*{[^}]*padding:\s*clamp\(76px,\s*7vw,\s*104px\)\s+0/s,
+    'shared editorial sections must use the approved compact rhythm'
+  );
+  assert.match(css, /\.travel-packs \.section-heading\s*{[^}]*margin-bottom:\s*44px/s);
+  assert.match(css, /\.faq-list article\s*{[^}]*padding:\s*26px\s+0/s);
   assert.match(css, /\.pack-status\[data-status="active"\]/);
   assert.match(css, /\.pack-status\[data-status="limited"\]/);
   assert.match(css, /\.pack-status\[data-status="unavailable"\]/);

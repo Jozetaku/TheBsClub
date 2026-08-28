@@ -38,7 +38,7 @@ body[data-article-id="autumn-interlaken"] main a {
 .article-hero {
   position: relative;
   overflow: hidden;
-  padding: clamp(76px, 9vw, 136px) 0 clamp(82px, 10vw, 148px);
+  padding: clamp(68px, 7vw, 104px) 0 clamp(74px, 7.5vw, 112px);
   background: var(--cream);
   border-block: 1px solid var(--line);
 }
@@ -105,7 +105,7 @@ body[data-article-id="autumn-interlaken"] main a {
 }
 
 .article-section {
-  padding: clamp(86px, 8vw, 122px) 0;
+  padding: clamp(76px, 7vw, 104px) 0;
 }
 
 .editorial-narrow {
@@ -427,7 +427,7 @@ body[data-article-id="autumn-interlaken"] main a {
   justify-content: space-between;
   align-items: end;
   gap: 70px;
-  margin-bottom: 52px;
+  margin-bottom: 44px;
 }
 
 .travel-packs .section-heading > p {
@@ -532,7 +532,7 @@ body[data-article-id="autumn-interlaken"] main a {
 }
 
 .faq-list article {
-  padding: 31px 0;
+  padding: 26px 0;
 }
 
 .faq-list article + article {
