@@ -154,10 +154,20 @@ test('article CSS fulfils the responsive editorial and accessibility contract', 
   assert.match(css, /\.map-section\s*{[^}]*position:\s*sticky/s);
   assert.match(css, /\.destination:nth-child\(even\)/);
   assert.match(css, /\.destination-number\s*{[^}]*color:\s*var\(--gold\)/s);
+  assert.doesNotMatch(
+    css,
+    /min-height:\s*980px/,
+    'the old tall-monitor-only sticky threshold must be removed'
+  );
   assert.match(
     css,
-    /@media\s*\(min-width:\s*1200px\)[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+96px/s,
-    'desktop even-number columns must contain both decorative digits without edge clipping'
+    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.journey-layout\s*{[^}]*grid-template-columns:[^}]*}[\s\S]*?\.map-section\s*{[^}]*position:\s*sticky;[^}]*top:\s*clamp\(76px,\s*8vh,\s*94px\);[^}]*padding:\s*28px\s+0\s+24px;[^}]*}[\s\S]*?\.article-map\s*{[^}]*height:\s*clamp\(340px,\s*52vh,\s*500px\);[^}]*aspect-ratio:\s*auto/s,
+    'the two-column layout and viewport-sized sticky rail must share one safe media condition'
+  );
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-grid\s*{[^}]*grid-template-columns:\s*84px\s+minmax\(0,\s*1fr\);[^}]*}[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+84px/s,
+    'desktop odd and even destinations must reserve equal number tracks'
   );
   assert.match(css, /\.pack-status\[data-status="active"\]/);
   assert.match(css, /\.pack-status\[data-status="limited"\]/);
@@ -174,11 +184,6 @@ test('article CSS fulfils the responsive editorial and accessibility contract', 
   );
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css, /@media\s*\(min-width:\s*1200px\)/, 'article should define its 1440-safe layout');
-  assert.match(
-    css,
-    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*980px\)[\s\S]*?\.map-section\s*{[^}]*position:\s*sticky/s,
-    'sticky map context should only engage when the desktop viewport is tall enough'
-  );
   assert.match(css, /@media\s*\(max-width:\s*820px\)/, 'article should define its 768-safe layout');
   assert.match(css, /@media\s*\(max-width:\s*560px\)[\s\S]*?width:\s*calc\(100%\s*-\s*48px\)/);
   assert.match(css, /@media\s*\(max-width:\s*380px\)/, 'article should define its 360-safe layout');

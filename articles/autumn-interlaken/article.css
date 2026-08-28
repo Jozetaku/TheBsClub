@@ -633,7 +633,7 @@ body[data-article-id="autumn-interlaken"] main a {
   overflow-wrap: anywhere;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1200px) and (min-height: 700px) {
   .journey-layout {
     grid-template-columns: minmax(650px, 1.18fr) minmax(430px, 0.82fr);
     gap: clamp(42px, 4vw, 72px);
@@ -643,38 +643,47 @@ body[data-article-id="autumn-interlaken"] main a {
     width: 100%;
   }
 
+  .map-section {
+    position: sticky;
+    top: clamp(76px, 8vh, 94px);
+    align-self: start;
+    padding: 28px 0 24px;
+  }
+
   .map-section .section-heading {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .map-section .section-heading h2 {
+    font-size: clamp(42px, 4vw, 58px);
   }
 
   .map-section .section-heading > p {
     max-width: 590px;
   }
 
+  .article-map {
+    height: clamp(340px, 52vh, 500px);
+    aspect-ratio: auto;
+  }
+
   .destination.article-section {
-    padding-block: 104px;
+    padding-block: 86px;
   }
 
   .destination-grid {
-    grid-template-columns: 62px minmax(0, 1fr);
+    grid-template-columns: 84px minmax(0, 1fr);
     gap: 30px;
   }
 
   .destination:nth-child(even) .destination-grid {
-    grid-template-columns: minmax(0, 1fr) 96px;
+    grid-template-columns: minmax(0, 1fr) 84px;
   }
 
   .destination-copy h2 {
     font-size: clamp(34px, 3.15vw, 49px);
-  }
-}
-
-@media (min-width: 1200px) and (min-height: 980px) {
-  .map-section {
-    position: sticky;
-    top: 94px;
-    align-self: start;
   }
 }
 
