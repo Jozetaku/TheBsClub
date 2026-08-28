@@ -32,10 +32,5 @@ export const TESTIMONIALS = Object.freeze([
     author: 'Traveller',
     platform: 'Tripadvisor',
     quote: 'I stayed in Interlaken for four days and tried their teas every day—authentic taste and reasonably priced.'
-  },
-  {
-    author: 'Jennylynn B.',
-    platform: 'Google review',
-    quote: "The best bubble tea I've ever had. Very nice and friendly service. Highly recommend!"
   }
 ]);

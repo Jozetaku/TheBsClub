@@ -12,10 +12,21 @@ test('keeps Google Review as the only primary external action', () => {
 });
 
 test('publishes approved social proof without review manipulation', () => {
-  for (const author of ['Ankita S.', 'Traveller', 'Jennylynn B.']) {
+  for (const author of ['Ankita S.', 'Traveller']) {
     assert.match(html, new RegExp(author.replace('.', '\\.')));
   }
   assert.doesNotMatch(html, /discount|reward|free gift|five-star review|copy this review|review like/i);
+});
+
+test('uses the approved two-line hero and compact social shortcut order', () => {
+  assert.match(html, /<span class="headline-line">How was<\/span>\s*<em class="headline-line">your visit\?<\/em>/);
+  const shortcuts = [...html.matchAll(/class="social-shortcut" data-action="([^"]+)"/g)].map((match) => match[1]);
+  assert.deepEqual(shortcuts, ['instagram', 'facebook', 'tripadvisor', 'whatsapp']);
+});
+
+test('removes the decorative trust marker and third testimonial', () => {
+  assert.doesNotMatch(html, /trust-marker|Jennylynn B\./);
+  assert.equal((html.match(/class="testimonial-card/g) ?? []).length, 2);
 });
 
 test('renders metadata, structured data and every approved action', () => {

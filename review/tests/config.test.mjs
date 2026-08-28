@@ -23,11 +23,10 @@ test('uses confirmed business details', () => {
   });
 });
 
-test('contains only the three owner-approved testimonials', () => {
-  assert.equal(TESTIMONIALS.length, 3);
+test('contains only the two compact owner-approved testimonials', () => {
+  assert.equal(TESTIMONIALS.length, 2);
   assert.deepEqual(TESTIMONIALS.map(({ author, platform }) => [author, platform]), [
     ['Ankita S.', 'Google review'],
-    ['Traveller', 'Tripadvisor'],
-    ['Jennylynn B.', 'Google review']
+    ['Traveller', 'Tripadvisor']
   ]);
 });
