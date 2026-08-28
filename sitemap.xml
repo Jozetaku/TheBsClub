@@ -14,4 +14,8 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.thebsclub.ch/en/articles/autumn-interlaken" />
     <xhtml:link rel="alternate" hreflang="de" href="https://www.thebsclub.ch/de/artikel/herbst-interlaken" />
   </url>
+  <url>
+    <loc>https://www.thebsclub.ch/review/</loc>
+    <lastmod>2026-08-28</lastmod>
+  </url>
 </urlset>

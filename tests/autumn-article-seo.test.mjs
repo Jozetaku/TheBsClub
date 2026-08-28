@@ -175,7 +175,7 @@ test('localized JSON-LD graphs contain complete Article, breadcrumb and place di
   }
 });
 
-test('sitemap lists the homepage and both localized articles with reciprocal alternates', () => {
+test('sitemap lists the homepage, localized articles, and review hub with reciprocal alternates', () => {
   const sitemap = read('../sitemap.xml');
   assert.match(sitemap, /xmlns:xhtml="http:\/\/www\.w3\.org\/1999\/xhtml"/);
 
@@ -186,10 +186,12 @@ test('sitemap lists the homepage and both localized articles with reciprocal alt
   assert.deepEqual(entries.map((entry) => entry.loc), [
     'https://www.thebsclub.ch/',
     locales.en.url,
-    locales.de.url
+    locales.de.url,
+    'https://www.thebsclub.ch/review/'
   ]);
 
   assert.deepEqual(entries[0].alternates, []);
+  assert.deepEqual(entries[3].alternates, []);
   const expectedAlternates = [
     { rel: 'alternate', hreflang: 'en', href: locales.en.url },
     { rel: 'alternate', hreflang: 'de', href: locales.de.url }

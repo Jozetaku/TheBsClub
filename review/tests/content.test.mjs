@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const html = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
+const sitemap = readFileSync(new URL('../../sitemap.xml', import.meta.url), 'utf8');
 
 test('keeps Google Review as the only primary external action', () => {
   assert.equal((html.match(/class="review-primary"/g) ?? []).length, 1);
@@ -22,5 +23,18 @@ test('renders metadata, structured data and every approved action', () => {
   assert.match(html, /"@type":\s*"CafeOrCoffeeShop"/);
   for (const action of ['google_review', 'google_listing', 'tripadvisor', 'instagram', 'facebook', 'menu', 'uber_eats', 'order_contact', 'whatsapp', 'phone', 'email', 'directions', 'website']) {
     assert.match(html, new RegExp(`data-action="${action}"`));
+  }
+});
+
+test('publishes the canonical review route in the sitemap', () => {
+  assert.match(sitemap, /<loc>https:\/\/www\.thebsclub\.ch\/review\/<\/loc>/);
+});
+
+test('opens every HTTP action with safe external-link attributes', () => {
+  const anchors = [...html.matchAll(/<a\b[^>]*href="https?:\/\/[^\"]+"[^>]*>/g)].map((match) => match[0]);
+  assert.ok(anchors.length >= 10);
+  for (const anchor of anchors) {
+    assert.match(anchor, /target="_blank"/);
+    assert.match(anchor, /rel="noopener noreferrer"/);
   }
 });

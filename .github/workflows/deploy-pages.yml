@@ -29,6 +29,16 @@ jobs:
         with:
           enablement: true
 
+      - name: Install review hub dependencies
+        working-directory: review
+        run: npm ci
+
+      - name: Build and test review hub
+        working-directory: review
+        run: |
+          npm run build
+          npm test
+
       - name: Run tests
         run: node --test tests/*.test.mjs
 
@@ -40,6 +50,8 @@ jobs:
           cp -R en de articles _site/
           cp sitemap.xml _site/
           cp -R music _site/music
+          mkdir -p _site/review
+          cp -R review/dist/. _site/review/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

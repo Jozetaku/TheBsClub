@@ -12,6 +12,7 @@ Launch target: 15 August 2026.
 - `music/` — The B's Club Global Music Radio, adapted from `Jozetaku/zetaku-radio-v2-dark` and limited to HTTPS streams for secure playback
 - `cursor.js` — optional Bubble Tea cursor for fine-pointer desktop devices
 - `images/` — original supplied brand, product and menu assets
+- `review/` — review-first QR, social, order and contact hub; see `review/README.md`
 - `DESIGN-REVIEW-TH.md` — Thai-language expert review and redesign rationale
 
 ## Preview locally
@@ -58,6 +59,13 @@ The refresh is isolated on `feature/asian-cafe-refresh`. These commits keep the 
 - Address: `Jungfraustrasse 46, 3800 Interlaken`
 - Instagram: `@thebsclub25`
 
+## Review hub maintenance
+
+- Public route: `https://www.thebsclub.ch/review/`
+- Keep every platform destination and the permanent tracked QR URL in `review/src/links.mjs`.
+- Follow the build, test, and update instructions in `review/README.md`.
+- Do not print or distribute the QR until the deployed HTTPS page is verified and the code is scanned successfully on physical iOS and Android devices.
+
 ## Autumn guide maintenance
 
 - The English guide is `/en/articles/autumn-interlaken`; its German counterpart is `/de/artikel/herbst-interlaken`. The German version is selected from the article language switch, not by an automatic redirect.
@@ -72,4 +80,4 @@ The refresh is isolated on `feature/asian-cafe-refresh`. These commits keep the 
 - On 27 August 2026, the official Harder Kulm destination and live-operation pages, BLS Lake Brienz page, BLS timetable, BLS current operating situation, BLS annual navigation timetable PDF, and Google Maps Directions query all returned HTTP 200. The Maps query resolved after redirects to Google Maps.
 - Keep reader-facing destination links on healthy first-party Interlaken Tourism, Jungfrau Railways, BLS or Google Maps pages. Recheck every external link on publication day and replace a failing destination URL with the most relevant healthy first-party page; do not substitute secondary travel blogs.
 
-No build step or JavaScript framework is required.
+The root website remains framework-free. The isolated review hub uses its small Node build only to render verified links and generate its QR assets.
