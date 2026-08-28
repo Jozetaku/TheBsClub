@@ -376,9 +376,9 @@ test('English guide follows the required editorial and shared-shell order', () =
   }
 
   assert.match(en, /Jungfraustrasse 46, 3800 Interlaken/);
-  assert.match(en, /11:00–19:00/);
-  assert.match(en, /tel:\+41762262722/);
-  assert.match(en, /\+41 76 226 27 22/);
+  assert.match(en, /11:00–20:00/);
+  assert.match(en, /tel:\+41767742027/);
+  assert.match(en, /\+41 76 774 20 27/);
   assert.match(en, /href="\/de\/artikel\/herbst-interlaken\/"[^>]*>DE<\/a>/);
 });
 

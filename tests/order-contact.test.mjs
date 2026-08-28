@@ -21,7 +21,7 @@ test('collects items, service, date, time and payment acknowledgement', () => {
   assert.match(html, /name="service" value="dine-in" required/);
   assert.match(html, /name="service" value="pickup" required/);
   assert.match(html, /type="date" name="orderDate" required/);
-  assert.match(html, /type="time" name="orderTime" min="11:00" max="19:00" required/);
+  assert.match(html, /type="time" name="orderTime" min="11:00" max="20:00" required/);
   assert.match(html, /name="paymentAccepted" required/);
   assert.match(html, /debit or credit cards only/i);
   assert.match(html, /Payment must be completed before we prepare food/i);

@@ -12,20 +12,20 @@ test('uses the confirmed website, hours, phone and launch date everywhere', () =
   assert.match(html, /<meta property="og:url" content="https:\/\/www\.thebsclub\.ch\/">/);
   assert.match(html, /"url": "https:\/\/www\.thebsclub\.ch\/"/);
   assert.doesNotMatch(html, /https:\/\/thebsclub\.ch/);
-  assert.doesNotMatch(html, /11:00[–-]21:00|"closes": "21:00"/);
-  assert.match(html, /11:00[–-]19:00/);
-  assert.match(html, /"closes": "19:00"/);
+  assert.doesNotMatch(html, /11:00[–-](?:19:00|21:00)|"closes": "(?:19:00|21:00)"/);
+  assert.match(html, /11:00[–-]20:00/);
+  assert.match(html, /"closes": "20:00"/);
   assert.match(html, /From 15 August/);
   assert.match(html, /Available from 15 August 2026 · Speisekarte/);
-  assert.match(html, /tel:\+41762262722/);
-  assert.match(html, /\+41 76 226 27 22/);
+  assert.match(html, /tel:\+41767742027/);
+  assert.match(html, /\+41 76 774 20 27/);
 });
 
 test('keeps repository launch notes aligned with confirmed details', () => {
   assert.match(readme, /Asian Café/);
   assert.match(readme, /15 August 2026/);
-  assert.match(readme, /Every day: `11:00[–-]19:00`/);
-  assert.match(readme, /\+41 76 226 27 22/);
+  assert.match(readme, /Every day: `11:00[–-]20:00`/);
+  assert.match(readme, /\+41 76 774 20 27/);
 });
 
 test('positions the site as an Asian Café in Interlaken without the awkward hero preposition', () => {

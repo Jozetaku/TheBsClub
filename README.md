@@ -53,8 +53,8 @@ The refresh is isolated on `feature/asian-cafe-refresh`. These commits keep the 
 ## Main links
 
 - Official website: `https://www.thebsclub.ch/`
-- Opening hours: Every day: `11:00–19:00`
-- Phone: `+41 76 226 27 22`
+- Opening hours: Every day: `11:00–20:00`
+- Phone: `+41 76 774 20 27`
 - Address: `Jungfraustrasse 46, 3800 Interlaken`
 - Instagram: `@thebsclub25`
 

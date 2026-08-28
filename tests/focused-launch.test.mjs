@@ -93,6 +93,6 @@ test('keeps water and cola as secondary meal-completion items', () => {
 });
 
 test('keeps the confirmed daily hours visible', () => {
-  assert.match(html, /Daily 11:00–19:00/);
-  assert.match(html, /"closes": "19:00"/);
+  assert.match(html, /Daily 11:00–20:00/);
+  assert.match(html, /"closes": "20:00"/);
 });
