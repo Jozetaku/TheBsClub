@@ -2,7 +2,6 @@ import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import QRCode from 'qrcode';
 import { BUSINESS, REVIEW_LINKS, TESTIMONIALS } from '../src/links.mjs';
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
@@ -41,24 +40,6 @@ const copyOptionalAsset = async (filename) => {
   if (existsSync(source)) await copyFile(source, join(distRoot, filename));
 };
 
-const generateQrAssets = async () => {
-  const qrOptions = {
-    errorCorrectionLevel: 'H',
-    margin: 4,
-    width: 1200,
-    color: { dark: '#123F35', light: '#FFF8E9' }
-  };
-  const svg = await QRCode.toString(REVIEW_LINKS.permanentShareUrl, { ...qrOptions, type: 'svg' });
-  const encodedAttribute = REVIEW_LINKS.permanentShareUrl.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
-  const taggedSvg = svg.replace('<svg ', `<svg data-encoded-url="${encodedAttribute}" `);
-  await writeFile(join(distAssets, 'the-bs-club-review-qr.svg'), taggedSvg);
-  await QRCode.toFile(
-    join(distAssets, 'the-bs-club-review-qr.png'),
-    REVIEW_LINKS.permanentShareUrl,
-    qrOptions
-  );
-};
-
 export const build = async () => {
   await rm(distRoot, { recursive: true, force: true });
   await mkdir(distAssets, { recursive: true });
@@ -74,9 +55,12 @@ export const build = async () => {
 
   await writeFile(join(distRoot, 'index.html'), html);
   await copyFile(join(repositoryRoot, 'images', 'logo-official.png'), join(distAssets, 'logo-official.png'));
+  await copyFile(
+    join(sourceRoot, 'assets', 'the-b-review-qr.png'),
+    join(distAssets, 'the-bs-club-review-qr.png')
+  );
   await copyOptionalAsset('review.css');
   await copyOptionalAsset('review.mjs');
-  await generateQrAssets();
 };
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

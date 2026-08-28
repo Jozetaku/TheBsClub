@@ -8,6 +8,7 @@
     "preview": "npx --yes serve dist -l 53901"
   },
   "devDependencies": {
-    "qrcode": "1.5.4"
+    "jsqr": "1.4.0",
+    "pngjs": "7.0.0"
   }
 }
