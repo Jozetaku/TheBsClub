@@ -1,0 +1,13 @@
+{
+  "name": "the-bs-club-review-hub",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "preview": "npx --yes serve dist -l 53901"
+  },
+  "devDependencies": {
+    "qrcode": "1.5.4"
+  }
+}
