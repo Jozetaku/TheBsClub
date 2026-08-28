@@ -125,11 +125,12 @@ button { font: inherit; }
 .welcome h1 {
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(52px, 16vw, 78px);
+  font-size: clamp(48px, 14vw, 76px);
   font-weight: 500;
-  line-height: 0.88;
+  line-height: 0.92;
   letter-spacing: -0.055em;
 }
+.headline-line { display: block; white-space: nowrap; }
 .welcome h1 em { color: var(--coral); font-weight: 500; }
 .welcome-copy {
   max-width: 520px;
@@ -167,11 +168,27 @@ button { font: inherit; }
 .review-primary strong { font-family: var(--display); font-size: 20px; font-weight: 600; line-height: 1.1; }
 .review-primary small { font-size: 9px; font-weight: 700; letter-spacing: 0.02em; }
 .review-primary small span { display: none; }
-.thank-you-note { margin: 16px 0 0; color: var(--soft-ink); font-size: 10px; font-weight: 600; }
+.social-shortcuts { margin: 14px auto 0; display: flex; justify-content: center; gap: 8px; }
+.social-shortcut {
+  width: 48px;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--forest);
+  text-decoration: none;
+  transition: transform 160ms ease, background 160ms ease;
+}
+.social-shortcut:hover { background: var(--gold); transform: translateY(-2px); }
+.social-shortcut svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.social-shortcut:nth-child(2) svg { fill: currentColor; stroke: none; }
+.thank-you-note { margin: 10px 0 0; color: var(--soft-ink); font-size: 10px; font-weight: 600; }
 
 .proof-band {
   position: relative;
-  padding-block: 56px 62px;
+  padding-block: 44px 48px;
   overflow: hidden;
   background: var(--forest);
   color: var(--cream);
@@ -195,23 +212,22 @@ button { font: inherit; }
   line-height: 0.98;
   letter-spacing: -0.04em;
 }
-.testimonial-track { margin-top: 30px; display: grid; gap: 14px; }
+.testimonial-track { margin-top: 22px; display: grid; gap: 12px; }
 .testimonial-card {
   position: relative;
   margin: 0;
-  padding: 24px 22px 20px;
+  padding: 18px 18px 16px;
   border: 1px solid rgba(255, 248, 233, 0.18);
   border-radius: 20px;
   background: rgba(255, 248, 233, 0.075);
 }
 .testimonial-card-2 { transform: rotate(0.55deg); }
-.testimonial-card-3 { transform: rotate(-0.4deg); }
 .testimonial-stars { color: var(--gold); font-size: 11px; letter-spacing: 0.12em; }
 .testimonial-card blockquote {
-  margin: 13px 0 18px;
+  margin: 10px 0 14px;
   font-family: var(--display);
-  font-size: 19px;
-  line-height: 1.42;
+  font-size: 17px;
+  line-height: 1.35;
 }
 .testimonial-card figcaption { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
 .testimonial-card figcaption strong { font-size: 11px; }
@@ -279,35 +295,24 @@ button { font: inherit; }
 .contact-card b { flex: 0 0 28px; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--gold); color: var(--forest); font-size: 12px; }
 .contact-card:hover b { background: var(--coral); }
 
-.trust-section { padding-block: 54px; background: var(--gold); }
-.trust-card { display: grid; grid-template-columns: 52px 1fr; gap: 18px; align-items: start; }
-.trust-marker {
-  width: 52px;
-  height: 52px;
-  display: grid;
-  place-items: center;
-  border: 2px solid var(--forest);
-  border-radius: 50%;
-  font-family: var(--display);
-  font-size: 24px;
-  box-shadow: 3px 3px 0 var(--forest);
-}
+.trust-section { padding-block: 48px; background: var(--gold); }
+.trust-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
 .trust-card h2 { margin: 0 0 14px; font-family: var(--display); font-size: 27px; font-weight: 500; line-height: 1.05; letter-spacing: -0.03em; }
 .trust-card address, .trust-card p:not(.eyebrow) { margin: 4px 0 0; color: var(--soft-ink); font-size: 11px; font-style: normal; }
-.trust-card > a { grid-column: 2; min-height: 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--forest); font-size: 11px; font-weight: 800; text-decoration: none; }
+.trust-card > a { grid-column: 1; min-height: 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--forest); font-size: 11px; font-weight: 800; text-decoration: none; }
 
-.share-section { padding-block: 60px 72px; }
+.share-section { padding-block: 44px 54px; }
 .qr-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 24px;
-  padding: 20px;
+  gap: 18px;
+  padding: 18px;
   border: 1px solid var(--line);
   border-radius: 24px;
   background: var(--paper);
 }
 .qr-card > div { min-width: 0; }
-.qr-card > img { width: min(100%, 250px); aspect-ratio: 1; margin-inline: auto; border-radius: 16px; background: var(--cream); }
+.qr-card > img { width: min(100%, 230px); height: auto; aspect-ratio: 1; object-fit: contain; margin-inline: auto; border-radius: 16px; background: var(--cream); }
 .qr-card h2 { margin: 0; font-family: var(--display); font-size: 36px; font-weight: 500; letter-spacing: -0.03em; }
 .qr-card p:not(.eyebrow):not(.share-status) { margin: 8px 0 18px; color: var(--soft-ink); font-size: 12px; }
 .share-button {
@@ -354,7 +359,7 @@ button { font: inherit; }
   .welcome { padding-block: 38px 58px; }
   .welcome-copy { font-size: 16px; }
   .review-primary { width: min(100%, 560px); margin-inline: auto; }
-  .testimonial-track { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+  .testimonial-track { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
   .testimonial-card { display: flex; flex-direction: column; }
   .testimonial-card blockquote { font-size: 16px; }
   .testimonial-card figcaption { margin-top: auto; display: grid; }
@@ -362,10 +367,9 @@ button { font: inherit; }
   .contact-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .contact-card-wide { grid-column: 1 / -1; min-height: 110px; }
   .contact-card { min-height: 112px; }
-  .trust-card { grid-template-columns: 62px 1fr auto; align-items: center; }
-  .trust-marker { width: 62px; height: 62px; }
-  .trust-card > a { grid-column: 3; min-width: 154px; }
-  .qr-card { grid-template-columns: minmax(180px, 250px) minmax(0, 1fr); align-items: center; padding: 28px; }
+  .trust-card { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 28px; }
+  .trust-card > a { grid-column: 2; min-width: 154px; }
+  .qr-card { grid-template-columns: minmax(180px, 230px) minmax(0, 1fr); align-items: center; padding: 24px; }
 }
 
 @media (min-width: 760px) {
@@ -374,24 +378,24 @@ button { font: inherit; }
   .brand-home { width: 62px; min-height: 62px; }
   .brand-home img { width: 56px; height: 56px; }
   .welcome { max-width: 780px; padding-block: 48px 76px; }
-  .welcome h1 { font-size: 88px; }
+  .welcome h1 { font-size: 76px; }
   .welcome-copy { margin-block: 22px 26px; }
   .review-primary { min-height: 82px; }
   .review-primary strong { font-size: 24px; }
-  .proof-band { padding-block: 78px 84px; }
+  .proof-band { padding-block: 58px 62px; }
   .section-heading h2 { font-size: 62px; }
-  .testimonial-track { margin-top: 38px; gap: 18px; }
-  .testimonial-card { padding: 28px 24px 24px; }
-  .testimonial-card blockquote { font-size: 18px; }
+  .testimonial-track { margin-top: 28px; gap: 18px; }
+  .testimonial-card { padding: 22px 22px 20px; }
+  .testimonial-card blockquote { font-size: 17px; }
   .links-section, .contact-section, .share-section { padding-block: 76px; }
   .contact-section { padding-top: 0; }
   .follow-grid { grid-template-columns: repeat(4, 1fr); }
   .link-card { min-height: 172px; padding: 20px; }
   .link-card > span { font-size: 34px; }
   .link-card strong { font-size: 19px; }
-  .trust-section { padding-block: 68px; }
+  .trust-section { padding-block: 56px; }
   .trust-card h2 { font-size: 34px; }
-  .qr-card { padding: 38px; gap: 42px; }
+  .qr-card { padding: 28px; gap: 30px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

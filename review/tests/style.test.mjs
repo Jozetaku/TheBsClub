@@ -18,3 +18,10 @@ test('supports mobile-first layout and accessible controls', () => {
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.doesNotMatch(css, /overflow-x:\s*(?:scroll|auto)/);
 });
+
+test('keeps the refined hero, social targets and QR compact', () => {
+  assert.match(css, /\.headline-line\s*\{[^}]*display:\s*block/s);
+  assert.match(css, /\.social-shortcut\s*\{[^}]*width:\s*48px[^}]*min-height:\s*48px/s);
+  assert.match(css, /\.qr-card\s*>\s*img\s*\{[^}]*height:\s*auto/s);
+  assert.doesNotMatch(css, /\.trust-marker\s*\{/);
+});
