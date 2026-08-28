@@ -66,28 +66,35 @@ button { font: inherit; }
   justify-content: space-between;
   gap: 16px;
 }
-.brand-home {
-  width: 54px;
-  min-height: 54px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--cream);
-  transition: transform 180ms ease;
+.home-wordmark {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-decoration: none;
 }
-.brand-home:hover { transform: rotate(-4deg) scale(1.04); }
-.brand-home img { width: 48px; height: 48px; border-radius: 50%; object-fit: contain; }
+.home-wordmark:hover, .home-link:hover { color: var(--gold); }
 .header-inner p {
   margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: none;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
-.header-inner p span { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); }
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.home-link span { color: var(--gold); font-size: 15px; }
 
 .welcome {
   position: relative;
@@ -168,7 +175,7 @@ button { font: inherit; }
 .review-primary strong { font-family: var(--display); font-size: 20px; font-weight: 600; line-height: 1.1; }
 .review-primary small { font-size: 9px; font-weight: 700; letter-spacing: 0.02em; }
 .review-primary small span { display: none; }
-.social-shortcuts { margin: 14px auto 0; display: flex; justify-content: center; gap: 8px; }
+.social-shortcuts { margin: 24px auto 0; display: flex; justify-content: center; gap: 8px; }
 .social-shortcut {
   width: 48px;
   min-height: 48px;
@@ -251,11 +258,14 @@ button { font: inherit; }
 .section-heading-compact h2 { font-size: clamp(38px, 11vw, 52px); }
 .link-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .link-card {
-  min-height: 132px;
+  position: relative;
+  min-width: 0;
+  min-height: 118px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -264,13 +274,26 @@ button { font: inherit; }
   transition: transform 160ms ease, border-color 160ms ease;
 }
 .link-card:hover { border-color: var(--forest); transform: translateY(-3px); }
-.link-card > span { margin-bottom: auto; color: var(--coral); font-family: var(--display); font-size: 27px; font-weight: 600; }
-.link-card strong { font-family: var(--display); font-size: 17px; font-weight: 600; }
-.link-card small { margin-top: 1px; color: var(--soft-ink); font-size: 9px; }
+.link-card-icon {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 12px;
+  color: var(--coral);
+}
+.link-card-icon svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.link-card-facebook .link-card-icon svg { fill: currentColor; stroke: none; }
+.link-card-copy { min-width: 0; display: grid; gap: 1px; }
+.link-card strong { font-family: var(--display); font-size: 16px; font-weight: 600; line-height: 1.1; }
+.link-card small { color: var(--soft-ink); font-size: 9px; line-height: 1.25; }
+.link-card-arrow { position: absolute; top: 16px; right: 16px; color: var(--soft-ink); font-size: 14px; }
 .link-card-instagram { background: var(--coral); color: var(--forest); border-color: var(--forest); }
-.link-card-instagram > span, .link-card-instagram small { color: var(--forest); }
+.link-card-instagram .link-card-icon, .link-card-instagram .link-card-arrow, .link-card-instagram small { color: var(--forest); }
 .link-card-facebook { background: var(--gold); border-color: var(--forest); }
-.link-card-facebook > span, .link-card-facebook small { color: var(--forest); }
+.link-card-facebook .link-card-icon, .link-card-facebook .link-card-arrow, .link-card-facebook small { color: var(--forest); }
 
 .contact-section { padding-top: 8px; }
 .contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -375,10 +398,12 @@ button { font: inherit; }
 @media (min-width: 760px) {
   .review-shell { width: min(calc(100% - 64px), 920px); }
   .header-inner { min-height: 82px; }
-  .brand-home { width: 62px; min-height: 62px; }
-  .brand-home img { width: 56px; height: 56px; }
+  .header-inner p { display: block; }
+  .home-wordmark { font-size: 21px; }
   .welcome { max-width: 780px; padding-block: 48px 76px; }
-  .welcome h1 { font-size: 76px; }
+  .welcome h1 { font-size: clamp(68px, 9vw, 76px); white-space: nowrap; }
+  .headline-line { display: inline; }
+  .headline-line + .headline-line { margin-left: 0.16em; }
   .welcome-copy { margin-block: 22px 26px; }
   .review-primary { min-height: 82px; }
   .review-primary strong { font-size: 24px; }
@@ -390,9 +415,11 @@ button { font: inherit; }
   .links-section, .contact-section, .share-section { padding-block: 76px; }
   .contact-section { padding-top: 0; }
   .follow-grid { grid-template-columns: repeat(4, 1fr); }
-  .link-card { min-height: 172px; padding: 20px; }
-  .link-card > span { font-size: 34px; }
-  .link-card strong { font-size: 19px; }
+  .link-card { min-height: 104px; flex-direction: row; align-items: center; justify-content: flex-start; gap: 11px; padding: 15px 13px; }
+  .link-card-icon { flex-basis: 40px; width: 40px; height: 40px; }
+  .link-card-copy { padding-right: 14px; }
+  .link-card strong { font-size: 16px; }
+  .link-card-arrow { top: 12px; right: 12px; }
   .trust-section { padding-block: 56px; }
   .trust-card h2 { font-size: 34px; }
   .qr-card { padding: 28px; gap: 30px; }
