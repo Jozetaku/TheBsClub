@@ -682,6 +682,14 @@ body[data-article-id="autumn-interlaken"] main a {
     gap: 30px;
   }
 
+  .destination-copy {
+    container-type: inline-size;
+  }
+
+  .destination-copy h2:has(.de-heading-line) {
+    font-size: clamp(32px, 10.5cqi, 45px);
+  }
+
   .destination:nth-child(even) .destination-grid {
     grid-template-columns: minmax(0, 1fr) 96px;
   }

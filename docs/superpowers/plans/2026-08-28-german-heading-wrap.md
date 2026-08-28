@@ -12,11 +12,12 @@
 
 - Preserve the complete visible German heading wording and every existing `h2` `id`.
 - Use exactly two `de-heading-line` spans in each of the three approved German headings.
-- Desktop groups are exactly `Sechs Stationen` / `ab The B`, `Höhematte: Platz lassen` / `auf der Wiese`, and `Harder Kulm: zuerst` / `die Rückfahrt klären`.
+- Desktop groups are exactly `Sechs Stationen` / `ab The B`, `Höhematte: Platz` / `lassen auf der Wiese`, and `Harder Kulm: zuerst` / `die Rückfahrt klären`.
 - Use `display: block` above `820px` and `display: inline` at `820px` and below.
 - Keep a literal normal space between the two spans in each heading.
 - Do not add `de-heading-line` to the English article.
-- Do not change heading font size, container width, grid proportions, article copy, SEO metadata, logo, cursor, navigation, map, numbering, or spacing system.
+- In the two-column desktop layout only, size German destination headings with `clamp(32px, 10.5cqi, 45px)` against the `.destination-copy` inline-size container.
+- Do not change English heading sizes, container width, grid proportions, article copy, SEO metadata, logo, cursor, navigation, map, numbering, or spacing system.
 - Do not stage or modify unrelated untracked image files.
 
 ---
@@ -51,7 +52,7 @@ test('German editorial headings use approved responsive line groups', () => {
   const css = readFileSync(artworkPath('article.css'), 'utf8');
   const expectedHeadings = [
     '<h2 id="map-title"><span class="de-heading-line">Sechs Stationen</span> <span class="de-heading-line">ab The B</span></h2>',
-    '<h2 id="hohematte-title"><span class="de-heading-line">Höhematte: Platz lassen</span> <span class="de-heading-line">auf der Wiese</span></h2>',
+    '<h2 id="hohematte-title"><span class="de-heading-line">Höhematte: Platz</span> <span class="de-heading-line">lassen auf der Wiese</span></h2>',
     '<h2 id="harder-title"><span class="de-heading-line">Harder Kulm: zuerst</span> <span class="de-heading-line">die Rückfahrt klären</span></h2>'
   ];
 
@@ -66,6 +67,10 @@ test('German editorial headings use approved responsive line groups', () => {
   assert.match(
     css,
     /@media\s*\(max-width:\s*820px\)[\s\S]*?\.de-heading-line\s*{[^}]*display:\s*inline;/s
+  );
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-copy\s*{[^}]*container-type:\s*inline-size;[^}]*}[\s\S]*?\.destination-copy h2:has\(\.de-heading-line\)\s*{[^}]*font-size:\s*clamp\(32px,\s*10\.5cqi,\s*45px\);/s
   );
 });
 ```
@@ -89,7 +94,7 @@ Replace the three German `h2` lines with:
 ```
 
 ```html
-<h2 id="hohematte-title"><span class="de-heading-line">Höhematte: Platz lassen</span> <span class="de-heading-line">auf der Wiese</span></h2>
+<h2 id="hohematte-title"><span class="de-heading-line">Höhematte: Platz</span> <span class="de-heading-line">lassen auf der Wiese</span></h2>
 ```
 
 ```html
@@ -115,6 +120,18 @@ Inside the existing `@media (max-width: 820px)` block, immediately after its ope
 ```css
   .de-heading-line {
     display: inline;
+  }
+```
+
+Inside the existing `@media (min-width: 1200px) and (min-height: 700px)` block, make the destination copy an inline-size container and size only German destination headings against that real column width:
+
+```css
+  .destination-copy {
+    container-type: inline-size;
+  }
+
+  .destination-copy h2:has(.de-heading-line) {
+    font-size: clamp(32px, 10.5cqi, 45px);
   }
 ```
 
@@ -166,10 +183,10 @@ Expected: the server reports a local URL on port `8000`.
 
 - [ ] **Step 2: Inspect the German article at desktop widths**
 
-Open `http://localhost:8000/de/artikel/herbst-interlaken/` and verify at both `1440×900` and `1920×900`:
+Open `http://localhost:8000/de/artikel/herbst-interlaken/` and verify at `1200×900`, `1440×900`, and `1920×900`:
 
 - `Sechs Stationen` is line one and `ab The B` is line two.
-- `Höhematte: Platz lassen` is line one and `auf der Wiese` is line two.
+- `Höhematte: Platz` is line one and `lassen auf der Wiese` is line two.
 - `Harder Kulm: zuerst` is line one and `die Rückfahrt klären` is line two.
 - No heading has a single-word second line, clipping, overlap, or horizontal overflow.
 
@@ -227,4 +244,4 @@ Expected: the newest `Deploy static site to GitHub Pages` run completes successf
 
 - [ ] **Step 4: Verify the live German and English pages**
 
-Open the live German URL with a cache-busting query such as `https://www.thebsclub.ch/de/artikel/herbst-interlaken/?v=<implementation-commit>` and repeat the `1440×900`, `1920×900`, and `390×844` checks from Task 2. Confirm the English control page remains unchanged, then report the deployment commit and workflow result.
+Open the live German URL with a cache-busting query such as `https://www.thebsclub.ch/de/artikel/herbst-interlaken/?v=<implementation-commit>` and repeat the `1200×900`, `1440×900`, `1920×900`, and `390×844` checks from Task 2. Confirm the English control page remains unchanged, then report the deployment commit and workflow result.

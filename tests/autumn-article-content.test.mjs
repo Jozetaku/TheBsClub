@@ -220,7 +220,7 @@ test('German editorial headings use approved responsive line groups', () => {
   const css = readFileSync(artworkPath('article.css'), 'utf8');
   const expectedHeadings = [
     '<h2 id="map-title"><span class="de-heading-line">Sechs Stationen</span> <span class="de-heading-line">ab The B</span></h2>',
-    '<h2 id="hohematte-title"><span class="de-heading-line">Höhematte: Platz lassen</span> <span class="de-heading-line">auf der Wiese</span></h2>',
+    '<h2 id="hohematte-title"><span class="de-heading-line">Höhematte: Platz</span> <span class="de-heading-line">lassen auf der Wiese</span></h2>',
     '<h2 id="harder-title"><span class="de-heading-line">Harder Kulm: zuerst</span> <span class="de-heading-line">die Rückfahrt klären</span></h2>'
   ];
 
@@ -235,6 +235,10 @@ test('German editorial headings use approved responsive line groups', () => {
   assert.match(
     css,
     /@media\s*\(max-width:\s*820px\)[\s\S]*?\.de-heading-line\s*{[^}]*display:\s*inline;/s
+  );
+  assert.match(
+    css,
+    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-copy\s*{[^}]*container-type:\s*inline-size;[^}]*}[\s\S]*?\.destination-copy h2:has\(\.de-heading-line\)\s*{[^}]*font-size:\s*clamp\(32px,\s*10\.5cqi,\s*45px\);/s
   );
 });
 

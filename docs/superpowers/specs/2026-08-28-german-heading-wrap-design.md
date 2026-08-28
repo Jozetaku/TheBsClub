@@ -11,7 +11,7 @@ Use semantic German-only line-group spans inside the three affected headings. Di
 The approved desktop groups are:
 
 - `Sechs Stationen` / `ab The B`
-- `Höhematte: Platz lassen` / `auf der Wiese`
+- `Höhematte: Platz` / `lassen auf der Wiese`
 - `Harder Kulm: zuerst` / `die Rückfahrt klären`
 
 ## Implementation Contract
@@ -22,14 +22,15 @@ The approved desktop groups are:
 - Inside the existing `@media (max-width: 820px)` block, set `.de-heading-line { display: inline; }`.
 - Add a normal inter-span space in the HTML so the complete text remains correct when the spans are inline.
 - Do not add these spans to the English article.
-- Do not change heading font size, container width, grid proportions, article copy, or SEO metadata.
+- In the two-column desktop layout only, size German destination headings from `32px` to `45px` with `10.5cqi` so both approved groups remain single lines as the destination column changes width.
+- Do not change English heading sizes, container width, grid proportions, article copy, or SEO metadata.
 
 ## Verification
 
 - A focused content test must fail before implementation and then assert the exact two line groups for all three German headings.
 - The test must assert that the English article contains no `de-heading-line` class.
 - The CSS test must assert block display by default and inline display at `max-width: 820px`.
-- Browser verification must cover the German article at 1440×900, 1920×900, and 390×844.
+- Browser verification must cover the German article at 1200×900, 1440×900, 1920×900, and 390×844.
 - Desktop verification must show two balanced lines for each affected heading with no single-word second line.
 - Mobile verification must show natural wrapping, no horizontal overflow, and no clipped heading text.
 
