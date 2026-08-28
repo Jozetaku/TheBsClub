@@ -14,7 +14,7 @@
 - Use `28px` top and `24px` bottom padding on the compact desktop map rail.
 - Use an `18px` heading-to-map gap and `clamp(340px, 52vh, 500px)` map height.
 - Use `clamp(76px, 8vh, 94px)` as the sticky rail offset.
-- Use equal `84px` tracks for odd and even destination numbers in the two-column layout.
+- Use equal `96px` tracks and `80px` type for odd and even destination numbers in the two-column layout so the widest Fraunces pair remains inside its track.
 - Use `86px` vertical padding for two-column desktop destination sections.
 - Use `clamp(68px, 7vw, 104px)` top and `clamp(74px, 7.5vw, 112px)` bottom desktop hero padding.
 - Use `clamp(76px, 7vw, 104px)` shared article-section padding.
@@ -33,7 +33,7 @@
 
 **Interfaces:**
 - Consumes: the existing `.journey-layout`, `.map-section`, `.article-map`, `.destination-grid`, and alternating destination markup shared by both locales.
-- Produces: one responsive CSS contract for the two-column rail and equal `84px` number tracks, consumed automatically by the English and German pages.
+- Produces: one responsive CSS contract for the two-column rail and equal `96px` number tracks with `80px` number type, consumed automatically by the English and German pages.
 
 - [ ] **Step 1: Replace the old desktop rail assertions with the failing adaptive-rail contract**
 
@@ -52,8 +52,8 @@ In `tests/autumn-article-content.test.mjs`, replace the current `96px` even-numb
   );
   assert.match(
     css,
-    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-grid\s*{[^}]*grid-template-columns:\s*84px\s+minmax\(0,\s*1fr\);[^}]*}[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+84px/s,
-    'desktop odd and even destinations must reserve equal number tracks'
+    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-grid\s*{[^}]*grid-template-columns:\s*96px\s+minmax\(0,\s*1fr\);[^}]*}[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+96px;[^}]*}[\s\S]*?\.destination-number\s*{[^}]*font-size:\s*80px/s,
+    'desktop destinations must use symmetric tracks sized for every 80px numeral pair'
   );
 ```
 
@@ -113,12 +113,16 @@ In `articles/autumn-interlaken/article.css`, replace the complete current `@medi
   }
 
   .destination-grid {
-    grid-template-columns: 84px minmax(0, 1fr);
+    grid-template-columns: 96px minmax(0, 1fr);
     gap: 30px;
   }
 
   .destination:nth-child(even) .destination-grid {
-    grid-template-columns: minmax(0, 1fr) 84px;
+    grid-template-columns: minmax(0, 1fr) 96px;
+  }
+
+  .destination-number {
+    font-size: 80px;
   }
 
   .destination-copy h2 {

@@ -24,7 +24,7 @@ The desktop destination grid also reserves `62px` for odd numbers and `96px` for
 
 ### Destination rhythm
 
-- Reserve the same `84px` number track for odd and even destinations on the two-column desktop layout.
+- Reserve the same `96px` number track for odd and even destinations on the two-column desktop layout and use an `80px` desktop number size. Browser glyph measurement showed that the widest Fraunces pair needs about `94.4px`; this combination prevents painted text from overflowing its track.
 - Keep the approved alternating number placement, but give the copy track equal width in both directions.
 - Retain the gold Fraunces numbering and all existing content.
 - Reduce desktop destination vertical padding from `104px` to `86px` so the sequence remains editorial but does not feel stretched.
@@ -60,7 +60,7 @@ Automated regression tests must first fail against the current CSS and then pass
 
 - The two-column desktop journey layout and sticky rail share the same width-and-height media condition.
 - The old `min-height: 980px` sticky threshold is removed.
-- Odd and even desktop destination grids use equal `84px` number tracks.
+- Odd and even desktop destination grids use equal `96px` number tracks with `80px` number type.
 - Desktop spacing values are reduced without changing mobile rules.
 
 Browser verification will cover both English and German pages at:

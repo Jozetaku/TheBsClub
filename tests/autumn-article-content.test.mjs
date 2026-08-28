@@ -166,8 +166,8 @@ test('article CSS fulfils the responsive editorial and accessibility contract', 
   );
   assert.match(
     css,
-    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-grid\s*{[^}]*grid-template-columns:\s*84px\s+minmax\(0,\s*1fr\);[^}]*}[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+84px/s,
-    'desktop odd and even destinations must reserve equal number tracks'
+    /@media\s*\(min-width:\s*1200px\)\s*and\s*\(min-height:\s*700px\)[\s\S]*?\.destination-grid\s*{[^}]*grid-template-columns:\s*96px\s+minmax\(0,\s*1fr\);[^}]*}[\s\S]*?\.destination:nth-child\(even\) \.destination-grid\s*{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)\s+96px;[^}]*}[\s\S]*?\.destination-number\s*{[^}]*font-size:\s*80px/s,
+    'desktop destinations must use symmetric tracks sized for every 80px numeral pair'
   );
   assert.match(
     css,
