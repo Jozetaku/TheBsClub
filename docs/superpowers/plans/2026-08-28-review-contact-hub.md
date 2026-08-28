@@ -787,4 +787,3 @@ git commit -m "build: publish review contact hub route"
 ```
 
 Provide the local preview URL, total passing-test counts, generated SVG/PNG paths, confirmed business details, and unresolved production-only checks. Do not push, deploy, print, or distribute the QR until the owner approves the rendered page.
-
