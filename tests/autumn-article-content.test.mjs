@@ -214,6 +214,30 @@ test('article CSS fulfils the responsive editorial and accessibility contract', 
   );
 });
 
+test('German editorial headings use approved responsive line groups', () => {
+  const en = readArticle('en');
+  const de = readArticle('de');
+  const css = readFileSync(artworkPath('article.css'), 'utf8');
+  const expectedHeadings = [
+    '<h2 id="map-title"><span class="de-heading-line">Sechs Stationen</span> <span class="de-heading-line">ab The B</span></h2>',
+    '<h2 id="hohematte-title"><span class="de-heading-line">Höhematte: Platz lassen</span> <span class="de-heading-line">auf der Wiese</span></h2>',
+    '<h2 id="harder-title"><span class="de-heading-line">Harder Kulm: zuerst</span> <span class="de-heading-line">die Rückfahrt klären</span></h2>'
+  ];
+
+  for (const heading of expectedHeadings) {
+    assert.ok(de.includes(heading), `expected exact German heading markup: ${heading}`);
+  }
+
+  assert.equal(occurrences(de, /class="de-heading-line"/g), 6);
+  assert.equal(occurrences(en, /class="de-heading-line"/g), 0);
+  assert.equal(occurrences(css, /\.de-heading-line\s*{/g), 2);
+  assert.match(css, /\.de-heading-line\s*{[^}]*display:\s*block;/s);
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*820px\)[\s\S]*?\.de-heading-line\s*{[^}]*display:\s*inline;/s
+  );
+});
+
 test('English autumn guide is a complete semantic article', () => {
   const en = readArticle('en');
 

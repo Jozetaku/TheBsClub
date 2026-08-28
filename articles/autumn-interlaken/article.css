@@ -163,6 +163,10 @@ body[data-article-id="autumn-interlaken"] main a {
   margin-top: 20px;
 }
 
+.de-heading-line {
+  display: block;
+}
+
 .map-section .section-heading > p {
   max-width: 420px;
   padding-bottom: 7px;
@@ -712,6 +716,10 @@ body[data-article-id="autumn-interlaken"] main a {
 }
 
 @media (max-width: 820px) {
+  .de-heading-line {
+    display: inline;
+  }
+
   .journey-layout {
     width: 100%;
     grid-template-columns: 1fr;
