@@ -24,6 +24,17 @@ test('uses the approved two-line hero and compact social shortcut order', () => 
   assert.deepEqual(shortcuts, ['instagram', 'facebook', 'tripadvisor', 'whatsapp']);
 });
 
+test('uses a logo-free home-style header and purposeful Keep in touch icons', () => {
+  const header = html.match(/<header class="hub-header">([\s\S]*?)<\/header>/)?.[1] ?? '';
+  assert.doesNotMatch(header, /<img\b/);
+  assert.match(header, /data-action="website"[^>]*>The B's Club<\/a>/);
+  assert.match(header, />Main website\s*<span aria-hidden="true">↗<\/span><\/a>/);
+
+  const linkGrid = html.match(/<div class="link-grid follow-grid">([\s\S]*?)<\/div>/)?.[1] ?? '';
+  assert.equal((linkGrid.match(/<svg aria-hidden="true"/g) ?? []).length, 4);
+  assert.doesNotMatch(linkGrid, />(?:◎|⌑|→)<\/span>/);
+});
+
 test('removes the decorative trust marker and third testimonial', () => {
   assert.doesNotMatch(html, /trust-marker|Jennylynn B\./);
   assert.equal((html.match(/class="testimonial-card/g) ?? []).length, 2);

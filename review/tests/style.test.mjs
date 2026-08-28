@@ -25,3 +25,9 @@ test('keeps the refined hero, social targets and QR compact', () => {
   assert.match(css, /\.qr-card\s*>\s*img\s*\{[^}]*height:\s*auto/s);
   assert.doesNotMatch(css, /\.trust-marker\s*\{/);
 });
+
+test('uses approved hero spacing and compact desktop link cards', () => {
+  assert.match(css, /\.social-shortcuts\s*\{[^}]*margin:\s*24px auto 0/s);
+  assert.match(css, /@media\s*\(min-width:\s*760px\)[\s\S]*?\.headline-line\s*\{[^}]*display:\s*inline/s);
+  assert.match(css, /@media\s*\(min-width:\s*760px\)[\s\S]*?\.link-card\s*\{[^}]*min-height:\s*104px[^}]*flex-direction:\s*row/s);
+});
