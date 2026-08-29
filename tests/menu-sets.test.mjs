@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { existsSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const menu = require('../menu-data.js');
@@ -47,4 +48,11 @@ test('publishes exact bilingual set names and stable image paths', () => {
   );
   assert.equal(menu.getIncludedDrinkCount('sandwich-sharing'), 2);
   assert.equal(menu.getIncludedDrinkCount('missing-set'), 0);
+});
+
+test('ships every catalog image plus the corrected Green Curry card', () => {
+  for (const item of [...menu.sandwichSets, ...menu.foodCombos]) {
+    assert.ok(existsSync(new URL(`..${item.image}`, import.meta.url)), item.image);
+  }
+  assert.ok(existsSync(new URL('../images/campaign/v5/green-curry-chicken.jpg', import.meta.url)));
 });
