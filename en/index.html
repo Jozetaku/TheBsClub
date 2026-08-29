@@ -222,7 +222,7 @@
       <div class="container">
         <div class="section-heading reveal">
           <div><p class="eyebrow"><span></span> Food + Boba · One price</p><h2 id="food-boba-title">Food + Boba Sets.<br><em>Your favourite drink included.</em></h2></div>
-          <p>Every set includes one Boba drink of your choice. Choose any available flavour at the displayed price — with no drink surcharge.</p>
+          <p>Every set includes one Boba drink of your choice. Choose any available flavour at the displayed all-inclusive price.</p>
         </div>
         <div class="combo-filter" aria-label="Food set categories"><span>Chicken</span><span>Tofu</span></div>
         <div class="food-combo-grid">
@@ -363,6 +363,54 @@
               <label><input type="radio" name="language" value="en" checked><span>English</span></label>
               <label><input type="radio" name="language" value="de"><span>Deutsch</span></label>
               <label><input type="radio" name="language" value="th"><span>ไทย</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="order-fieldset set-order-fieldset">
+            <legend data-order-i18n="setLegend">Optional: Choose a set</legend>
+            <div class="set-order-grid">
+              <label class="order-field">
+                <span data-order-i18n="setProductLabel">Sandwich or Food + Boba set</span>
+                <select id="set-product" name="setProduct">
+                  <option value="">No set selected</option>
+                  <optgroup label="Sandwich Sets">
+                    <option value="sandwich-regular">Regular Sandwich Set — CHF 16.90</option>
+                    <option value="sandwich-double">Double Sandwich Set — CHF 24.90</option>
+                    <option value="sandwich-sharing">Sharing Sandwich Set — CHF 31.90</option>
+                  </optgroup>
+                  <optgroup label="Food + Boba Sets">
+                    <option value="katsu-chicken">Chicken Katsu Curry — CHF 23.90</option>
+                    <option value="red-curry-chicken">Red Curry Chicken — CHF 24.90</option>
+                    <option value="green-curry-chicken">Green Curry Chicken — CHF 24.90</option>
+                    <option value="thai-basil-chicken">Thai Basil Chicken — CHF 24.90</option>
+                    <option value="thai-basil-tofu">Thai Basil Tofu — CHF 21.90</option>
+                    <option value="red-curry-tofu">Red Curry Tofu — CHF 23.90</option>
+                    <option value="green-curry-tofu">Green Curry Tofu — CHF 23.90</option>
+                  </optgroup>
+                </select>
+              </label>
+              <label class="order-field">
+                <span data-order-i18n="setQuantityLabel">Set quantity</span>
+                <input id="set-quantity" name="setQuantity" type="number" min="1" max="20" value="1" inputmode="numeric">
+              </label>
+            </div>
+            <output class="set-price-preview" id="set-price-preview" aria-live="polite"></output>
+
+            <div class="drink-modifier" data-drink-modifier="1" hidden>
+              <strong data-order-i18n="drinkOneLegend">Included Boba drink 1</strong>
+              <div class="drink-modifier-grid">
+                <label><span data-order-i18n="flavourLabel">Flavour</span><select name="bobaFlavour1" disabled><option value="">Choose a flavour</option><option>Brown Sugar Milk Tea</option><option>Yummy Strawberry</option><option>Matcha Latte</option><option>Mango Tea</option><option value="Other available Boba drink">Other available Boba drink</option></select></label>
+                <label><span data-order-i18n="sweetnessLabel">Sweetness</span><select name="sweetness1" disabled><option>0%</option><option>25%</option><option selected>50%</option><option>75%</option><option>100%</option></select></label>
+                <label><span data-order-i18n="iceLabel">Ice</span><select name="ice1" disabled><option value="None">None</option><option value="Less">Less</option><option value="Normal" selected>Normal</option></select></label>
+              </div>
+            </div>
+            <div class="drink-modifier" data-drink-modifier="2" hidden>
+              <strong data-order-i18n="drinkTwoLegend">Included Boba drink 2</strong>
+              <div class="drink-modifier-grid">
+                <label><span data-order-i18n="flavourLabel">Flavour</span><select name="bobaFlavour2" disabled><option value="">Choose a flavour</option><option>Brown Sugar Milk Tea</option><option>Yummy Strawberry</option><option>Matcha Latte</option><option>Mango Tea</option><option value="Other available Boba drink">Other available Boba drink</option></select></label>
+                <label><span data-order-i18n="sweetnessLabel">Sweetness</span><select name="sweetness2" disabled><option>0%</option><option>25%</option><option selected>50%</option><option>75%</option><option>100%</option></select></label>
+                <label><span data-order-i18n="iceLabel">Ice</span><select name="ice2" disabled><option value="None">None</option><option value="Less">Less</option><option value="Normal" selected>Normal</option></select></label>
+              </div>
             </div>
           </fieldset>
 

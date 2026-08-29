@@ -366,6 +366,54 @@
             </div>
           </fieldset>
 
+          <fieldset class="order-fieldset set-order-fieldset">
+            <legend data-order-i18n="setLegend">Optional: Set wählen</legend>
+            <div class="set-order-grid">
+              <label class="order-field">
+                <span data-order-i18n="setProductLabel">Sandwich- oder Food + Boba-Set</span>
+                <select id="set-product" name="setProduct">
+                  <option value="">Kein Set ausgewählt</option>
+                  <optgroup label="Sandwich-Sets">
+                    <option value="sandwich-regular">Regular Sandwich-Set — CHF 16.90</option>
+                    <option value="sandwich-double">Double Sandwich-Set — CHF 24.90</option>
+                    <option value="sandwich-sharing">Sharing Sandwich-Set — CHF 31.90</option>
+                  </optgroup>
+                  <optgroup label="Food + Boba-Sets">
+                    <option value="katsu-chicken">Chicken Katsu Curry — CHF 23.90</option>
+                    <option value="red-curry-chicken">Red Curry Poulet — CHF 24.90</option>
+                    <option value="green-curry-chicken">Green Curry Poulet — CHF 24.90</option>
+                    <option value="thai-basil-chicken">Thai Basil Poulet — CHF 24.90</option>
+                    <option value="thai-basil-tofu">Thai Basil Tofu — CHF 21.90</option>
+                    <option value="red-curry-tofu">Red Curry Tofu — CHF 23.90</option>
+                    <option value="green-curry-tofu">Green Curry Tofu — CHF 23.90</option>
+                  </optgroup>
+                </select>
+              </label>
+              <label class="order-field">
+                <span data-order-i18n="setQuantityLabel">Set-Menge</span>
+                <input id="set-quantity" name="setQuantity" type="number" min="1" max="20" value="1" inputmode="numeric">
+              </label>
+            </div>
+            <output class="set-price-preview" id="set-price-preview" aria-live="polite"></output>
+
+            <div class="drink-modifier" data-drink-modifier="1" hidden>
+              <strong data-order-i18n="drinkOneLegend">Inklusives Boba-Getränk 1</strong>
+              <div class="drink-modifier-grid">
+                <label><span data-order-i18n="flavourLabel">Sorte</span><select name="bobaFlavour1" disabled><option value="">Sorte wählen</option><option>Brown Sugar Milk Tea</option><option>Yummy Strawberry</option><option>Matcha Latte</option><option>Mango Tea</option><option value="Other available Boba drink">Anderes verfügbares Boba-Getränk</option></select></label>
+                <label><span data-order-i18n="sweetnessLabel">Süsse</span><select name="sweetness1" disabled><option>0%</option><option>25%</option><option selected>50%</option><option>75%</option><option>100%</option></select></label>
+                <label><span data-order-i18n="iceLabel">Eis</span><select name="ice1" disabled><option value="None">Kein Eis</option><option value="Less">Wenig</option><option value="Normal" selected>Normal</option></select></label>
+              </div>
+            </div>
+            <div class="drink-modifier" data-drink-modifier="2" hidden>
+              <strong data-order-i18n="drinkTwoLegend">Inklusives Boba-Getränk 2</strong>
+              <div class="drink-modifier-grid">
+                <label><span data-order-i18n="flavourLabel">Sorte</span><select name="bobaFlavour2" disabled><option value="">Sorte wählen</option><option>Brown Sugar Milk Tea</option><option>Yummy Strawberry</option><option>Matcha Latte</option><option>Mango Tea</option><option value="Other available Boba drink">Anderes verfügbares Boba-Getränk</option></select></label>
+                <label><span data-order-i18n="sweetnessLabel">Süsse</span><select name="sweetness2" disabled><option>0%</option><option>25%</option><option selected>50%</option><option>75%</option><option>100%</option></select></label>
+                <label><span data-order-i18n="iceLabel">Eis</span><select name="ice2" disabled><option value="None">Kein Eis</option><option value="Less">Wenig</option><option value="Normal" selected>Normal</option></select></label>
+              </div>
+            </div>
+          </fieldset>
+
           <div class="order-fields">
             <label class="order-field">
               <span data-order-i18n="nameLabel">Ihr Name</span>
