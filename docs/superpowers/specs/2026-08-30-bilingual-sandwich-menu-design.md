@@ -93,7 +93,7 @@ The serving recommendation says the sandwich is best enjoyed fresh, the Boba dri
 
 Add a bilingual `Food + Boba Combos` / `Essen + Boba Menüs` section immediately after the existing Asian café meals. Every combo contains one food portion with jasmine rice and one standard Boba drink of the customer's choice.
 
-Standard Boba drinks that normally cost CHF 7.90 are included. Premium Boba drinks that normally cost CHF 8.90 add CHF 1.00. This rule must be visible before the customer starts an order.
+Every available Boba drink is included at the displayed combo price. There is no premium category and no surcharge for drinks that normally have a higher individual price. This rule must be visible before the customer starts an order.
 
 ### Chicken combos
 
@@ -162,7 +162,7 @@ The existing order/contact area gains separate `Food + Boba Combos` and `Sandwic
 - Ice level selection
 - Optional notes
 
-The generated WhatsApp/email summary uses the page language and includes the set, protein where relevant, quantity, base price, premium-drink supplement, drink choices, sweetness, ice, fulfilment method, date/time, and customer notes. The existing payment-before-preparation notice and Uber Eats delivery path remain unchanged.
+The generated WhatsApp/email summary uses the page language and includes the set, protein where relevant, quantity, set price, drink choices, sweetness, ice, fulfilment method, date/time, and customer notes. The existing payment-before-preparation notice and Uber Eats delivery path remain unchanged.
 
 The sandwich section also includes a direct `Auf Uber Eats bestellen` / `Order on Uber Eats` call to action using the existing Uber Eats destination.
 
@@ -195,7 +195,7 @@ The sandwich section also includes a direct `Auf Uber Eats bestellen` / `Order o
 
 Before publication:
 
-- Run the complete existing test suite and add coverage for bilingual content, routes, language links, all sandwich and Food + Boba prices, the CHF 1.00 premium modifier, ingredients, allergens, ordering modifiers, generated messages, analytics names, and sitemap entries.
+- Run the complete existing test suite and add coverage for bilingual content, routes, language links, all sandwich and Food + Boba prices, the absence of drink surcharges, ingredients, allergens, ordering modifiers, generated messages, analytics names, and sitemap entries.
 - Validate both language homepages without JavaScript.
 - Check desktop and mobile layouts, keyboard navigation, reduced-motion mode, and all three product images.
 - Confirm the Double Set image contains no coffee and the Sharing Set image visibly contains two sandwiches and two Boba drinks.
