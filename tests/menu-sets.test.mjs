@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const menu = require('../menu-data.js');
@@ -55,4 +56,19 @@ test('ships every catalog image plus the corrected Green Curry card', () => {
     assert.ok(existsSync(new URL(`..${item.image}`, import.meta.url)), item.image);
   }
   assert.ok(existsSync(new URL('../images/campaign/v5/green-curry-chicken.jpg', import.meta.url)));
+});
+
+test('publishes every approved set on both language homepages', () => {
+  const de = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const en = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
+
+  for (const html of [de, en]) {
+    assert.match(html, /id="food-boba-combos"/);
+    assert.match(html, /id="sandwich-sets"/);
+    for (const item of [...menu.foodCombos, ...menu.sandwichSets]) {
+      assert.match(html, new RegExp(`data-set-id="${item.id}"[\\s\\S]*?CHF ${item.price.toFixed(2)}`));
+    }
+    assert.doesNotMatch(html, /Premium Boba|Premium-Getränk|\+\s*CHF\s*1\.00/i);
+    assert.doesNotMatch(html, /Tofu Katsu/i);
+  }
 });
