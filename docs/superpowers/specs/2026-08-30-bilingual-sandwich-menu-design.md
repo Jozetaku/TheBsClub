@@ -4,7 +4,7 @@ Date: 2026-08-30
 
 ## Goal
 
-Add a clearly photographed Ham, Egg & Cheese sandwich range to The B's Club website and make the complete public website available in German and English. German becomes the primary language at `https://www.thebsclub.ch/`; English is available at `/en/` through a persistent `DE | EN` language switch.
+Add clearly photographed Ham, Egg & Cheese sandwich sets and Food + Boba combos to The B's Club website, replace the existing unnatural Green Curry image, and make the complete public website available in German and English. German becomes the primary language at `https://www.thebsclub.ch/`; English is available at `/en/` through a persistent `DE | EN` language switch.
 
 The work must preserve the current site's visual identity and its existing food, drinks, music, ordering, story, review, partner, visit, privacy, analytics, and autumn-guide functionality.
 
@@ -15,7 +15,7 @@ The primary audience is local German-speaking customers and visitors in Interlak
 The primary journey is:
 
 1. Arrive on the German or English homepage.
-2. Recognise the new sandwich offer and compare the three set sizes visually.
+2. Recognise the new sandwich and Food + Boba offers and compare the sets visually.
 3. Read ingredients and allergen information if needed.
 4. Continue to Uber Eats or prepare a direct order through the existing order/contact form.
 
@@ -32,7 +32,7 @@ The primary journey is:
 
 ## Sandwich section
 
-Insert a dedicated `Sandwich-Sets` section after the Asian café meals and before the bestselling drinks. It should look like a natural extension of the existing editorial product-card system rather than a separate microsite.
+Insert a dedicated `Sandwich-Sets` section after the new Food + Boba combos and before the bestselling drinks. It should look like a natural extension of the existing editorial product-card system rather than a separate microsite.
 
 The section heading in German is `Frisch gemacht. Perfekt kombiniert.` and introduces the sandwich as freshly prepared with a Boba drink of the customer's choice. The English equivalent is `Freshly made. Perfectly paired.`
 
@@ -89,6 +89,60 @@ The allergen warning states that the sandwich contains gluten, egg, and milk; ma
 
 The serving recommendation says the sandwich is best enjoyed fresh, the Boba drink should be shaken or stirred, and the set should be consumed soon after delivery for the best taste and texture.
 
+## Food + Boba combo section
+
+Add a bilingual `Food + Boba Combos` / `Essen + Boba Menüs` section immediately after the existing Asian café meals. Every combo contains one food portion with jasmine rice and one standard Boba drink of the customer's choice.
+
+Standard Boba drinks that normally cost CHF 7.90 are included. Premium Boba drinks that normally cost CHF 8.90 add CHF 1.00. This rule must be visible before the customer starts an order.
+
+### Chicken combos
+
+1. `Crispy Chicken Katsu Curry + Boba-Getränk nach Wahl` / `Crispy Chicken Katsu Curry + Any Boba Drink` — **CHF 23.90**
+2. `Thai Red Curry Chicken + Boba-Getränk nach Wahl` / `Thai Red Curry Chicken + Any Boba Drink` — **CHF 24.90**
+3. `Thai Green Curry Chicken + Boba-Getränk nach Wahl` / `Thai Green Curry Chicken + Any Boba Drink` — **CHF 24.90**
+4. `Thai Basil Chicken + Boba-Getränk nach Wahl` / `Thai Basil Chicken + Any Boba Drink` — **CHF 24.90**
+
+### Tofu combos
+
+1. `Thai Basil Tofu + Boba-Getränk nach Wahl` / `Thai Basil Tofu + Any Boba Drink` — **CHF 21.90**
+2. `Thai Red Curry Tofu + Boba-Getränk nach Wahl` / `Thai Red Curry Tofu + Any Boba Drink` — **CHF 23.90**
+3. `Thai Green Curry Tofu + Boba-Getränk nach Wahl` / `Thai Green Curry Tofu + Any Boba Drink` — **CHF 23.90**
+
+Do not add a tofu Katsu combo because the current menu does not offer a verified Crispy Tofu Katsu product.
+
+The Green Curry Chicken combo is the featured `Best Value` item. Chicken and tofu are presented as explicit products rather than silently swapping proteins, so the image, title, price, generated order message, and allergen disclosure cannot become mismatched.
+
+## Food photography repair and expansion
+
+The current Green Curry campaign image on the website is replaced because its curry surface and repeated geometric food shapes look unnatural. The replacement must keep the same visual system as the other approved food cards while making the curry, vegetables, chicken, and tofu look irregular and genuinely prepared.
+
+Create one consistent Food + Boba image for every listed combo:
+
+- Thai Basil Chicken
+- Thai Basil Tofu
+- Thai Red Curry Chicken
+- Thai Red Curry Tofu
+- Thai Green Curry Chicken
+- Thai Green Curry Tofu
+- Crispy Chicken Katsu Curry
+
+The newly supplied Green Curry Tofu photos are direct subject and serving references. They establish the actual green curry colour, browned tofu, jasmine rice, white handled serving bowl, white plate, wooden board, white tabletop, and real café interior. The wider interior photographs establish the authentic background and lighting of The B's Club.
+
+For dishes or protein variants without an existing photograph, derive the new scene from these approved serving references and the existing matching menu image. Do not invent a new bowl, takeaway box, plate, serving size, garnish system, or café interior.
+
+Each combo image shows exactly one food serving, one rice serving, and one standard The B's Club Boba cup. The cup proportions, sealed lid, printed branding, tapioca/ingredients, and overall drink presentation follow the supplied and existing approved Boba photographs. The exact drink flavour is illustrative; the adjacent copy must still say that any available Boba drink can be chosen.
+
+Use one shared commercial-photo treatment across the seven assets:
+
+- white ceramic food and rice containers;
+- the existing wooden serving board and white table;
+- the real The B's Club interior softly visible in the background;
+- natural café/window light, realistic shadows, and restrained colour correction;
+- matching camera height, perspective, depth of field, product scale, and portrait crop;
+- no floating ingredients, repeated grid patterns, duplicated garnish, deformed tableware, invented logos, decorative text, or watermarks.
+
+The corrected food-only Green Curry image and all combo images are reused by both language pages.
+
 ## Image treatment
 
 - Preserve the food's real appearance, proportions, fillings, packaging, and brand cup design.
@@ -101,21 +155,21 @@ The serving recommendation says the sandwich is best enjoyed fresh, the Boba dri
 
 ## Ordering integration
 
-The existing order/contact area gains a `Sandwich-Sets` product group with the three set choices. When a sandwich set is selected, the page reveals or enables:
+The existing order/contact area gains separate `Food + Boba Combos` and `Sandwich-Sets` product groups. Food combos use the seven approved products and prices above. When either type of set is selected, the page reveals or enables:
 
 - Boba flavour selection for each included drink
 - Sweetness selection
 - Ice level selection
 - Optional notes
 
-The generated WhatsApp/email summary uses the page language and includes the set, quantity, drink choices, sweetness, ice, fulfilment method, date/time, and customer notes. The existing payment-before-preparation notice and Uber Eats delivery path remain unchanged.
+The generated WhatsApp/email summary uses the page language and includes the set, protein where relevant, quantity, base price, premium-drink supplement, drink choices, sweetness, ice, fulfilment method, date/time, and customer notes. The existing payment-before-preparation notice and Uber Eats delivery path remain unchanged.
 
 The sandwich section also includes a direct `Auf Uber Eats bestellen` / `Order on Uber Eats` call to action using the existing Uber Eats destination.
 
 ## Visual and responsive behaviour
 
 - Reuse the current deep green, cream, coral, sand, editorial serif, rounded card, and restrained-motion system.
-- Use a three-card row on wide screens, two-plus-one layout on medium screens, and one card per row on mobile.
+- Use a three-card row on wide screens and one card per row on mobile for the sandwich section. Use a compact responsive filter or grouped grid for the seven Food + Boba products so chicken and tofu choices remain easy to compare without an excessively long first viewport.
 - Keep prices and quantities visible without opening the details area.
 - Use the image itself as the primary quantity cue, reinforced by short quantity text and compact set badges.
 - Respect reduced-motion preferences and existing reveal behaviour.
@@ -141,10 +195,12 @@ The sandwich section also includes a direct `Auf Uber Eats bestellen` / `Order o
 
 Before publication:
 
-- Run the complete existing test suite and add coverage for bilingual content, routes, language links, sandwich prices, ingredients, allergens, ordering modifiers, generated messages, analytics names, and sitemap entries.
+- Run the complete existing test suite and add coverage for bilingual content, routes, language links, all sandwich and Food + Boba prices, the CHF 1.00 premium modifier, ingredients, allergens, ordering modifiers, generated messages, analytics names, and sitemap entries.
 - Validate both language homepages without JavaScript.
 - Check desktop and mobile layouts, keyboard navigation, reduced-motion mode, and all three product images.
 - Confirm the Double Set image contains no coffee and the Sharing Set image visibly contains two sandwiches and two Boba drinks.
+- Confirm all seven Food + Boba images use the approved white containers, one standard Boba cup, and the real café atmosphere.
+- Confirm the existing Green Curry image has been replaced and the new chicken/tofu curry photographs contain no repeated grid-like shapes or synthetic food patterns.
 - Build or serve the static site locally and verify both routes return successful responses.
 - Compare the implementation against the approved requirements line by line before publishing.
 
