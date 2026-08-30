@@ -31,3 +31,8 @@ test('uses approved hero spacing and compact desktop link cards', () => {
   assert.match(css, /@media\s*\(min-width:\s*760px\)[\s\S]*?\.headline-line\s*\{[^}]*display:\s*inline/s);
   assert.match(css, /@media\s*\(min-width:\s*760px\)[\s\S]*?\.link-card\s*\{[^}]*min-height:\s*104px[^}]*flex-direction:\s*row/s);
 });
+
+test('publishes the approved calmer H1 scale and spacing', () => {
+  assert.match(css, /\.welcome h1\s*\{[^}]*font-size:\s*calc\(clamp\(48px, 14vw, 76px\) - 2px\)[^}]*line-height:\s*0\.96/s);
+  assert.match(css, /@media\s*\(min-width:\s*760px\)[\s\S]*?\.welcome h1\s*\{[^}]*font-size:\s*calc\(clamp\(68px, 9vw, 76px\) - 2px\)/s);
+});

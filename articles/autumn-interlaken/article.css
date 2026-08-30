@@ -74,8 +74,8 @@ body[data-article-id="autumn-interlaken"] main a {
 .article-hero h1 {
   max-width: 940px;
   margin-top: 24px;
-  font-size: clamp(52px, 7.1vw, 96px);
-  line-height: 0.99;
+  font-size: calc(clamp(52px, 7.1vw, 96px) - 2px);
+  line-height: 1.02;
 }
 
 .article-standfirst {
@@ -830,8 +830,8 @@ body[data-article-id="autumn-interlaken"] main a {
 
   .article-hero h1 {
     margin-top: 19px;
-    font-size: clamp(42px, 13vw, 57px);
-    line-height: 1;
+    font-size: calc(clamp(42px, 13vw, 57px) - 2px);
+    line-height: 1.04;
   }
 
   .article-standfirst {
@@ -966,7 +966,7 @@ body[data-article-id="autumn-interlaken"] main a {
 
 @media (max-width: 380px) {
   .article-hero h1 {
-    font-size: 39px;
+    font-size: 37px;
   }
 
   .article-map {
