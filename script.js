@@ -85,17 +85,17 @@
   const menuData = {
     bubble: {
       title: 'Bubble tea menu',
-      image: 'images/drink-menu-1.jpg',
+      image: '/images/drink-menu-1.jpg',
       alt: 'The B’s Club bubble tea menu'
     },
     matcha: {
       title: 'Matcha menu',
-      image: 'images/matcha-menu.jpg',
+      image: '/images/matcha-menu.jpg',
       alt: 'The B’s Club matcha menu'
     },
     coffee: {
       title: 'Coffee menu',
-      image: 'images/coffee-menu.jpg',
+      image: '/images/coffee-menu.jpg',
       alt: 'The B’s Club coffee and tea menu'
     }
   };
@@ -169,6 +169,15 @@
       whatsappLabel: 'WhatsApp',
       emailLabel: 'Email',
       languageLegend: '1. Choose your language',
+      setLegend: 'Optional: Choose a set',
+      setProductLabel: 'Sandwich or Food + Boba set',
+      setQuantityLabel: 'Set quantity',
+      drinkOneLegend: 'Included Boba drink 1',
+      drinkTwoLegend: 'Included Boba drink 2',
+      flavourLabel: 'Flavour',
+      sweetnessLabel: 'Sweetness',
+      iceLabel: 'Ice',
+      setPriceLabel: 'Set price',
       nameLabel: 'Your name',
       namePlaceholder: 'Name for the order',
       itemsLegend: '2. What would you like?',
@@ -219,6 +228,15 @@
       whatsappLabel: 'WhatsApp',
       emailLabel: 'E-Mail',
       languageLegend: '1. Sprache wählen',
+      setLegend: 'Optional: Set wählen',
+      setProductLabel: 'Sandwich- oder Food + Boba-Set',
+      setQuantityLabel: 'Set-Menge',
+      drinkOneLegend: 'Inklusives Boba-Getränk 1',
+      drinkTwoLegend: 'Inklusives Boba-Getränk 2',
+      flavourLabel: 'Sorte',
+      sweetnessLabel: 'Süsse',
+      iceLabel: 'Eis',
+      setPriceLabel: 'Set-Preis',
       nameLabel: 'Dein Name',
       namePlaceholder: 'Name für die Bestellung',
       itemsLegend: '2. Was möchtest du bestellen?',
@@ -269,6 +287,15 @@
       whatsappLabel: 'WhatsApp',
       emailLabel: 'อีเมล',
       languageLegend: '1. เลือกภาษาที่ต้องการสื่อสาร',
+      setLegend: 'ตัวเลือก: เลือกชุดเมนู',
+      setProductLabel: 'ชุดแซนด์วิชหรืออาหาร + Boba',
+      setQuantityLabel: 'จำนวนชุด',
+      drinkOneLegend: 'Boba ที่รวมในชุด แก้วที่ 1',
+      drinkTwoLegend: 'Boba ที่รวมในชุด แก้วที่ 2',
+      flavourLabel: 'รสชาติ',
+      sweetnessLabel: 'ความหวาน',
+      iceLabel: 'น้ำแข็ง',
+      setPriceLabel: 'ราคาชุด',
       nameLabel: 'ชื่อของคุณ',
       namePlaceholder: 'ชื่อสำหรับรายการสั่งซื้อ',
       itemsLegend: '2. ต้องการสั่งอะไร?',
@@ -309,7 +336,18 @@
     }
   };
 
-  const getOrderLanguage = () => orderForm?.elements.language?.value || 'en';
+  const pageLanguage = document.body?.dataset?.pageLanguage;
+  if (pageLanguage === 'de' || pageLanguage === 'en') {
+    const pageLanguageRadio = orderForm?.querySelector(`input[name="language"][value="${pageLanguage}"]`);
+    if (pageLanguageRadio) pageLanguageRadio.checked = true;
+  }
+
+  const setProduct = orderForm?.elements.setProduct;
+  const setQuantity = orderForm?.elements.setQuantity;
+  const setPricePreview = document.querySelector('#set-price-preview');
+  const drinkModifiers = [...(orderForm?.querySelectorAll('[data-drink-modifier]') || [])];
+
+  const getOrderLanguage = () => orderForm?.elements.language?.value || pageLanguage || 'en';
   const getOrderCopy = () => orderTranslations[getOrderLanguage()] || orderTranslations.en;
 
   const setOrderLanguage = () => {
@@ -324,6 +362,40 @@
     });
     const firstItem = orderForm?.querySelector('input[name="items"]');
     firstItem?.setCustomValidity('');
+    setProduct?.setCustomValidity('');
+    if (orderStatus) orderStatus.textContent = '';
+  };
+
+  const getSetItem = () => window.TheBsMenu?.getMenuItem?.(setProduct?.value || '') || null;
+
+  const syncSetModifiers = () => {
+    const copy = getOrderCopy();
+    const item = getSetItem();
+    const requiredDrinks = item ? window.TheBsMenu?.getIncludedDrinkCount?.(item.id) || 0 : 0;
+
+    drinkModifiers.forEach((group, index) => {
+      const enabled = index < requiredDrinks;
+      group.hidden = !enabled;
+      group.querySelectorAll('select').forEach((select) => {
+        select.disabled = !enabled;
+        select.required = enabled && select.name.startsWith('bobaFlavour');
+        select.setCustomValidity('');
+        if (!enabled) {
+          select.value = '';
+        } else if (select.name.startsWith('sweetness') && !select.value) {
+          select.value = '50%';
+        } else if (select.name.startsWith('ice') && !select.value) {
+          select.value = 'Normal';
+        }
+      });
+    });
+
+    if (setQuantity) setQuantity.required = Boolean(item);
+    if (setPricePreview) {
+      setPricePreview.textContent = item ? `${copy.setPriceLabel}: CHF ${item.price.toFixed(2)}` : '';
+    }
+    setProduct?.setCustomValidity('');
+    orderForm?.querySelector('input[name="items"]')?.setCustomValidity('');
     if (orderStatus) orderStatus.textContent = '';
   };
 
@@ -338,7 +410,36 @@
   }
 
   orderForm?.querySelectorAll('input[name="language"]').forEach((radio) => {
-    radio.addEventListener('change', setOrderLanguage);
+    radio.addEventListener('change', () => {
+      setOrderLanguage();
+      syncSetModifiers();
+    });
+  });
+
+  setProduct?.addEventListener('change', () => {
+    syncSetModifiers();
+    if (setProduct.value && typeof window.gtag === 'function') {
+      window.gtag('event', 'set_selection', {
+        set_id: setProduct.value,
+        language: getOrderLanguage(),
+        cta_location: 'order_form'
+      });
+    }
+  });
+
+  document.querySelectorAll('[data-order-set]').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (!setProduct) return;
+      setProduct.value = link.dataset.orderSet || '';
+      syncSetModifiers();
+      if (setProduct.value && typeof window.gtag === 'function') {
+        window.gtag('event', 'set_selection', {
+          set_id: setProduct.value,
+          language: pageLanguage || getOrderLanguage(),
+          cta_location: 'menu_card'
+        });
+      }
+    });
   });
 
   orderForm?.querySelectorAll('input[name="items"]').forEach((checkbox) => {
@@ -347,6 +448,9 @@
       if (orderStatus) orderStatus.textContent = '';
     });
   });
+
+  setOrderLanguage();
+  syncSetModifiers();
 
   const formatOrderDate = (value, language) => {
     if (!value) return '';
@@ -360,8 +464,9 @@
     const copy = getOrderCopy();
     const selectedItems = [...orderForm.querySelectorAll('input[name="items"]:checked')].map((item) => item.value);
     const firstItem = orderForm.querySelector('input[name="items"]');
+    const selectedSetId = setProduct?.value || '';
 
-    if (selectedItems.length === 0) {
+    if (selectedItems.length === 0 && !selectedSetId) {
       firstItem?.setCustomValidity(copy.itemRequired);
       firstItem?.reportValidity();
       firstItem?.focus();
@@ -372,6 +477,40 @@
 
     const data = new FormData(orderForm);
     const language = getOrderLanguage();
+    let setLines = [];
+
+    if (selectedSetId) {
+      const drinks = drinkModifiers
+        .filter((group) => !group.hidden)
+        .map((group) => {
+          const flavour = group.querySelector('select[name^="bobaFlavour"]');
+          const sweetness = group.querySelector('select[name^="sweetness"]');
+          const ice = group.querySelector('select[name^="ice"]');
+          return {
+            flavour: flavour?.selectedOptions[0]?.textContent.trim() || '',
+            sweetness: sweetness?.selectedOptions[0]?.textContent.trim() || '',
+            ice: ice?.selectedOptions[0]?.textContent.trim() || ''
+          };
+        });
+      const selection = {
+        setId: selectedSetId,
+        quantity: Number(setQuantity?.value),
+        drinks
+      };
+      const setLanguage = language === 'de' ? 'de' : 'en';
+      const validation = window.TheBsOrder?.validateSetSelection?.(window.TheBsMenu, selection, setLanguage);
+      if (!validation?.valid) {
+        const message = validation?.errors?.join(' ') || copy.itemRequired;
+        setProduct?.setCustomValidity(message);
+        setProduct?.reportValidity();
+        setProduct?.focus();
+        if (orderStatus) orderStatus.textContent = message;
+        return;
+      }
+      setProduct?.setCustomValidity('');
+      setLines = window.TheBsOrder.formatSetOrderLines(window.TheBsMenu, selection, setLanguage);
+    }
+
     const service = data.get('service') === 'dine-in' ? copy.serviceDineIn : copy.servicePickup;
     const details = String(data.get('orderDetails') || '').trim() || copy.notProvided;
     const notes = String(data.get('notes') || '').trim() || copy.notProvided;
@@ -379,7 +518,8 @@
       copy.messageTitle,
       '',
       `${copy.messageName}: ${String(data.get('customerName')).trim()}`,
-      `${copy.messageItems}: ${selectedItems.join(', ')}`,
+      `${copy.messageItems}: ${selectedItems.join(', ') || copy.notProvided}`,
+      ...(setLines.length ? ['', ...setLines] : []),
       `${copy.messageDetails}: ${details}`,
       `${copy.messageService}: ${service}`,
       `${copy.messageDate}: ${formatOrderDate(String(data.get('orderDate')), language)}`,
@@ -456,6 +596,39 @@
   privacySettings?.addEventListener('click', () => {
     if (consentBanner) consentBanner.hidden = false;
     consentButtons[0]?.focus();
+  });
+
+  document.querySelectorAll('.language-switch a').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'language_switch', {
+          language: link.getAttribute('href') === '/en/' ? 'en' : 'de',
+          cta_location: 'header'
+        });
+      }
+    });
+  });
+
+  document.querySelectorAll('#sandwich-sets details').forEach((details) => {
+    details.addEventListener('toggle', () => {
+      if (details.open && typeof window.gtag === 'function') {
+        window.gtag('event', 'sandwich_details_open', {
+          set_id: 'sandwich-all',
+          language: pageLanguage || getOrderLanguage(),
+          cta_location: 'sandwich_details'
+        });
+      }
+    });
+  });
+
+  document.querySelector('.sandwich-uber a')?.addEventListener('click', () => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'set_uber_eats_click', {
+        set_id: 'sandwich-all',
+        language: pageLanguage || getOrderLanguage(),
+        cta_location: 'sandwich_section'
+      });
+    }
   });
 
   document.querySelectorAll('[data-cta="directions"]').forEach((directionsLink) => {

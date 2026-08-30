@@ -9,7 +9,8 @@ const expectedDate = '2026-08-27';
 const locales = {
   en: {
     path: '../en/articles/autumn-interlaken/index.html',
-    url: 'https://www.thebsclub.ch/en/articles/autumn-interlaken',
+    url: 'https://www.thebsclub.ch/en/articles/autumn-interlaken/',
+    language: 'en',
     title: 'Interlaken in Autumn: 6 Places to Visit | The B',
     description: 'Find six beautiful places to visit in Interlaken this autumn, from Höhematte to Lake Brienz, plus three easy travel packs and directions to The B.',
     headline: 'Interlaken in Autumn: A Golden Day Between Two Lakes',
@@ -27,7 +28,8 @@ const locales = {
   },
   de: {
     path: '../de/artikel/herbst-interlaken/index.html',
-    url: 'https://www.thebsclub.ch/de/artikel/herbst-interlaken',
+    url: 'https://www.thebsclub.ch/de/artikel/herbst-interlaken/',
+    language: 'de-CH',
     title: 'Interlaken im Herbst: 6 schöne Orte | The B',
     description: 'Entdecke sechs schöne Orte in Interlaken im Herbst – von der Höhematte bis zum Brienzersee – plus drei Herbst-Packs und den Weg zu The B.',
     headline: 'Interlaken im Herbst: Ein goldener Tag zwischen zwei Seen',
@@ -66,9 +68,11 @@ const schemaHasType = (schema, type) => Array.isArray(schema['@type'])
   : schema['@type'] === type;
 
 test('localized article metadata uses the approved search and social presentation', () => {
-  const alternateUrls = Object.fromEntries(
-    Object.entries(locales).map(([locale, config]) => [locale, config.url])
-  );
+  const alternateUrls = {
+    en: locales.en.url,
+    'de-CH': locales.de.url,
+    'x-default': locales.en.url
+  };
 
   for (const [locale, config] of Object.entries(locales)) {
     const html = read(config.path);
@@ -89,10 +93,9 @@ test('localized article metadata uses the approved search and social presentatio
     assert.deepEqual(
       Object.fromEntries(alternates.map((link) => [link.hreflang, link.href])),
       alternateUrls,
-      `${locale} must expose only reciprocal en/de alternates`
+      `${locale} must expose reciprocal localized and x-default alternates`
     );
-    assert.equal(alternates.length, 2);
-    assert.ok(!alternates.some((link) => link.hreflang === 'x-default'));
+    assert.equal(alternates.length, 3);
   }
 });
 
@@ -143,7 +146,7 @@ test('localized JSON-LD graphs contain complete Article, breadcrumb and place di
     assert.ok(article, `${locale} Article node missing`);
     assert.equal(article.headline, config.headline);
     assert.equal(article.description, config.description);
-    assert.equal(article.inLanguage, locale);
+    assert.equal(article.inLanguage, config.language);
     assert.equal(article.datePublished, expectedDate);
     assert.equal(article.dateModified, expectedDate);
     assert.deepEqual(article.author, { '@id': businessId });
@@ -185,18 +188,26 @@ test('sitemap lists the homepage, localized articles, and review hub with recipr
   }));
   assert.deepEqual(entries.map((entry) => entry.loc), [
     'https://www.thebsclub.ch/',
+    'https://www.thebsclub.ch/en/',
     locales.en.url,
     locales.de.url,
     'https://www.thebsclub.ch/review/'
   ]);
 
-  assert.deepEqual(entries[0].alternates, []);
-  assert.deepEqual(entries[3].alternates, []);
-  const expectedAlternates = [
-    { rel: 'alternate', hreflang: 'en', href: locales.en.url },
-    { rel: 'alternate', hreflang: 'de', href: locales.de.url }
+  const homepageAlternates = [
+    { rel: 'alternate', hreflang: 'de-CH', href: 'https://www.thebsclub.ch/' },
+    { rel: 'alternate', hreflang: 'en', href: 'https://www.thebsclub.ch/en/' },
+    { rel: 'alternate', hreflang: 'x-default', href: 'https://www.thebsclub.ch/' }
   ];
-  assert.deepEqual(entries[1].alternates, expectedAlternates);
-  assert.deepEqual(entries[2].alternates, expectedAlternates);
-  assert.doesNotMatch(sitemap, /x-default|\/articles<|\/artikel</);
+  const articleAlternates = [
+    { rel: 'alternate', hreflang: 'en', href: locales.en.url },
+    { rel: 'alternate', hreflang: 'de-CH', href: locales.de.url },
+    { rel: 'alternate', hreflang: 'x-default', href: locales.en.url }
+  ];
+  assert.deepEqual(entries[0].alternates, homepageAlternates);
+  assert.deepEqual(entries[1].alternates, homepageAlternates);
+  assert.deepEqual(entries[2].alternates, articleAlternates);
+  assert.deepEqual(entries[3].alternates, articleAlternates);
+  assert.deepEqual(entries[4].alternates, []);
+  assert.doesNotMatch(sitemap, /\/articles<|\/artikel</);
 });

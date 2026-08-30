@@ -2,23 +2,27 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const de = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const en = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
+const html = en;
 const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 const pagesWorkflow = readFileSync(new URL('../.github/workflows/deploy-pages.yml', import.meta.url), 'utf8');
 
 test('uses the confirmed website, hours, phone and launch date everywhere', () => {
-  assert.match(html, /<link rel="canonical" href="https:\/\/www\.thebsclub\.ch\/">/);
-  assert.match(html, /<meta property="og:url" content="https:\/\/www\.thebsclub\.ch\/">/);
-  assert.match(html, /"url": "https:\/\/www\.thebsclub\.ch\/"/);
-  assert.doesNotMatch(html, /https:\/\/thebsclub\.ch/);
-  assert.doesNotMatch(html, /11:00[–-](?:19:00|21:00)|"closes": "(?:19:00|21:00)"/);
-  assert.match(html, /11:00[–-]20:00/);
-  assert.match(html, /"closes": "20:00"/);
-  assert.match(html, /From 15 August/);
-  assert.match(html, /Available from 15 August 2026 · Speisekarte/);
-  assert.match(html, /tel:\+41767742027/);
-  assert.match(html, /\+41 76 774 20 27/);
+  assert.match(de, /<link rel="canonical" href="https:\/\/www\.thebsclub\.ch\/">/);
+  assert.match(en, /<link rel="canonical" href="https:\/\/www\.thebsclub\.ch\/en\/">/);
+  for (const page of [de, en]) {
+    assert.match(page, /"url": "https:\/\/www\.thebsclub\.ch\/"/);
+    assert.doesNotMatch(page, /https:\/\/thebsclub\.ch/);
+    assert.doesNotMatch(page, /11:00[–-](?:19:00|21:00)|"closes": "(?:19:00|21:00)"/);
+    assert.match(page, /11:00[–-]20:00/);
+    assert.match(page, /"closes": "20:00"/);
+    assert.match(page, /tel:\+41767742027/);
+    assert.match(page, /\+41 76 774 20 27/);
+  }
+  assert.match(en, /From 15 August/);
+  assert.match(en, /Available from 15 August 2026 · Speisekarte/);
 });
 
 test('keeps repository launch notes aligned with confirmed details', () => {
@@ -45,8 +49,8 @@ test('links the English autumn guide from navigation and the footer', () => {
   const primaryNav = html.match(/<nav class="primary-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
   const footer = html.match(/<footer class="footer">[\s\S]*?<\/footer>/)?.[0] ?? '';
 
-  assert.match(primaryNav, /<a href="\/en\/articles\/autumn-interlaken">Autumn guide<\/a>/);
-  assert.match(footer, /<a href="\/en\/articles\/autumn-interlaken">Plan an autumn day in Interlaken<\/a>/);
+  assert.match(primaryNav, /<a href="\/en\/articles\/autumn-interlaken\/">Autumn guide<\/a>/);
+  assert.match(footer, /<a href="\/en\/articles\/autumn-interlaken\/">Plan an autumn day in Interlaken<\/a>/);
 });
 
 test('documents autumn guide pack, transport, and date maintenance', () => {
@@ -73,7 +77,7 @@ test('records the healthy first-party place-source maintenance policy', () => {
 
 test('publishes localized autumn guides, article assets, and sitemap in the Pages artifact', () => {
   assert.match(pagesWorkflow, /cp\s+-R\s+en\s+de\s+articles\s+_site\//);
-  assert.match(pagesWorkflow, /cp\s+sitemap\.xml\s+_site\//);
+  assert.match(pagesWorkflow, /cp\s+sitemap\.xml\s+robots\.txt\s+_site\//);
 });
 
 test('runs the complete Node test suite before preparing or uploading the Pages artifact', () => {
@@ -108,9 +112,9 @@ test('keeps every bestseller and category connected to the existing full-menu di
 });
 
 test('marks every directions surface for delegated tracking', () => {
-  assert.match(html, /<link rel="stylesheet" href="styles\.css\?v=20260827-2">/);
-  assert.match(html, /<script src="script\.js\?v=20260827-2" defer><\/script>/);
-  assert.match(html, /<script src="cursor\.js\?v=20260815-2" defer><\/script>/);
+  assert.match(html, /<link rel="stylesheet" href="\/styles\.css\?v=20260830-1">/);
+  assert.match(html, /<script src="\/script\.js\?v=20260830-1" defer><\/script>/);
+  assert.match(html, /<script src="\/cursor\.js\?v=20260815-2" defer><\/script>/);
   assert.doesNotMatch(html, /(?:analytics|tracking|cta)\.js/);
   const trackedDirections = html.match(/data-cta="directions"/g) ?? [];
   assert.ok(trackedDirections.length >= 5, `expected at least 5 tracked directions links, found ${trackedDirections.length}`);

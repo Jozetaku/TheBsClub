@@ -45,10 +45,10 @@ jobs:
       - name: Prepare site
         run: |
           mkdir _site
-          cp index.html styles.css script.js cursor.js .nojekyll _site/
+          cp index.html styles.css menu-data.js order-builder.js script.js cursor.js .nojekyll _site/
           cp -R images _site/images
           cp -R en de articles _site/
-          cp sitemap.xml _site/
+          cp sitemap.xml robots.txt _site/
           cp -R music _site/music
           mkdir -p _site/review
           cp -R review/dist/. _site/review/
