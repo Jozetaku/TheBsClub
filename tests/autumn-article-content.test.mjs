@@ -414,7 +414,7 @@ test('German autumn guide mirrors the approved bilingual content contract', () =
   const en = readArticle('en');
   const de = readArticle('de');
 
-  assert.match(de, /<html lang="de">/);
+  assert.match(de, /<html lang="de-CH">/);
   assert.equal(occurrences(de, /<h1\b/g), 1);
   assert.match(de, /<h1>Interlaken im Herbst: Ein goldener Tag zwischen zwei Seen<\/h1>/);
 

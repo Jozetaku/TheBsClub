@@ -6,7 +6,8 @@ Launch target: 15 August 2026.
 
 ## Files
 
-- `index.html` — semantic page content, SEO metadata and structured data
+- `index.html` — canonical German homepage (`de-CH`), SEO metadata and structured data
+- `en/index.html` — complete canonical English homepage
 - `styles.css` — full responsive visual system
 - `script.js` — navigation, scroll reveals, menu viewer and CTA tracking
 - `music/` — The B's Club Global Music Radio, adapted from `Jozetaku/zetaku-radio-v2-dark` and limited to HTTPS streams for secure playback
@@ -58,6 +59,33 @@ The refresh is isolated on `feature/asian-cafe-refresh`. These commits keep the 
 - Phone: `+41 76 774 20 27`
 - Address: `Jungfraustrasse 46, 3800 Interlaken`
 - Instagram: `@thebsclub25`
+
+## Bilingual homepage maintenance
+
+- `/` is the complete German homepage and `/en/` is its complete English mirror. Keep visible content, canonical URLs, `hreflang` links, Open Graph data and JSON-LD aligned in both files.
+- Shared browser behaviour belongs in `script.js`; shared prices and image paths belong in `menu-data.js`. Do not make either language depend on JavaScript for visible product names, quantities or prices.
+- When a menu fact changes, update `menu-data.js`, both homepage files and the relevant tests in the same change.
+
+## Sandwich and Food + Boba sets
+
+The ten stable catalog IDs and all-inclusive prices are:
+
+- `sandwich-regular` — CHF 16.90
+- `sandwich-double` — CHF 24.90
+- `sandwich-sharing` — CHF 31.90
+- `katsu-chicken` — CHF 23.90
+- `red-curry-chicken` — CHF 24.90
+- `green-curry-chicken` — CHF 24.90
+- `thai-basil-chicken` — CHF 24.90
+- `thai-basil-tofu` — CHF 21.90
+- `red-curry-tofu` — CHF 23.90
+- `green-curry-tofu` — CHF 23.90
+
+Every currently available Boba flavour is included at the displayed set price. There is no premium tier and no drink surcharge. Do not add a price adjustment in the catalog, UI, order builder or message output.
+
+Campaign v5 images in `images/campaign/v5/` are 1200 × 1500 JPEG files. Food-set photographs must retain white ceramic containers, one standard branded Boba cup, the wooden serving board, white table and real café interior. Sandwich photographs must preserve their exact item counts: Regular 1+1, Double 2+1 with no coffee, and Sharing 2+2. Reject repeated grid-like ingredients, wrong proteins or invented branding.
+
+The direct-order Boba choices appear in both homepage forms. To add or remove an available flavour, update the flavour options in `index.html` and `en/index.html` together, verify the full drink-menu dialog, and rerun `tests/order-contact.test.mjs`, `tests/order-builder.test.mjs` and `tests/menu-sets.test.mjs`.
 
 ## Review hub maintenance
 

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
 const logoUrl = new URL('../images/logo-official.png', import.meta.url);
 
 test('uses the official logo in header and footer', () => {
@@ -24,7 +24,7 @@ test('publishes all four Asian food dishes as semantic cards', () => {
 test('maps every approved meal photograph to its matching semantic card', () => {
   const expectedImages = [
     ['spicy-basil', 'v3/spicy-basil.png', 'Spicy Basil chicken with jasmine rice in a kraft takeaway bowl'],
-    ['green-curry', 'v3/green-curry.png', 'Green Curry chicken with vegetables and jasmine rice in a kraft takeaway bowl'],
+    ['green-curry', 'v5/green-curry-chicken.jpg', 'Green Curry chicken with vegetables and jasmine rice in white ceramic bowls'],
     ['red-curry', 'v3/red-curry.png', 'Red Curry chicken with jasmine rice in a kraft takeaway bowl'],
     ['katsu-curry', 'v4/katsu-curry.png', 'Crispy Chicken Katsu Curry with jasmine rice in a kraft takeaway bowl'],
   ];
@@ -33,7 +33,7 @@ test('maps every approved meal photograph to its matching semantic card', () => 
     assert.ok(existsSync(new URL(`../images/campaign/${assetPath}`, import.meta.url)));
     assert.match(
       html,
-      new RegExp(`data-dish="${dish}"[\\s\\S]*?<figure class="dish-photo-stage">[\\s\\S]*?src="images/campaign/${assetPath}"[\\s\\S]*?alt="${alt}"`),
+      new RegExp(`data-dish="${dish}"[\\s\\S]*?<figure class="dish-photo-stage">[\\s\\S]*?src="/images/campaign/${assetPath}"[\\s\\S]*?alt="${alt}"`),
     );
   }
 

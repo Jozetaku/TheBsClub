@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
 test('positions the homepage as an Asian Café in Interlaken', () => {
@@ -79,8 +79,8 @@ test('uses the approved elegant product theatre without branding the cups', () =
 
 test('pairs the real café interior with the existing cappuccino in the story collage', () => {
   const story = html.match(/<section class="section story"[\s\S]*?<\/section>/)?.[0] ?? '';
-  assert.match(story, /class="story-photo-one" src="images\/the-bs-club-interior\.jpg"[^>]*alt="Interior of The B's Club Asian café in central Interlaken/);
-  assert.match(story, /class="story-photo-two" src="images\/signature-latte\.jpg"[^>]*alt="Cappuccino/);
+  assert.match(story, /class="story-photo-one" src="\/images\/the-bs-club-interior\.jpg"[^>]*alt="Interior of The B's Club Asian café in central Interlaken/);
+  assert.match(story, /class="story-photo-two" src="\/images\/signature-latte\.jpg"[^>]*alt="Cappuccino/);
   assert.doesNotMatch(story, /story-iced-coffee-tall-v2/);
 });
 

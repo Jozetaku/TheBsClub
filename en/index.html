@@ -7,9 +7,11 @@
   <meta name="description" content="Thai food, Bubble Tea, coffee and matcha at The B's Club, an Asian café in central Interlaken. Dine in or takeaway daily, 11:00–20:00.">
   <meta name="theme-color" content="#173f34">
   <meta property="og:type" content="restaurant">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:locale:alternate" content="de_CH">
   <meta property="og:title" content="The B's Club — Asian Café Interlaken">
   <meta property="og:description" content="Thai food, Bubble Tea, coffee and matcha in central Interlaken. Dine in or takeaway daily, 11:00–20:00.">
-  <meta property="og:image" content="images/brown-sugar-milk-tea.jpg">
+  <meta property="og:image" content="https://www.thebsclub.ch/images/campaign/v5/sandwich-sharing.jpg">
   <meta property="og:url" content="https://www.thebsclub.ch/en/">
   <link rel="canonical" href="https://www.thebsclub.ch/en/">
   <link rel="alternate" hreflang="de-CH" href="https://www.thebsclub.ch/">
@@ -31,8 +33,129 @@
     "telephone": "+41767742027",
     "image": "https://www.thebsclub.ch/images/brown-sugar-milk-tea.jpg",
     "priceRange": "CHF",
+    "inLanguage": "en",
     "servesCuisine": ["Asian", "Thai", "Japanese", "Bubble Tea", "Coffee"],
-    "hasMenu": "https://www.thebsclub.ch/#food",
+    "hasMenu": {
+      "@type": "Menu",
+      "@id": "https://www.thebsclub.ch/en/#sets",
+      "inLanguage": "en",
+      "hasMenuSection": [
+        {
+          "@type": "MenuSection",
+          "name": "Sandwich Sets",
+          "url": "https://www.thebsclub.ch/en/#sandwich-sets",
+          "hasMenuItem": [
+            {
+              "@type": "MenuItem",
+              "name": "Regular Sandwich Set",
+              "url": "https://www.thebsclub.ch/en/#sandwich-sets",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "16.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Double Sandwich Set",
+              "url": "https://www.thebsclub.ch/en/#sandwich-sets",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "24.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Sharing Sandwich Set",
+              "url": "https://www.thebsclub.ch/en/#sandwich-sets",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "31.90"
+              }
+            }
+          ]
+        },
+        {
+          "@type": "MenuSection",
+          "name": "Food + Boba Sets",
+          "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+          "hasMenuItem": [
+            {
+              "@type": "MenuItem",
+              "name": "Crispy Chicken Katsu Curry + Any Boba Drink",
+              "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "23.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Thai Red Curry Chicken + Any Boba Drink",
+              "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "24.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Thai Green Curry Chicken + Any Boba Drink",
+              "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "24.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Thai Basil Chicken + Any Boba Drink",
+              "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "24.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Thai Basil Tofu + Any Boba Drink",
+              "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "21.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Thai Red Curry Tofu + Any Boba Drink",
+              "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "23.90"
+              }
+            },
+            {
+              "@type": "MenuItem",
+              "name": "Thai Green Curry Tofu + Any Boba Drink",
+              "url": "https://www.thebsclub.ch/en/#food-boba-combos",
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "CHF",
+                "price": "23.90"
+              }
+            }
+          ]
+        }
+      ]
+    },
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Jungfraustrasse 46",
@@ -95,7 +218,7 @@
         <a href="#order">Order / Contact</a>
         <a href="#our-story">Our Story</a>
         <a href="#visit">Visit</a>
-        <a href="/en/articles/autumn-interlaken">Autumn guide</a>
+        <a href="/en/articles/autumn-interlaken/">Autumn guide</a>
       </nav>
 
       <nav class="language-switch" aria-label="Language">
@@ -570,7 +693,7 @@
   <footer class="footer">
     <div class="container footer-top">
       <a class="footer-logo" href="#top" aria-label="The B's Club, back to top"><img src="/images/logo-official.png" alt="The B's Club" width="1181" height="1181" loading="lazy" decoding="async"></a>
-      <div class="footer-links"><a href="#food">Food</a><a href="#drinks">Drinks</a><a href="#music">Music</a><a href="#order">Order / Contact</a><a href="#our-story">Our Story</a><a href="#visit">Visit</a><a href="/en/articles/autumn-interlaken">Plan an autumn day in Interlaken</a><a href="https://www.instagram.com/thebsclub25/" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.facebook.com/profile.php?id=100071619350267" target="_blank" rel="noopener">Facebook ↗</a></div>
+      <div class="footer-links"><a href="#food">Food</a><a href="#drinks">Drinks</a><a href="#music">Music</a><a href="#order">Order / Contact</a><a href="#our-story">Our Story</a><a href="#visit">Visit</a><a href="/en/articles/autumn-interlaken/">Plan an autumn day in Interlaken</a><a href="https://www.instagram.com/thebsclub25/" target="_blank" rel="noopener">Instagram ↗</a><a href="https://www.facebook.com/profile.php?id=100071619350267" target="_blank" rel="noopener">Facebook ↗</a></div>
     </div>
     <div class="container footer-bottom"><p>© <span id="year">2026</span> The B's Club. Interlaken, Switzerland.</p><p>Independent café · Good food · Good company</p><button class="footer-privacy" id="privacy-settings" type="button">Privacy settings</button></div>
   </footer>

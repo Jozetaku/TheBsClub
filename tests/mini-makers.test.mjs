@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
 test('keeps every final V2 campaign asset inside the website worktree', () => {
@@ -28,7 +28,7 @@ test('shows the final food image without people or ladders in the hero', () => {
 
 test('keeps the swappable food art as the only hero image layer', () => {
   assert.match(html, /class="mini-makers"[^>]*data-hero-asset="spicy-basil-grab-go-v2"/);
-  assert.match(html, /class="hero-product-layer"[\s\S]*class="hero-product-image"[^>]*src="images\/campaign\/v2\/spicy-basil-grab-go\.png"[^>]*alt=""[\s\S]*<\/div>/);
+  assert.match(html, /class="hero-product-layer"[\s\S]*class="hero-product-image"[^>]*src="\/images\/campaign\/v2\/spicy-basil-grab-go\.png"[^>]*alt=""[\s\S]*<\/div>/);
   assert.match(css, /\.hero-product-layer\s*\{[^}]*z-index:\s*2/);
   assert.match(css, /\.hero-product-image\s*\{[^}]*object-fit:\s*cover/);
 });
