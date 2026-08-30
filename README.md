@@ -68,7 +68,7 @@ The refresh is isolated on `feature/asian-cafe-refresh`. These commits keep the 
 
 ## Sandwich and Food + Boba sets
 
-The ten stable catalog IDs and all-inclusive prices are:
+The nine stable catalog IDs and all-inclusive prices are:
 
 - `sandwich-regular` — CHF 16.90
 - `sandwich-double` — CHF 24.90
@@ -77,7 +77,6 @@ The ten stable catalog IDs and all-inclusive prices are:
 - `red-curry-chicken` — CHF 24.90
 - `green-curry-chicken` — CHF 24.90
 - `thai-basil-chicken` — CHF 24.90
-- `thai-basil-tofu` — CHF 21.90
 - `red-curry-tofu` — CHF 23.90
 - `green-curry-tofu` — CHF 23.90
 

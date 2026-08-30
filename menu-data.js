@@ -23,10 +23,6 @@
       de: 'Thai Basil Chicken + Boba-Getränk nach Wahl',
       en: 'Thai Basil Chicken + Any Boba Drink'
     }),
-    'thai-basil-tofu': Object.freeze({
-      de: 'Thai Basil Tofu + Boba-Getränk nach Wahl',
-      en: 'Thai Basil Tofu + Any Boba Drink'
-    }),
     'red-curry-tofu': Object.freeze({
       de: 'Thai Red Curry Tofu + Boba-Getränk nach Wahl',
       en: 'Thai Red Curry Tofu + Any Boba Drink'
@@ -77,7 +73,6 @@
     { id: 'red-curry-chicken', price: 24.90, protein: 'chicken' },
     { id: 'green-curry-chicken', price: 24.90, protein: 'chicken' },
     { id: 'thai-basil-chicken', price: 24.90, protein: 'chicken' },
-    { id: 'thai-basil-tofu', price: 21.90, protein: 'tofu' },
     { id: 'red-curry-tofu', price: 23.90, protein: 'tofu' },
     { id: 'green-curry-tofu', price: 23.90, protein: 'tofu' }
   ].map((item) => freezeItem({

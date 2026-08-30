@@ -18,7 +18,7 @@ test('publishes the approved sandwich set prices and quantities', () => {
   );
 });
 
-test('publishes all seven Food + Boba combos at one all-inclusive price each', () => {
+test('publishes all six Food + Boba combos at one all-inclusive price each', () => {
   assert.deepEqual(
     Object.fromEntries(menu.foodCombos.map(({ id, price }) => [id, price])),
     {
@@ -26,11 +26,11 @@ test('publishes all seven Food + Boba combos at one all-inclusive price each', (
       'red-curry-chicken': 24.90,
       'green-curry-chicken': 24.90,
       'thai-basil-chicken': 24.90,
-      'thai-basil-tofu': 21.90,
       'red-curry-tofu': 23.90,
       'green-curry-tofu': 23.90,
     },
   );
+  assert.equal(menu.getMenuItem('thai-basil-tofu'), null);
   assert.ok(menu.foodCombos.every((item) => item.drinks === 1));
   assert.ok(menu.foodCombos.every((item) => item.surcharge === 0));
   assert.equal(menu.getMenuItem('tofu-katsu'), null);
@@ -70,5 +70,10 @@ test('publishes every approved set on both language homepages', () => {
     }
     assert.doesNotMatch(html, /Premium Boba|Premium-Getränk|\+\s*CHF\s*1\.00/i);
     assert.doesNotMatch(html, /Tofu Katsu/i);
+  }
+  assert.equal((de.match(/class="food-combo-card/g) ?? []).length, 6);
+  assert.equal((en.match(/class="food-combo-card/g) ?? []).length, 6);
+  for (const html of [de, en]) {
+    assert.doesNotMatch(html, /thai-basil-tofu|Thai Basil Tofu/);
   }
 });
