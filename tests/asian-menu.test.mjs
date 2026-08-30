@@ -23,10 +23,10 @@ test('publishes all four Asian food dishes as semantic cards', () => {
 
 test('maps every approved meal photograph to its matching semantic card', () => {
   const expectedImages = [
-    ['spicy-basil', 'v3/spicy-basil.png', 'Spicy Basil chicken with jasmine rice in a kraft takeaway bowl'],
+    ['spicy-basil', 'v6/spicy-basil-white-ceramic.jpg', 'Spicy Basil chicken in a white ceramic bowl with jasmine rice in a separate white bowl'],
     ['green-curry', 'v5/green-curry-chicken.jpg', 'Green Curry chicken with vegetables and jasmine rice in white ceramic bowls'],
-    ['red-curry', 'v3/red-curry.png', 'Red Curry chicken with jasmine rice in a kraft takeaway bowl'],
-    ['katsu-curry', 'v4/katsu-curry.png', 'Crispy Chicken Katsu Curry with jasmine rice in a kraft takeaway bowl'],
+    ['red-curry', 'v6/red-curry-white-ceramic.jpg', 'Red Curry chicken in a white ceramic bowl with jasmine rice in a separate white bowl'],
+    ['katsu-curry', 'v6/katsu-curry-white-ceramic.jpg', 'Crispy Chicken Katsu Curry with seven round chicken bites and jasmine rice in white ceramic bowls'],
   ];
 
   for (const [dish, assetPath, alt] of expectedImages) {
@@ -39,6 +39,9 @@ test('maps every approved meal photograph to its matching semantic card', () => 
 
   assert.equal((html.match(/class="dish-photo"/g) ?? []).length, 4);
   assert.doesNotMatch(html, /dish-illustration/);
+
+  const foodSection = html.match(/<section class="section asian-menu"[\s\S]*?<\/section>/)?.[0] ?? '';
+  assert.doesNotMatch(foodSection, /kraft|paper|cardboard|Boba drink|coffee/i);
 });
 
 test('keeps dietary language factual until ingredients are verified', () => {
