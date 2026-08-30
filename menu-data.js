@@ -81,7 +81,9 @@
     sandwiches: 0,
     drinks: 1,
     surcharge: 0,
-    image: `/images/campaign/v5/food-boba-${item.id}.jpg`
+    image: item.id === 'katsu-chicken'
+      ? '/images/campaign/v7/katsu-curry-natural-six.jpg'
+      : `/images/campaign/v5/food-boba-${item.id}.jpg`
   })));
 
   const allItems = Object.freeze([...sandwichSets, ...foodCombos]);

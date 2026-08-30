@@ -47,6 +47,10 @@ test('publishes exact bilingual set names and stable image paths', () => {
     menu.getMenuItem('green-curry-tofu').image,
     '/images/campaign/v5/food-boba-green-curry-tofu.jpg',
   );
+  assert.equal(
+    menu.getMenuItem('katsu-chicken').image,
+    '/images/campaign/v7/katsu-curry-natural-six.jpg',
+  );
   assert.equal(menu.getIncludedDrinkCount('sandwich-sharing'), 2);
   assert.equal(menu.getIncludedDrinkCount('missing-set'), 0);
 });
@@ -70,6 +74,14 @@ test('publishes every approved set on both language homepages', () => {
     }
     assert.doesNotMatch(html, /Premium Boba|Premium-Getränk|\+\s*CHF\s*1\.00/i);
     assert.doesNotMatch(html, /Tofu Katsu/i);
+    assert.match(
+      html,
+      /data-set-id="katsu-chicken"[\s\S]*?src="\/images\/campaign\/v7\/katsu-curry-natural-six\.jpg"/,
+    );
+    assert.doesNotMatch(
+      html,
+      /(?:v3\/katsu-curry|v4\/katsu-curry|food-boba-katsu-chicken)/i,
+    );
   }
   assert.equal((de.match(/class="food-combo-card/g) ?? []).length, 6);
   assert.equal((en.match(/class="food-combo-card/g) ?? []).length, 6);
