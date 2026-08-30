@@ -26,7 +26,7 @@ test('maps every approved meal photograph to its matching semantic card', () => 
     ['spicy-basil', 'v6/spicy-basil-white-ceramic.jpg', 'Spicy Basil chicken in a white ceramic bowl with jasmine rice in a separate white bowl'],
     ['green-curry', 'v5/green-curry-chicken.jpg', 'Green Curry chicken with vegetables and jasmine rice in white ceramic bowls'],
     ['red-curry', 'v6/red-curry-white-ceramic.jpg', 'Red Curry chicken in a white ceramic bowl with jasmine rice in a separate white bowl'],
-    ['katsu-curry', 'v6/katsu-curry-white-ceramic.jpg', 'Crispy Chicken Katsu Curry with seven round chicken bites and jasmine rice in white ceramic bowls'],
+    ['katsu-curry', 'v7/katsu-curry-natural-six.jpg', 'Crispy Chicken Katsu Curry with six naturally spaced, partially submerged round chicken bites and jasmine rice in white ceramic bowls'],
   ];
 
   for (const [dish, assetPath, alt] of expectedImages) {
