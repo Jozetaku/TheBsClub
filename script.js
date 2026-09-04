@@ -1,4 +1,9 @@
 (() => {
+  const googleAdsConversions = {
+    directions: 'AW-18339850662/hxWiCLTTpO4cEKbTj6lE',
+    contact: 'AW-18339850662/gzNvCLfTpO4cEKbTj6lE'
+  };
+
   const header = document.querySelector('#site-header');
   const menuToggle = document.querySelector('.menu-toggle');
   const primaryNav = document.querySelector('#primary-nav');
@@ -393,6 +398,9 @@
 
     if (typeof window.gtag === 'function') {
       window.gtag('event', 'order_contact_click', { channel, language, service: data.get('service') });
+      window.gtag('event', 'conversion', {
+        send_to: googleAdsConversions.contact
+      });
     }
 
     if (channel === 'email') {
@@ -462,6 +470,9 @@
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'directions_click', {
           cta_location: ctaLocation
+        });
+        window.gtag('event', 'conversion', {
+          send_to: googleAdsConversions.directions
         });
       } else {
         if (!Array.isArray(window.dataLayer)) window.dataLayer = [];

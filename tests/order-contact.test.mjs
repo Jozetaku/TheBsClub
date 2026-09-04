@@ -35,6 +35,17 @@ test('builds encoded WhatsApp and email handoffs without a data backend', () => 
   assert.doesNotMatch(html, /action="https?:\/\//);
 });
 
+test('sends order contact submissions to the Google Ads contact conversion', () => {
+  assert.match(
+    script,
+    /send_to:\s*googleAdsConversions\.contact/
+  );
+  assert.match(
+    script,
+    /contact:\s*'AW-18339850662\/gzNvCLfTpO4cEKbTj6lE'/
+  );
+});
+
 test('routes delivery customers to the existing Uber Eats listing', () => {
   const uberUrl = 'https://www.ubereats.com/ch/store/bublee-interlaken/Ik4zv95aWhWzt0lYSbjaMQ';
   assert.ok(html.split(uberUrl).length - 1 >= 4);
