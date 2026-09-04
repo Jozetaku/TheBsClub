@@ -1,7 +1,8 @@
 (() => {
   const googleAdsConversions = {
     directions: 'AW-18339850662/hxWiCLTTpO4cEKbTj6lE',
-    contact: 'AW-18339850662/gzNvCLfTpO4cEKbTj6lE'
+    contact: 'AW-18339850662/gzNvCLfTpO4cEKbTj6lE',
+    phone: 'AW-18339850662/Fs5nCOKbze4cEKbTj6lE'
   };
 
   const header = document.querySelector('#site-header');
@@ -661,6 +662,19 @@
         window.dataLayer.push({
           event: 'directions_click',
           ...payload
+        });
+      }
+    });
+  });
+
+  document.querySelectorAll('a[href^="tel:"]').forEach((phoneLink) => {
+    phoneLink.addEventListener('click', () => {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'phone_click', {
+          cta_location: phoneLink.dataset.ctaLocation || 'contact'
+        });
+        window.gtag('event', 'conversion', {
+          send_to: googleAdsConversions.phone
         });
       }
     });
