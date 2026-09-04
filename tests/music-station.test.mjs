@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const homepage = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const homepage = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
 const homepageCss = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 const stationHtml = readFileSync(new URL('../music/index.html', import.meta.url), 'utf8');
 const stationScript = readFileSync(new URL('../music/app.js', import.meta.url), 'utf8');
@@ -11,8 +11,8 @@ const pagesWorkflow = readFileSync(new URL('../.github/workflows/deploy-pages.ym
 
 test('introduces Global Music Radio as a prominent branded homepage section', () => {
   assert.match(homepage, /<section class="section music-station-teaser" id="music">/);
-  assert.match(homepage, /href="music\/" target="_blank" rel="noopener">Open Global Music Radio/);
-  assert.match(homepage, /class="music-orbit-play" href="music\/" target="_blank" rel="noopener" aria-label="Open The B's Club Global Music Radio"/);
+  assert.match(homepage, /href="\/music\/" target="_blank" rel="noopener">Open Global Music Radio/);
+  assert.match(homepage, /class="music-orbit-play" href="\/music\/" target="_blank" rel="noopener" aria-label="Open The B's Club Global Music Radio"/);
   assert.doesNotMatch(homepage, /class="music-orbit-logo"/);
   assert.match(homepage, /href="#music">Music<\/a>/);
   assert.match(homepage, /126 secure live stations from 38 countries/);

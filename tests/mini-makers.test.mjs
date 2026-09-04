@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
 test('keeps every final V2 campaign asset inside the website worktree', () => {
@@ -18,7 +18,7 @@ test('keeps every final V2 campaign asset inside the website worktree', () => {
 });
 
 test('shows the final food image without people or ladders in the hero', () => {
-  assert.match(html, /class="mini-makers"[^>]*data-hero-asset="spicy-basil-grab-go-v2"[^>]*role="img"[^>]*aria-label="Spicy basil chicken and jasmine rice in an open kraft paper takeaway bowl with a white interior and clear lid behind it\."/);
+  assert.match(html, /class="mini-makers"[^>]*data-hero-asset="spicy-basil-white-ceramic-v6"[^>]*role="img"[^>]*aria-label="Spicy Basil chicken in a white ceramic bowl with jasmine rice in a separate white bowl\."/);
   assert.match(html, /class="hero-product-image"/);
   assert.doesNotMatch(html, /class="hero-makers-layer"/);
   assert.doesNotMatch(html, /class="mini-makers-crew-image"/);
@@ -27,8 +27,9 @@ test('shows the final food image without people or ladders in the hero', () => {
 });
 
 test('keeps the swappable food art as the only hero image layer', () => {
-  assert.match(html, /class="mini-makers"[^>]*data-hero-asset="spicy-basil-grab-go-v2"/);
-  assert.match(html, /class="hero-product-layer"[\s\S]*class="hero-product-image"[^>]*src="images\/campaign\/v2\/spicy-basil-grab-go\.png"[^>]*alt=""[\s\S]*<\/div>/);
+  assert.match(html, /class="mini-makers"[^>]*data-hero-asset="spicy-basil-white-ceramic-v6"/);
+  assert.match(html, /class="hero-product-layer"[\s\S]*class="hero-product-image"[^>]*src="\/images\/campaign\/v6\/spicy-basil-white-ceramic\.jpg"[^>]*alt=""[\s\S]*<\/div>/);
+  assert.doesNotMatch(html, /spicy-basil-grab-go|kraft paper takeaway bowl/i);
   assert.match(css, /\.hero-product-layer\s*\{[^}]*z-index:\s*2/);
   assert.match(css, /\.hero-product-image\s*\{[^}]*object-fit:\s*cover/);
 });

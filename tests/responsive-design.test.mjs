@@ -20,6 +20,12 @@ test('lays out food and drinks responsively', () => {
   assert.match(css, /@media\s*\(max-width:\s*560px\)/);
 });
 
+test('lays out both set collections responsively', () => {
+  assert.match(css, /\.food-combo-grid\s*\{[^}]*display:\s*grid/);
+  assert.match(css, /\.sandwich-set-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,/);
+  assert.match(css, /@media\s*\(max-width:\s*820px\)[\s\S]*\.sandwich-set-grid\s*\{[^}]*grid-template-columns:\s*1fr/);
+});
+
 test('keeps the official logo readable in header and footer', () => {
   assert.match(css, /\.official-logo\s*\{[^}]*overflow:\s*hidden/);
   assert.match(css, /\.footer-logo/);

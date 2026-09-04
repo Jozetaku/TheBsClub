@@ -5,7 +5,14 @@ import vm from 'node:vm';
 
 const analyticsUrl = new URL('../script.js', import.meta.url);
 
-const loadTracking = ({ dataLayer = [], gtag, locations = ['hero'] } = {}) => {
+const loadTracking = ({
+  articleId,
+  dataLayer = [],
+  gtag,
+  language = 'en',
+  locations = ['hero'],
+  width = 1280
+} = {}) => {
   assert.ok(existsSync(analyticsUrl), 'script.js should exist');
   const listeners = new Map();
   const directionsLinks = locations.map((location) => ({
@@ -16,6 +23,7 @@ const loadTracking = ({ dataLayer = [], gtag, locations = ['hero'] } = {}) => {
   }));
   const window = {
     dataLayer,
+    innerWidth: width,
     addEventListener() {},
     matchMedia: () => ({ matches: true }),
     scrollY: 0
@@ -29,13 +37,27 @@ const loadTracking = ({ dataLayer = [], gtag, locations = ['hero'] } = {}) => {
     },
     querySelector: () => null,
     querySelectorAll: (selector) => selector === '[data-cta="directions"]' ? directionsLinks : [],
-    body: { classList: { toggle() {}, add() {}, remove() {} } }
+    body: {
+      classList: { toggle() {}, add() {}, remove() {} },
+      dataset: articleId ? { articleId } : {}
+    },
+    documentElement: { lang: language }
   };
   vm.runInNewContext(readFileSync(analyticsUrl, 'utf8'), { window, document });
   return { clicks: directionsLinks.map((link) => link.click), window };
 };
 
 const normalize = (value) => JSON.parse(JSON.stringify(value));
+
+const directionsEvents = (dataLayer) => dataLayer
+  .map((message) => {
+    if (message?.event === 'directions_click') return message;
+    const [command, event, payload] = Array.from(message);
+    return command === 'event' && event === 'directions_click'
+      ? { event, ...payload }
+      : null;
+  })
+  .filter(Boolean);
 
 test('pushes directions_click with the CTA location', () => {
   const { clicks, window } = loadTracking();
@@ -66,16 +88,7 @@ test('queues exactly one directions event through the shared gtag data layer', (
   };
   const { clicks } = loadTracking({ dataLayer, gtag: bootstrapGtag, locations: ['mobile'] });
   clicks[0]();
-  const directionsEvents = dataLayer
-    .map((message) => {
-      if (message?.event === 'directions_click') return message;
-      const [command, event, payload] = Array.from(message);
-      return command === 'event' && event === 'directions_click'
-        ? { event, cta_location: payload.cta_location }
-        : null;
-    })
-    .filter(Boolean);
-  assert.deepEqual(normalize(directionsEvents), [
+  assert.deepEqual(normalize(directionsEvents(dataLayer)), [
     { event: 'directions_click', cta_location: 'mobile' }
   ]);
 });
@@ -91,4 +104,48 @@ test('sends the Google Ads directions conversion once', () => {
   assert.deepEqual(normalize(conversions), [
     ['event', 'conversion', { send_to: 'AW-18339850662/hxWiCLTTpO4cEKbTj6lE' }]
   ]);
+});
+
+test('pushes one directions event with article context on article pages', () => {
+  const dataLayer = [];
+  const bootstrapGtag = function gtag() {
+    dataLayer.push(arguments);
+  };
+  const { clicks } = loadTracking({
+    articleId: 'autumn-interlaken',
+    dataLayer,
+    gtag: bootstrapGtag,
+    language: 'en',
+    width: 767
+  });
+
+  clicks[0]();
+
+  assert.deepEqual(normalize(directionsEvents(dataLayer)), [
+    {
+      event: 'directions_click',
+      cta_location: 'hero',
+      article_id: 'autumn-interlaken',
+      language: 'en',
+      device_category: 'mobile'
+    }
+  ]);
+});
+
+test('categorizes exact 768 and 1024 directions boundaries', () => {
+  for (const [width, deviceCategory] of [
+    [767, 'mobile'],
+    [768, 'tablet'],
+    [1023, 'tablet'],
+    [1024, 'desktop']
+  ]) {
+    const { clicks, window } = loadTracking({
+      articleId: 'autumn-interlaken',
+      language: 'en',
+      width
+    });
+    clicks[0]();
+
+    assert.equal(directionsEvents(window.dataLayer)[0].device_category, deviceCategory, `${width}px`);
+  }
 });

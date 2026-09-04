@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../en/index.html', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 const script = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
 
@@ -21,7 +21,7 @@ test('collects items, service, date, time and payment acknowledgement', () => {
   assert.match(html, /name="service" value="dine-in" required/);
   assert.match(html, /name="service" value="pickup" required/);
   assert.match(html, /type="date" name="orderDate" required/);
-  assert.match(html, /type="time" name="orderTime" min="11:00" max="19:00" required/);
+  assert.match(html, /type="time" name="orderTime" min="11:00" max="20:00" required/);
   assert.match(html, /name="paymentAccepted" required/);
   assert.match(html, /debit or credit cards only/i);
   assert.match(html, /Payment must be completed before we prepare food/i);
@@ -57,4 +57,17 @@ test('lays the order form out responsively', () => {
   assert.match(css, /\.order-item-groups\s*\{[^}]*grid-template-columns:\s*1fr 1fr/);
   assert.match(css, /@media\s*\(max-width:\s*1050px\)[\s\S]*\.order-layout\s*\{[^}]*grid-template-columns:\s*1fr/);
   assert.match(css, /@media\s*\(max-width:\s*560px\)[\s\S]*\.order-item-groups,[\s\S]*grid-template-columns:\s*1fr/);
+});
+
+test('collects one priced set and the exact number of included Boba choices', () => {
+  assert.match(html, /id="set-product" name="setProduct"/);
+  assert.match(html, /id="set-quantity" name="setQuantity" type="number" min="1" max="20"/);
+  assert.equal((html.match(/data-drink-modifier/g) ?? []).length, 2);
+  for (const field of ['bobaFlavour', 'sweetness', 'ice']) {
+    assert.match(html, new RegExp(`name="${field}1"`));
+    assert.match(html, new RegExp(`name="${field}2"`));
+  }
+  assert.doesNotMatch(html, /premium|surcharge|Aufpreis/i);
+  assert.match(script, /syncSetModifiers/);
+  assert.match(script, /formatSetOrderLines/);
 });
