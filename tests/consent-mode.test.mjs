@@ -17,7 +17,7 @@ test('loads the Google tag for the approved GA4 measurement ID', () => {
   );
 });
 
-test('sets every consent category to denied before configuring GA4', () => {
+test('sets every consent category to denied before configuring analytics and ads', () => {
   assert.ok(bootstrapMatch, 'consent bootstrap should exist');
   const window = { dataLayer: [] };
   vm.runInNewContext(bootstrapMatch[1], { window, Date });
@@ -36,7 +36,8 @@ test('sets every consent category to denied before configuring GA4', () => {
       wait_for_update: 500
     }
   ]);
-  assert.deepEqual(calls.at(-1), ['config', 'G-JS838K2PY5']);
+  assert.deepEqual(calls.at(-2), ['config', 'G-JS838K2PY5']);
+  assert.deepEqual(calls.at(-1), ['config', 'AW-18339850662']);
 });
 
 test('declares consent defaults before loading gtag.js', () => {

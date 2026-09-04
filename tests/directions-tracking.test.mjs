@@ -93,6 +93,19 @@ test('queues exactly one directions event through the shared gtag data layer', (
   ]);
 });
 
+test('sends the Google Ads directions conversion once', () => {
+  const calls = [];
+  const { clicks } = loadTracking({
+    gtag: (...args) => calls.push(args),
+    locations: ['hero']
+  });
+  clicks[0]();
+  const conversions = calls.filter(([command, event]) => command === 'event' && event === 'conversion');
+  assert.deepEqual(normalize(conversions), [
+    ['event', 'conversion', { send_to: 'AW-18339850662/hxWiCLTTpO4cEKbTj6lE' }]
+  ]);
+});
+
 test('pushes one directions event with article context on article pages', () => {
   const dataLayer = [];
   const bootstrapGtag = function gtag() {
