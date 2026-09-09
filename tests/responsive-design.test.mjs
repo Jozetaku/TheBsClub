@@ -27,6 +27,7 @@ test('lays out both set collections responsively', () => {
 });
 
 test('food boba images use compact landscape framing without changing sandwich portraits', () => {
+  assert.match(css, /\.food-combo-card img\s*,\s*\.sandwich-set-card img\s*\{[^}]*height:\s*auto/s);
   assert.match(css, /\.food-combo-card img\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*3/s);
   assert.match(css, /\.sandwich-set-card img\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s);
   assert.doesNotMatch(css, /\.food-combo-card img\s*,\s*\.sandwich-set-card img\s*\{[^}]*aspect-ratio/s);

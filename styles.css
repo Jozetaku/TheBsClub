@@ -1953,6 +1953,7 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 .food-combo-card img,
 .sandwich-set-card img {
   width: 100%;
+  height: auto;
   object-fit: cover;
 }
 
