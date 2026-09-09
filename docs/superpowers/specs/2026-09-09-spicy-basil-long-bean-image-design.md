@@ -13,6 +13,14 @@ Create the approved marketplace master for Spicy Basil Chicken from the current 
 - Keep the food centred and fully visible in a square marketplace image suitable for Swinch.
 - Do not add cucumber, bell pepper, broccoli, onion, new garnish, text, logos, utensils, hands, borders or watermarks.
 
+## Candidate v2 refinement
+
+- Use Candidate v1 as the edit target rather than regenerating the whole scene.
+- Reduce the visible long-bean quantity by approximately 50%, distributing the remaining pieces naturally among the chicken.
+- Reduce only the foreground food bowl by 20% relative to Candidate v1 so it better represents the real serving size.
+- Keep the separate rice bowl at its current size and preserve its position.
+- Preserve the square composition and all other approved visual elements without introducing new ingredients.
+
 ## Platform workflow
 
 - Save the square approved candidate non-destructively in the workspace and Obsidian.
@@ -30,6 +38,8 @@ Create the approved marketplace master for Spicy Basil Chicken from the current 
 
 - No sugar snap peas or snow-pea-like pieces remain.
 - Long-bean segments are visibly smaller by approximately 20% and look naturally cooked with the dish.
+- Candidate v2 contains approximately half as many visible long-bean pieces as Candidate v1.
+- The foreground food bowl is approximately 20% smaller than Candidate v1, while the rice bowl remains unchanged.
 - Chicken, basil, chilli, rice and the café scene remain consistent with the source.
 - The marketplace master and website derivative keep the complete meal centred.
 - Website tests pass after the derivative is integrated.
