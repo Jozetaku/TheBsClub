@@ -4,7 +4,7 @@
 
 **Goal:** Produce and publish a Spicy Basil Chicken image that replaces sugar snap peas with smaller long-bean segments, then synchronize the website, Obsidian and Swinch at the website price of CHF 18.50.
 
-**Architecture:** Treat the current website image as an immutable source and use one precise built-in image edit to create a versioned square marketplace master. Derive the 4:3 website asset mechanically, update the static site and Obsidian record, then create matching Swinch Product and Menu Item records only after owner approval.
+**Architecture:** Preserve the current website image and Candidate v1 as immutable sources, then use one precise built-in image edit on Candidate v1 to create the versioned Candidate v2 marketplace master. Derive the 4:3 website asset mechanically, update the static site and Obsidian record, then create matching Swinch Product and Menu Item records only after owner approval.
 
 **Tech Stack:** Built-in image generation/editing, PowerShell with System.Drawing, static HTML, Node.js tests, Markdown/Obsidian, Swinch Merchant browser UI.
 
@@ -12,6 +12,8 @@
 
 - Remove every sugar snap pea / snow-pea-like green vegetable from the dish.
 - Replace them with cut long-bean segments approximately 20% smaller than the removed pieces.
+- Candidate v2 must contain approximately half as many visible long-bean pieces as Candidate v1.
+- Reduce only the foreground food bowl by 20% relative to Candidate v1; keep the rice bowl unchanged.
 - Preserve chicken, Thai basil, sliced red chilli, jasmine rice, white ceramic bowls, wooden board, café background, lighting, camera angle and colour treatment.
 - Do not add cucumber, bell pepper, broccoli, onion, new garnish, text, logos, utensils, hands, borders or watermarks.
 - Save the square master and website derivative non-destructively before publication.
@@ -20,20 +22,20 @@
 
 ---
 
-### Task 1: Create and validate the square marketplace master
+### Task 1: Create and validate the refined square marketplace master
 
 **Files:**
-- Read: `images/campaign/v6/spicy-basil-white-ceramic.jpg`
-- Create: `C:/Users/v-bes/Documents/The B's Club/outputs/menu-master/spicy-basil-chicken/spicy-basil-chicken-candidate-v1-long-beans.png`
-- Create: `C:/Users/v-bes/Documents/Obsidien/Founder/06-Business-OS/01-Businesses/The B's Club/Menu/Assets/spicy-basil-chicken/spicy-basil-chicken-candidate-v1-long-beans.png`
+- Read: `C:/Users/v-bes/Documents/The B's Club/outputs/menu-master/spicy-basil-chicken/spicy-basil-chicken-candidate-v1-long-beans.png`
+- Create: `C:/Users/v-bes/Documents/The B's Club/outputs/menu-master/spicy-basil-chicken/spicy-basil-chicken-candidate-v2-less-beans-smaller-bowl.png`
+- Create: `C:/Users/v-bes/Documents/Obsidien/Founder/06-Business-OS/01-Businesses/The B's Club/Menu/Assets/spicy-basil-chicken/spicy-basil-chicken-candidate-v2-less-beans-smaller-bowl.png`
 
 **Interfaces:**
-- Consumes: the existing vertical website photograph.
-- Produces: one centred square candidate for owner review and downstream derivatives.
+- Consumes: the approved square Candidate v1.
+- Produces: one refined square Candidate v2 for owner review and downstream derivatives.
 
 - [ ] **Step 1: Inspect the source at original detail**
 
-Confirm the source shows chicken, Thai basil, red chilli, sugar-snap-pea-like pieces, jasmine rice and two white bowls on a wooden board.
+Confirm Candidate v1 shows chicken, Thai basil, red chilli, long-bean segments, jasmine rice and two white bowls on a wooden board.
 
 - [ ] **Step 2: Run the precise built-in image edit**
 
@@ -42,20 +44,20 @@ Use this exact prompt:
 ```text
 Use case: precise-object-edit
 Asset type: square marketplace food photograph for Swinch
-Primary request: Remove every sugar snap pea or snow-pea-like green piece from the Spicy Basil Chicken and replace each with naturally cooked Thai long-bean segments approximately 20% smaller than the removed pieces.
+Primary request: Edit Candidate v1 by reducing the visible long-bean quantity by approximately 50%, distributing the remaining segments naturally among the chicken. Reduce only the foreground food bowl by 20% relative to Candidate v1 so it reflects the real serving size.
 Input image: Image 1 is the edit target.
-Composition: Reframe as a centred square marketplace image with the complete curry bowl and separate rice bowl fully visible.
-Constraints: Preserve the chicken, Thai basil, sliced red chilli, jasmine rice, white ceramic bowls, wooden serving board, café background, camera angle, lighting and colour treatment. Keep the replacement quantity visually balanced and realistic.
+Composition: Keep the centred square marketplace composition with the complete smaller food bowl and separate rice bowl fully visible.
+Constraints: Keep the rice bowl at its current size and position. Preserve the chicken, Thai basil, sliced red chilli, jasmine rice, white ceramic bowl design, wooden serving board, café background, camera angle, lighting and colour treatment. Change only the visible long-bean quantity and the scale of the foreground food bowl.
 Avoid: sugar snap peas, snow peas, cucumber, bell pepper, broccoli, onion, new garnish, duplicated food, distorted ceramics, text, logos, utensils, hands, borders or watermarks.
 ```
 
 - [ ] **Step 3: Save both project copies**
 
-Copy the chosen output to the workspace and Obsidian v1 paths without overwriting the source.
+Copy the chosen output to the workspace and Obsidian v2 paths without overwriting Candidate v1.
 
 - [ ] **Step 4: Verify identity and visual requirements**
 
-Run `Get-FileHash -Algorithm SHA256` against both saved copies and confirm identical hashes. Inspect the square output at original detail and confirm that only long-bean segments remain, the two bowls are complete and the meal is centred.
+Run `Get-FileHash -Algorithm SHA256` against both saved copies and confirm identical hashes. Inspect the square output at original detail and confirm that approximately half the long beans remain, the food bowl is 20% smaller, the rice bowl is unchanged, both bowls are complete and the meal is centred.
 
 ### Task 2: Prepare and integrate the website derivative
 
