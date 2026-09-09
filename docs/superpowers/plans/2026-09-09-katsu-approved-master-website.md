@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the public website's Katsu Curry photograph with the owner-approved reusable Katsu portrait.
+**Goal:** Replace the public website's Katsu Curry photograph with the owner-approved reusable portrait and reduce Food + Boba images to the same 4:3 proportion as the main meal cards.
 
-**Architecture:** Keep both existing website references unchanged and replace their shared JPEG asset at the current path. Export the approved Obsidian portrait to the website's required 1200 × 1500 dimensions, verify visually and through the complete test suite, then push and confirm the deployed bytes by SHA-256.
+**Architecture:** Split the shared Food + Boba/Sandwich image rule so only Food + Boba changes from 4:5 to 4:3. Keep both existing Katsu website references unchanged and replace their shared JPEG asset at the current path. Verify the CSS contract, image composition and complete site before pushing and confirming deployed bytes by SHA-256.
 
 **Tech Stack:** PowerShell 7, System.Drawing, Node.js test runner, GitHub Pages, Obsidian Markdown.
 
@@ -14,10 +14,72 @@
 - Preserve the complete curry bowl, rice plate, coriander garnish, lighting, white table and café setting.
 - Do not generate or alter food, crockery, garnish, text, logos, watermarks or background elements.
 - Keep all website names, descriptions, prices, links and ordering behaviour unchanged.
+- Set only Food + Boba card images to `aspect-ratio: 4 / 3`.
+- Keep Sandwich Set card images at `aspect-ratio: 4 / 5`.
 
 ---
 
-### Task 1: Replace and publish the shared Katsu website asset
+### Task 1: Reduce Food + Boba image height
+
+**Files:**
+- Modify: `styles.css:1953`
+- Modify: `tests/responsive-design.test.mjs`
+
+**Interfaces:**
+- Consumes: the existing `.food-combo-card` and `.sandwich-set-card` selectors.
+- Produces: independent 4:3 and 4:5 image-ratio contracts.
+
+- [ ] **Step 1: Write the failing CSS contract test**
+
+Add to `tests/responsive-design.test.mjs`:
+
+```javascript
+test('food boba images use compact landscape framing without changing sandwich portraits', () => {
+  assert.match(css, /\.food-combo-card img\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*3/s);
+  assert.match(css, /\.sandwich-set-card img\s*\{[^}]*aspect-ratio:\s*4\s*\/\s*5/s);
+  assert.doesNotMatch(css, /\.food-combo-card img\s*,\s*\.sandwich-set-card img\s*\{[^}]*aspect-ratio/s);
+});
+```
+
+- [ ] **Step 2: Run the focused test and verify it fails**
+
+```powershell
+node --test tests/responsive-design.test.mjs
+```
+
+Expected: FAIL because Food + Boba and Sandwich images still share the 4:5 rule.
+
+- [ ] **Step 3: Split the selectors with the minimal CSS change**
+
+Replace the shared rule with:
+
+```css
+.food-combo-card img,
+.sandwich-set-card img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.food-combo-card img { aspect-ratio: 4 / 3; }
+.sandwich-set-card img { aspect-ratio: 4 / 5; }
+```
+
+- [ ] **Step 4: Run the focused test and verify it passes**
+
+```powershell
+node --test tests/responsive-design.test.mjs
+```
+
+Expected: PASS with zero failures.
+
+- [ ] **Step 5: Commit the compact image rule**
+
+```powershell
+git add styles.css tests/responsive-design.test.mjs
+git commit -m "feat: compact food boba card images"
+```
+
+### Task 2: Replace and publish the shared Katsu website asset
 
 **Files:**
 - Read: `C:/Users/v-bes/Documents/Founder-Business-OS-Vault/02-BUSINESSES/The B's Club/Menu/Assets/katsu-curry/Final/crispy-chicken-katsu-curry-portrait-1080x1350.jpg`
