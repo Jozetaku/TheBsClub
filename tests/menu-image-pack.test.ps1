@@ -29,6 +29,37 @@ try {
   $masterHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $testOutput 'katsu-curry-test-master.png')).Hash
   if ($sourceHash -ne $masterHash) { throw 'Master copy hash differs from source' }
   if ($result.Count -ne 4) { throw 'Generator did not report four outputs' }
+
+  $syntheticSource = Join-Path $testOutput 'composition-source.png'
+  $synthetic = New-Object System.Drawing.Bitmap 100, 100
+  $syntheticGraphics = [System.Drawing.Graphics]::FromImage($synthetic)
+  try {
+    $syntheticGraphics.Clear([System.Drawing.Color]::Blue)
+    $borderPen = New-Object System.Drawing.Pen ([System.Drawing.Color]::Red), 6
+    try { $syntheticGraphics.DrawRectangle($borderPen, 0, 0, 99, 99) } finally { $borderPen.Dispose() }
+    $synthetic.Save($syntheticSource, [System.Drawing.Imaging.ImageFormat]::Png)
+  } finally {
+    $syntheticGraphics.Dispose()
+    $synthetic.Dispose()
+  }
+
+  $compositionOutput = Join-Path $testOutput 'composition'
+  & $scriptPath -SourcePath $syntheticSource -OutputDirectory $compositionOutput -Slug 'composition-test' | Out-Null
+  $edgeChecks = @(
+    @{ Path = Join-Path $compositionOutput 'composition-test-landscape-1200x900.jpg'; Points = @(@(600, 4), @(600, 895)) },
+    @{ Path = Join-Path $compositionOutput 'composition-test-portrait-1080x1350.jpg'; Points = @(@(4, 675), @(1075, 675)) }
+  )
+  foreach ($check in $edgeChecks) {
+    $rendered = [System.Drawing.Bitmap]::FromFile($check.Path)
+    try {
+      foreach ($point in $check.Points) {
+        $pixel = $rendered.GetPixel($point[0], $point[1])
+        if ($pixel.R -lt 150 -or $pixel.G -gt 120 -or $pixel.B -gt 120) {
+          throw "Full source boundary was cropped from $($check.Path) at $($point[0]),$($point[1])"
+        }
+      }
+    } finally { $rendered.Dispose() }
+  }
   'PASS: menu image pack contract'
 } finally {
   if (Test-Path -LiteralPath $testOutput) { Remove-Item -LiteralPath $testOutput -Recurse -Force }
