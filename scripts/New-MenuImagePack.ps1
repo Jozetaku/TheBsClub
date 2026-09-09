@@ -95,16 +95,18 @@ function Save-JpegContain {
 
 $source = [System.Drawing.Image]::FromFile($SourcePath)
 try {
-  if ($source.Width -ne $source.Height) { throw "Source must be square: $($source.Width)x$($source.Height)" }
-
   $masterPath = Join-Path $OutputDirectory "$Slug-master.png"
   $squarePath = Join-Path $OutputDirectory "$Slug-square-1200.jpg"
   $landscapePath = Join-Path $OutputDirectory "$Slug-landscape-1200x900.jpg"
   $portraitPath = Join-Path $OutputDirectory "$Slug-portrait-1080x1350.jpg"
   Copy-Item -LiteralPath $SourcePath -Destination $masterPath -Force
 
-  $full = New-Object System.Drawing.Rectangle 0, 0, $source.Width, $source.Height
-  Save-JpegCrop -Source $source -SourceRectangle $full -Width 1200 -Height 1200 -Destination $squarePath
+  if ($source.Width -eq $source.Height) {
+    $full = New-Object System.Drawing.Rectangle 0, 0, $source.Width, $source.Height
+    Save-JpegCrop -Source $source -SourceRectangle $full -Width 1200 -Height 1200 -Destination $squarePath
+  } else {
+    Save-JpegContain -Source $source -Width 1200 -Height 1200 -Destination $squarePath
+  }
 
   Save-JpegContain -Source $source -Width 1200 -Height 900 -Destination $landscapePath
   Save-JpegContain -Source $source -Width 1080 -Height 1350 -Destination $portraitPath
