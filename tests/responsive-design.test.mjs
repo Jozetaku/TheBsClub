@@ -60,7 +60,7 @@ test('keeps the Hero lockup slash-free', () => {
 
 test('normalizes every bestseller cup to one optical stage', () => {
   const expectedOpticalAdjustments = [
-    ['Brown Sugar Milk Tea', '1.01', '-2px'],
+    ['Brown Sugar Milk Tea', '1.20', '0px'],
     ['Yummy Strawberry', '1.01', '21px'],
     ['Matcha Latte', '1.055', '-1px'],
     ['Mango Tea', '1', '-4px'],

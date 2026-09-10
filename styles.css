@@ -697,7 +697,7 @@ h1 em, h2 em { color: var(--gold); font-weight: 500; }
 
 .bestseller-card:hover { transform: translateY(-4px); box-shadow: 0 28px 70px rgba(35, 45, 35, .13); }
 
-.bestseller-card[data-drink="Brown Sugar Milk Tea"] { --cup-scale: 1.01; --cup-y: -2px; }
+.bestseller-card[data-drink="Brown Sugar Milk Tea"] { --cup-scale: 1.20; --cup-y: 0px; }
 .bestseller-card[data-drink="Yummy Strawberry"] { --cup-scale: 1.01; --cup-y: 21px; }
 .bestseller-card[data-drink="Matcha Latte"] { --cup-scale: 1.055; --cup-y: -1px; }
 .bestseller-card[data-drink="Mango Tea"] { --cup-scale: 1; --cup-y: -4px; }
