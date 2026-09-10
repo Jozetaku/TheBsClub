@@ -82,7 +82,7 @@ git add -- campaign-2026-08/assets/candidates/drinks/mango-tea-v1.png
 git commit -m "feat: add Bublee Mango Tea candidate"
 ```
 
-### Task 2: Promote the approved candidate and generate deterministic derivatives
+### Task 2: Promote approved Candidate v3 and generate deterministic derivatives
 
 **Files:**
 - Create: `campaign-2026-08/assets/final/drinks/mango-tea-master.png`
@@ -102,7 +102,7 @@ Run `pwsh -NoProfile -File tests/menu-image-pack.test.ps1`. Expected: exit code 
 
 ```powershell
 pwsh -NoProfile -File scripts/New-MenuImagePack.ps1 `
-  -SourcePath "campaign-2026-08/assets/candidates/drinks/mango-tea-v1.png" `
+  -SourcePath "campaign-2026-08/assets/candidates/drinks/mango-tea-v3-light-mango-glaze.png" `
   -OutputDirectory "campaign-2026-08/assets/final/drinks" `
   -Slug "mango-tea"
 ```
